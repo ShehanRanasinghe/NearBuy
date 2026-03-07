@@ -29,6 +29,9 @@
         <activity
             android:name=".Saved_Deals"
             android:exported="false" />
+        <activity
+            android:name=".deal_details"
+            android:exported="false" />
     </application>
 
 </manifest>
