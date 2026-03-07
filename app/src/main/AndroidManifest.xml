@@ -40,6 +40,11 @@
             android:exported="true"
             android:theme="@style/Theme.NearBuy.Categories"
             android:label="@string/categories_title" />
+        <activity
+            android:name=".NotificationsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NearBuy.Screen"
+            android:label="@string/notif_screen_title" />
     </application>
 
 </manifest>

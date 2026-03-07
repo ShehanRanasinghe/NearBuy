@@ -12,4 +12,44 @@
     <string name="cat_entertainment">Entertainment</string>
     <string name="cat_health">Health</string>
     <string name="cat_tap_message">Browsing %s deals…</string>
+
+    <!-- Notifications Screen -->
+    <string name="notif_screen_title">Notifications</string>
+    <string name="notif_tagline">Your deals, your alerts</string>
+
+    <!-- New Deal notifications -->
+    <string name="notif_nd_1_title">🛍 New Deal: 50% off Pizza Palace</string>
+    <string name="notif_nd_1_body">Limited time offer at Pizza Palace near you. Grab it before it\'s gone!</string>
+    <string name="notif_nd_1_time">2 min ago</string>
+
+    <string name="notif_nd_2_title">🛍 New Deal: Buy 1 Get 1 at FreshMart</string>
+    <string name="notif_nd_2_body">FreshMart is offering BOGO on selected groceries. Valid today only.</string>
+    <string name="notif_nd_2_time">18 min ago</string>
+
+    <!-- Expiring Deal notifications -->
+    <string name="notif_exp_1_title">⏰ Expiring Soon: Tech Zone 30% off</string>
+    <string name="notif_exp_1_body">Your saved deal at Tech Zone expires in 2 hours. Don\'t miss out!</string>
+    <string name="notif_exp_1_time">1 hr ago</string>
+
+    <string name="notif_exp_2_title">⏰ Expiring Soon: Fashion Hub Flash Sale</string>
+    <string name="notif_exp_2_body">Flash sale ending at midnight. Up to 70% off selected clothing.</string>
+    <string name="notif_exp_2_time">3 hr ago</string>
+
+    <!-- Promotional offer notifications -->
+    <string name="notif_promo_1_title">🎁 Promo: Earn 200 Reward Points</string>
+    <string name="notif_promo_1_body">Shop at any partner store today and earn double reward points on every purchase.</string>
+    <string name="notif_promo_1_time">Yesterday</string>
+
+    <string name="notif_promo_2_title">🎁 Promo: Free Delivery Weekend</string>
+    <string name="notif_promo_2_body">Enjoy free delivery on all orders above Rs. 500 this weekend at select stores.</string>
+    <string name="notif_promo_2_time">Yesterday</string>
+
+    <!-- Section labels -->
+    <string name="notif_section_new">New Deals</string>
+    <string name="notif_section_expiring">Expiring Soon</string>
+    <string name="notif_section_promo">Promotional Offers</string>
+    <string name="notif_badge_new">NEW</string>
+    <string name="notif_badge_urgent">URGENT</string>
+    <string name="notif_badge_promo">PROMO</string>
+    <string name="notif_mark_read">Mark all as read</string>
 </resources>
