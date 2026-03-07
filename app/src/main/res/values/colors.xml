@@ -7,4 +7,24 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- NearBuy brand – teal/cyan + orange palette -->
+    <color name="nb_bg">#E0F7FA</color>
+    <color name="nb_header_start">#004D40</color>
+    <color name="nb_header_end">#00ACC1</color>
+    <color name="nb_teal_dark">#006064</color>
+    <color name="nb_teal">#0097A7</color>
+    <color name="nb_teal_mid">#00838F</color>
+    <color name="nb_teal_circle">#B2EBF2</color>
+    <color name="nb_text_dark">#004D40</color>
+    <color name="nb_text_sub">#00838F</color>
+    <color name="nb_orange">#FF6D00</color>
+    <color name="nb_orange_dark">#E65100</color>
+    <color name="nb_orange_circle">#FFE0B2</color>
+    <color name="nb_card_border">#80DEEA</color>
+    <color name="nb_divider">#E0F2F1</color>
+    <color name="nb_expiring_circle">#FCE4EC</color>
+    <color name="nb_expiring_icon">#C62828</color>
+    <color name="nb_promo_circle">#F3E5F5</color>
+    <color name="nb_promo_icon">#6A1B9A</color>
 </resources>

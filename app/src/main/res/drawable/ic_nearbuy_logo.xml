@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NearBuy branded shopping-bag logo: teal gradient bag + orange swoosh + indigo shadow -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Indigo / purple shadow drop at base -->
+    <path
+        android:pathData="M62,172 Q100,186 138,172 Q122,193 100,195 Q78,193 62,172Z"
+        android:fillColor="#311B92" />
+
+    <!-- Bag body — teal-cyan to green gradient -->
+    <path android:pathData="M38,76 L44,168 L156,168 L162,76 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="38" android:startY="76"
+                android:endX="162" android:endY="168"
+                android:startColor="#00BFA5"
+                android:endColor="#43A047" />
+        </aapt:attr>
+    </path>
+
+    <!-- Bag top opening — lighter cyan trapezoid -->
+    <path android:pathData="M50,76 L63,53 L137,53 L150,76 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="50" android:startY="53"
+                android:endX="150" android:endY="76"
+                android:startColor="#26C6DA"
+                android:endColor="#00BFA5" />
+        </aapt:attr>
+    </path>
+
+    <!-- White highlight strip on bag's right face -->
+    <path
+        android:pathData="M120,76 L124,168 L156,168 L162,76 Z"
+        android:fillColor="#1AFFFFFF" />
+
+    <!-- Handle arch -->
+    <path
+        android:pathData="M72,75 Q72,37 100,33 Q128,37 128,75"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#004D40"
+        android:strokeWidth="10"
+        android:strokeLineCap="round" />
+
+    <!-- Orange swoosh — left arc under bag -->
+    <path
+        android:pathData="M20,112 Q6,155 32,179 Q58,197 102,193"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="13"
+        android:strokeLineCap="round" />
+
+    <!-- Orange swoosh — right arc rising upward -->
+    <path
+        android:pathData="M182,96 Q197,142 174,172"
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF5722"
+        android:strokeWidth="13"
+        android:strokeLineCap="round" />
+</vector>
