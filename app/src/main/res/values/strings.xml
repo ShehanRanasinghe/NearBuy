@@ -52,4 +52,25 @@
     <string name="notif_badge_urgent">URGENT</string>
     <string name="notif_badge_promo">PROMO</string>
     <string name="notif_mark_read">Mark all as read</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_tagline">Discover Deals Near You</string>
+    <string name="splash_version">Version 1.0</string>
+
+    <!-- Home Screen -->
+    <string name="home_greeting">Hello,</string>
+    <string name="home_username">John Don</string>
+    <string name="home_search_hint">Search</string>
+    <string name="home_category_title">Category</string>
+    <string name="home_promos_title">Promos</string>
+
+    <!-- Search Screen -->
+    <string name="search_hint">Search for deals or stores…</string>
+    <string name="search_popular_categories">Popular Categories</string>
+    <string name="search_results">Search Results</string>
+    <string name="filter_all">All</string>
+    <string name="filter_nearby">Nearby</string>
+    <string name="filter_deals">Deals</string>
+    <string name="filter_stores">Stores</string>
+    <string name="filter_popular">Popular</string>
 </resources>
