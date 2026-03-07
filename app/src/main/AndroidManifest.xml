@@ -35,6 +35,11 @@
         <activity
             android:name=".Store_Details"
             android:exported="false" />
+        <activity
+            android:name=".CategoriesActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NearBuy.Categories"
+            android:label="@string/categories_title" />
     </application>
 
 </manifest>
