@@ -32,6 +32,9 @@
         <activity
             android:name=".deal_details"
             android:exported="false" />
+        <activity
+            android:name=".Store_Details"
+            android:exported="false" />
     </application>
 
 </manifest>
