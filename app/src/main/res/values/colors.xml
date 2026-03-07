@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Categories Screen – blue-green + orange palette -->
+    <color name="cat_bg">#E0F7FA</color>
+    <color name="cat_toolbar">#0097A7</color>
+    <color name="cat_toolbar_dark">#006064</color>
+    <color name="cat_icon_circle">#B2EBF2</color>
+    <color name="cat_icon_tint">#00838F</color>
+    <color name="cat_text_label">#004D40</color>
+    <color name="cat_card_stroke">#80DEEA</color>
+    <!-- Orange accent (logo swoosh colour) -->
+    <color name="cat_orange">#FF6D00</color>
+    <color name="cat_orange_light">#FFF3E0</color>
 </resources>

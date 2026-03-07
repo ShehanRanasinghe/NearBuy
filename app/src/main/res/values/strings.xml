@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">NearBuy</string>
+
+    <!-- Categories Screen -->
+    <string name="categories_title">NearBuy</string>
+    <string name="categories_subtitle">Explore by Category</string>
+    <string name="categories_description">Find the best deals near you</string>
+    <string name="cat_food">Food</string>
+    <string name="cat_electronics">Electronics</string>
+    <string name="cat_fashion">Fashion</string>
+    <string name="cat_groceries">Groceries</string>
+    <string name="cat_entertainment">Entertainment</string>
+    <string name="cat_health">Health</string>
+    <string name="cat_tap_message">Browsing %s deals…</string>
 </resources>

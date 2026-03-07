@@ -13,4 +13,14 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Theme for the Categories screen – blue-green, no default action bar -->
+    <style name="Theme.NearBuy.Categories" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/cat_toolbar</item>
+        <item name="colorPrimaryVariant">@color/cat_toolbar_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/cat_icon_tint</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/cat_toolbar_dark</item>
+    </style>
 </resources>
