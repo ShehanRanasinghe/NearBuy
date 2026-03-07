@@ -97,8 +97,7 @@
                     android:layout_height="wrap_content"
                     android:text="රු 1,500"
                     android:textColor="#9AA0AC"
-                    android:textSize="11sp"
-                    android:paintFlags="16" />
+                    android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
