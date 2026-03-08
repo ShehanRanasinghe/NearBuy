@@ -12,17 +12,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NearBuy"
         tools:targetApi="31">
+
+        <!-- Splash Screen - Launcher -->
         <activity
-            android:name=".Settings"
-            android:exported="false" />
-        <activity
-            android:name=".DashboardUI"
-            android:exported="true">
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Login Screen -->
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+
+        <!-- Home Screen -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <!-- Search Screen -->
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".DashboardUI"
+            android:exported="false" />
         <activity
             android:name=".Profile"
             android:exported="false" />
