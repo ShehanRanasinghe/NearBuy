@@ -31,12 +31,11 @@ public class SplashActivity extends AppCompatActivity {
         logoImage.startAnimation(fadeIn);
         taglineText.startAnimation(slideUp);
 
-        // Navigate to Welcome/Home screen after delay
+        // Navigate to Login screen after delay
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            Intent intent = new Intent(SplashActivity.this, Login.class);
             startActivity(intent);
             finish();
         }, SPLASH_DURATION);
     }
 }
-

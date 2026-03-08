@@ -1,6 +1,8 @@
 package com.example.nearbuy;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +17,22 @@ public class NotificationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
 
+        // Enable back button in action bar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         setupCardListeners();
         setupMarkAllRead();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupCardListeners() {
@@ -42,9 +58,13 @@ public class NotificationsActivity extends AppCompatActivity {
             MaterialCardView card = findViewById(cardIds[i]);
             final String msg = messages[i];
             if (card != null) {
-                card.setOnClickListener(v ->
-                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                );
+                card.setOnClickListener(v -> {
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                    // Navigate to deal details if needed
+                    Intent intent = new Intent(NotificationsActivity.this, deal_details.class);
+                    intent.putExtra("deal_title", msg);
+                    startActivity(intent);
+                });
             }
         }
     }

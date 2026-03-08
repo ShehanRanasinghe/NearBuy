@@ -1,5 +1,6 @@
 package com.example.nearbuy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,8 +37,11 @@ public class Login extends AppCompatActivity {
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(Login.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
             } else {
-
+                // Navigate to Dashboard
                 Toast.makeText(Login.this, "Logging in...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Login.this, DashboardUI.class);
+                startActivity(intent);
+                finish();
             }
         });
 

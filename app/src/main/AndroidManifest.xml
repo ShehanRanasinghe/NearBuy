@@ -24,6 +24,11 @@
             </intent-filter>
         </activity>
 
+        <!-- Login Screen -->
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+
         <!-- Home Screen -->
         <activity
             android:name=".HomeActivity"

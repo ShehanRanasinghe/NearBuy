@@ -1,6 +1,9 @@
 package com.example.nearbuy;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -19,5 +22,13 @@ public class Saved_Deals extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        loadSavedDeals();
+    }
+
+    private void loadSavedDeals() {
+        // Load saved deals with sample data
+        Toast.makeText(this, "Saved deals loaded", Toast.LENGTH_SHORT).show();
     }
 }
+
