@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.nearbuy.R;
-import com.example.nearbuy.categories.CategoriesActivity;
-import com.example.nearbuy.deals.DealsActivity;
+import com.example.nearbuy.discounts.DealsAndPromoActivity;
+import com.example.nearbuy.orders.OrdersActivity;
 import com.example.nearbuy.notifications.NotificationsActivity;
 import com.example.nearbuy.profile.ProfileActivity;
 import com.example.nearbuy.search.SearchActivity;
@@ -39,11 +39,8 @@ public class DashboardActivity extends AppCompatActivity {
     // Notification
     private ImageView btnNotifications;
 
-    // Categories
-    private LinearLayout catGroceries, catFresh, catFood, catMore;
-
-    // Nearby Shops
-    private LinearLayout shopFreshMart, shopQuickMart, shopGreenLeaf;
+    // Nearby Shops (5 total)
+    private LinearLayout shopFreshMart, shopQuickMart, shopGreenLeaf, shopSnackHub, shopBakeryPlus;
 
     // Sample data
     private String userName   = "John Doe";
@@ -69,7 +66,6 @@ public class DashboardActivity extends AppCompatActivity {
         initViews();
         populateData();
         setupNavigation();
-        setupCategoryClicks();
         setupNearbyShopClicks();
     }
 
@@ -100,15 +96,11 @@ public class DashboardActivity extends AppCompatActivity {
 
         btnNotifications = findViewById(R.id.btnNotifications);
 
-        catGroceries = findViewById(R.id.catGroceries);
-        catFresh     = findViewById(R.id.catFresh);
-        catFood      = findViewById(R.id.catFood);
-        catMore      = findViewById(R.id.catMore);
-
-        // Nearby shop cards (optional – may not exist in all layout versions)
-        shopFreshMart = safeFind(R.id.shopFreshMart);
-        shopQuickMart = safeFind(R.id.shopQuickMart);
-        shopGreenLeaf = safeFind(R.id.shopGreenLeaf);
+        shopFreshMart  = safeFind(R.id.shopFreshMart);
+        shopQuickMart  = safeFind(R.id.shopQuickMart);
+        shopGreenLeaf  = safeFind(R.id.shopGreenLeaf);
+        shopSnackHub   = safeFind(R.id.shopSnackHub);
+        shopBakeryPlus = safeFind(R.id.shopBakeryPlus);
     }
 
     private void populateData() {
@@ -127,30 +119,30 @@ public class DashboardActivity extends AppCompatActivity {
         navSearch.setOnClickListener(v ->
                 startActivity(new Intent(this, SearchActivity.class)));
         navDeals.setOnClickListener(v ->
-                startActivity(new Intent(this, DealsActivity.class)));
+                startActivity(new Intent(this, OrdersActivity.class)));
         navProfile.setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class)));
         btnNotifications.setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
 
-        tvViewAllDeals.setOnClickListener(v ->
-                startActivity(new Intent(this, DealsActivity.class)));
-        tvViewAllPromos.setOnClickListener(v ->
-                startActivity(new Intent(this, DealsActivity.class)));
-    }
-
-    private void setupCategoryClicks() {
-        if (catGroceries != null) catGroceries.setOnClickListener(v -> startSearch("Groceries"));
-        if (catFresh     != null) catFresh.setOnClickListener(v ->     startSearch("Fresh Produce"));
-        if (catFood      != null) catFood.setOnClickListener(v ->      startSearch("Food"));
-        if (catMore      != null) catMore.setOnClickListener(v ->
-                startActivity(new Intent(this, CategoriesActivity.class)));
+        tvViewAllDeals.setOnClickListener(v -> {
+            Intent i = new Intent(this, DealsAndPromoActivity.class);
+            i.putExtra(DealsAndPromoActivity.EXTRA_TAB, "deals");
+            startActivity(i);
+        });
+        tvViewAllPromos.setOnClickListener(v -> {
+            Intent i = new Intent(this, DealsAndPromoActivity.class);
+            i.putExtra(DealsAndPromoActivity.EXTRA_TAB, "promos");
+            startActivity(i);
+        });
     }
 
     private void setupNearbyShopClicks() {
-        openShop(shopFreshMart, "FreshMart Grocery", "🏪", "0.8", "No. 10, Main St, Colombo 01");
-        openShop(shopQuickMart, "QuickMart",          "🛒", "1.1", "No. 22, High St, Colombo 03");
-        openShop(shopGreenLeaf, "GreenLeaf Store",    "🥦", "0.5", "No. 5, Park Rd, Colombo 05");
+        openShop(shopFreshMart,  "FreshMart Grocery", "🏪", "0.8", "No. 10, Main St, Colombo 01");
+        openShop(shopQuickMart,  "QuickMart",          "🛒", "1.1", "No. 22, High St, Colombo 03");
+        openShop(shopGreenLeaf,  "GreenLeaf Store",    "🥦", "0.5", "No. 5, Park Rd, Colombo 05");
+        openShop(shopSnackHub,   "SnackHub",            "🍟", "2.1", "No. 14, Union Pl, Colombo 02");
+        openShop(shopBakeryPlus, "BakeryPlus",          "🍞", "1.5", "No. 8, Galle Rd, Colombo 04");
     }
 
     private void openShop(LinearLayout card, String name, String emoji,
@@ -164,12 +156,6 @@ public class DashboardActivity extends AppCompatActivity {
             i.putExtra(StoreDetailsActivity.EXTRA_ADDRESS,    addr);
             startActivity(i);
         });
-    }
-
-    private void startSearch(String query) {
-        Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra("query", query);
-        startActivity(intent);
     }
 
     @SuppressWarnings("unchecked")

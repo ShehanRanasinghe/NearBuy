@@ -60,16 +60,11 @@ public class StoreDetailsActivity extends AppCompatActivity {
         setText(R.id.tv_location, address);
         setText(R.id.tv_contact,  "+94 11 234 5678");
         setText(R.id.tv_hours,    "7:00 AM – 10:00 PM Daily");
-        setText(R.id.tv_rating,   "4.8 (320 reviews)");
     }
 
     private void setupButtons(String shopName) {
         // Back
         safeClick(R.id.btn_back, v -> finish());
-
-        // Share
-        safeClick(R.id.btn_share, v ->
-                Toast.makeText(this, "Share: " + shopName, Toast.LENGTH_SHORT).show());
 
         // "View All Deals" button
         safeClick(R.id.btn_view_deals, v -> {

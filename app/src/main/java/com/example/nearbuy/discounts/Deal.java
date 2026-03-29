@@ -1,4 +1,4 @@
-package com.example.nearbuy.deals;
+package com.example.nearbuy.discounts;
 
 /**
  * Data model for a Deal or Promotion card.

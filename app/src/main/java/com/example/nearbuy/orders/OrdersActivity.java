@@ -64,7 +64,6 @@ public class OrdersActivity extends AppCompatActivity {
 
         // Stats
         ((TextView) findViewById(R.id.tvStatTotal)).setText("12");
-        ((TextView) findViewById(R.id.tvStatDelivered)).setText("9");
         ((TextView) findViewById(R.id.tvStatSpent)).setText("Rs.4,250");
     }
 

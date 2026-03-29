@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@drawable/bg_card_white"
     android:padding="16dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="16dp"
     android:elevation="3dp"
     android:clickable="true"
     android:focusable="true">

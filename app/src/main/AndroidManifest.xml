@@ -75,7 +75,7 @@
 
         <!-- ── DEALS ── -->
         <activity
-            android:name=".deals.DealsActivity"
+            android:name=".discounts.DealsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
@@ -119,19 +119,31 @@
 
         <!-- ── DEAL DETAILS ── -->
         <activity
-            android:name=".deals.DealDetailsActivity"
+            android:name=".discounts.DealDetailsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- ── SAVED DEALS ── -->
         <activity
-            android:name=".deals.SavedDealsActivity"
+            android:name=".discounts.SavedDealsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- ── SETTINGS ── -->
         <activity
             android:name=".profile.SettingsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── DEALS AND PROMO (full list, accessed via View All only) ── -->
+        <activity
+            android:name=".discounts.DealsAndPromoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── LOGOUT ── -->
+        <activity
+            android:name=".profile.LogoutActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

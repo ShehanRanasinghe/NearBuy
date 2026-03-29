@@ -1,5 +1,4 @@
-package com.example.nearbuy.deals;
-import android.content.Intent;
+package com.example.nearbuy.discounts;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Window;
@@ -9,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.example.nearbuy.R;
-import com.example.nearbuy.store.StoreDetailsActivity;
+
 public class DealDetailsActivity extends AppCompatActivity {
     public static final String EXTRA_EMOJI    = "emoji";
     public static final String EXTRA_TITLE    = "title";

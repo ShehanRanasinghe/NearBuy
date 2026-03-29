@@ -13,144 +13,174 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="@drawable/bg_topbar_curved"
-        android:paddingStart="18dp"
+        android:paddingStart="16dp"
         android:paddingEnd="18dp"
         android:paddingTop="14dp"
         android:paddingBottom="14dp"
         android:elevation="4dp">
 
-        <!-- App logo + title -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@android:drawable/ic_menu_revert"
+            android:background="@drawable/bg_icon_circle_white"
+            android:padding="8dp"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="Back"/>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/nearbuy_logo"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/logo_desc"
-                android:layout_marginEnd="10dp"/>
-
-            <LinearLayout
+            android:orientation="vertical">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="My Orders"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your purchase history"
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="11sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- LIFETIME STATS -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_stat_card"
+        android:padding="16dp"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LIFETIME STATS"
+            android:textColor="@color/text_on_dark_secondary"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.10"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <!-- Total Orders -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_metric_box_rounded"
+                android:padding="8dp"
+                android:layout_marginEnd="5dp">
                 <TextView
+                    android:id="@+id/tvTotalOrdersStat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deals &amp; Offers"
+                    android:text="12"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Best deals near you"
-                    android:textColor="#FFFF9E40"
-                    android:textSize="11sp"/>
+                    android:text="Orders"
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"/>
             </LinearLayout>
-        </LinearLayout>
 
-        <!-- Notification bell -->
-        <ImageView
-            android:id="@+id/btnNotifications"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:padding="7dp"
-            android:src="@drawable/ic_notification"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Notifications"
-            app:tint="@color/white"/>
-    </LinearLayout>
+            <!-- Total Spent -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_metric_box_rounded"
+                android:padding="8dp"
+                android:layout_marginEnd="5dp">
+                <TextView
+                    android:id="@+id/tvTotalSpentStat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs.4,250"
+                    android:textColor="@color/nb_accent_light"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Spent"
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
 
-    <!-- STATS BAR -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/bg_white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:elevation="2dp">
+            <!-- Delivered -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_metric_box_rounded"
+                android:padding="8dp"
+                android:layout_marginEnd="5dp">
+                <TextView
+                    android:id="@+id/tvDeliveredStat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9"
+                    android:textColor="@color/stat_green"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delivered"
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:background="@drawable/bg_chip_white"
-            android:padding="8dp"
-            android:layout_marginEnd="6dp">
-            <TextView
-                android:id="@+id/tvTotalDeals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24"
-                android:textColor="@color/nb_primary"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Live Deals"
-                android:textColor="@color/text_dark_hint"
-                android:textSize="10sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:background="@drawable/bg_chip_white"
-            android:padding="8dp"
-            android:layout_marginEnd="6dp">
-            <TextView
-                android:id="@+id/tvExpiringSoon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"
-                android:textColor="@color/stat_red"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expiring Soon"
-                android:textColor="@color/text_dark_hint"
-                android:textSize="10sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:background="@drawable/bg_chip_white"
-            android:padding="8dp">
-            <TextView
-                android:id="@+id/tvMaxSaving"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="60%"
-                android:textColor="@color/stat_green"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Max Saving"
-                android:textColor="@color/text_dark_hint"
-                android:textSize="10sp"/>
+            <!-- Avg Order -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_metric_box_rounded"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/tvAvgOrderStat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs.354"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Avg. Order"
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -172,36 +202,29 @@
 
             <TextView android:id="@+id/tabAll"
                 android:layout_width="wrap_content" android:layout_height="34dp"
-                android:text="All Deals" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold"
-                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:text="All" android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"
+                android:gravity="center" android:paddingStart="18dp" android:paddingEnd="18dp"
                 android:background="@drawable/bg_distance_chip_active" android:layout_marginEnd="8dp"
                 android:clickable="true" android:focusable="true"/>
 
-            <TextView android:id="@+id/tabFood"
+            <TextView android:id="@+id/tabDelivered"
                 android:layout_width="wrap_content" android:layout_height="34dp"
-                android:text="🍛 Food" android:textColor="@color/nb_primary" android:textSize="12sp"
-                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:text="Delivered" android:textColor="@color/nb_primary" android:textSize="13sp"
+                android:gravity="center" android:paddingStart="18dp" android:paddingEnd="18dp"
                 android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
                 android:clickable="true" android:focusable="true"/>
 
-            <TextView android:id="@+id/tabGroceries"
+            <TextView android:id="@+id/tabProcessing"
                 android:layout_width="wrap_content" android:layout_height="34dp"
-                android:text="🛒 Groceries" android:textColor="@color/nb_primary" android:textSize="12sp"
-                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:text="Processing" android:textColor="@color/nb_primary" android:textSize="13sp"
+                android:gravity="center" android:paddingStart="18dp" android:paddingEnd="18dp"
                 android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
                 android:clickable="true" android:focusable="true"/>
 
-            <TextView android:id="@+id/tabFresh"
+            <TextView android:id="@+id/tabCancelled"
                 android:layout_width="wrap_content" android:layout_height="34dp"
-                android:text="🥦 Fresh" android:textColor="@color/nb_primary" android:textSize="12sp"
-                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
-                android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
-                android:clickable="true" android:focusable="true"/>
-
-            <TextView android:id="@+id/tabPromos"
-                android:layout_width="wrap_content" android:layout_height="34dp"
-                android:text="🎉 Promos" android:textColor="@color/nb_primary" android:textSize="12sp"
-                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:text="Cancelled" android:textColor="@color/nb_primary" android:textSize="13sp"
+                android:gravity="center" android:paddingStart="18dp" android:paddingEnd="18dp"
                 android:background="@drawable/bg_distance_chip"
                 android:clickable="true" android:focusable="true"/>
         </LinearLayout>
@@ -212,7 +235,7 @@
         android:id="@+id/tvResultCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="24 deals found"
+        android:text="12 orders"
         android:textColor="@color/text_dark_secondary"
         android:textSize="13sp"
         android:paddingStart="18dp"
@@ -220,9 +243,9 @@
         android:paddingTop="12dp"
         android:paddingBottom="6dp"/>
 
-    <!-- Deals List -->
+    <!-- Orders List -->
     <ListView
-        android:id="@+id/listDeals"
+        android:id="@+id/listOrders"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -272,10 +295,10 @@
             android:gravity="center" android:clickable="true" android:focusable="true">
             <ImageView android:id="@+id/navDealsIcon"
                 android:layout_width="24dp" android:layout_height="24dp"
-                android:src="@drawable/ic_cart" app:tint="@color/nb_primary"/>
+                android:src="@drawable/ic_orders" app:tint="@color/nb_primary"/>
             <TextView android:id="@+id/navDealsText"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="@string/nav_deals" android:textSize="10sp" android:textColor="@color/nb_primary" android:textStyle="bold"/>
+                android:text="@string/nav_orders" android:textSize="10sp" android:textColor="@color/nb_primary" android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/navProfile"

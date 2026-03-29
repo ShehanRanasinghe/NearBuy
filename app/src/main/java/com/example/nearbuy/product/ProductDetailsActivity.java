@@ -39,11 +39,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public static final String EXTRA_DISCOUNT      = "discount";
 
     private TextView tvProductEmoji, tvProductName, tvCategory, tvInStock;
-    private TextView tvSalePrice, tvOriginalPrice, tvSavings, tvDiscountBadge;
+    private TextView tvSalePrice, tvOriginalPrice;
     private TextView tvShopEmoji, tvShopName, tvDistance, tvRating;
     private TextView tvDescription, tvWeight, tvCategoryDetail, tvDealExpiry;
-    private TextView btnViewStore, btnSaveDeal;
-    private Button   btnAddToCart;
+    private TextView btnViewStore;
+    private TextView btnDelivery, btnPickUp;
+    private Button   btnPlaceOrder;
+    private boolean  isDeliverySelected = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvInStock        = findViewById(R.id.tvInStock);
         tvSalePrice      = findViewById(R.id.tvSalePrice);
         tvOriginalPrice  = findViewById(R.id.tvOriginalPrice);
-        tvSavings        = findViewById(R.id.tvSavings);
-        tvDiscountBadge  = findViewById(R.id.tvDiscountBadge);
         tvShopEmoji      = findViewById(R.id.tvShopEmoji);
         tvShopName       = findViewById(R.id.tvShopName);
         tvDistance       = findViewById(R.id.tvDistance);
@@ -79,8 +79,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvCategoryDetail = findViewById(R.id.tvCategoryDetail);
         tvDealExpiry     = findViewById(R.id.tvDealExpiry);
         btnViewStore     = findViewById(R.id.btnViewStore);
-        btnSaveDeal      = findViewById(R.id.btnSaveDeal);
-        btnAddToCart     = findViewById(R.id.btnAddToCart);
+        btnDelivery      = findViewById(R.id.btnDelivery);
+        btnPickUp        = findViewById(R.id.btnPickUp);
+        btnPlaceOrder    = findViewById(R.id.btnPlaceOrder);
     }
 
     private void populateData() {
@@ -93,7 +94,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         String origPrice = getIntent().getStringExtra(EXTRA_ORIGINAL_PRICE);
         String distance  = getIntent().getStringExtra(EXTRA_DISTANCE);
         String category  = getIntent().getStringExtra(EXTRA_CATEGORY);
-        String discount  = getIntent().getStringExtra(EXTRA_DISCOUNT);
 
         tvProductEmoji.setText(emoji   != null ? emoji    : "🍎");
         tvProductName.setText(name     != null ? name     : "Fresh Red Apples");
@@ -103,21 +103,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvDistance.setText("📍 " + (distance != null ? distance : "0.8 km") + " away");
         tvCategory.setText(category    != null ? category : "Fruits");
         tvCategoryDetail.setText(category != null ? category : "Fruits");
-        tvDiscountBadge.setText(discount != null ? discount : "40% OFF");
 
         // Strike-through original price
-        tvOriginalPrice.setText(origPrice != null ? origPrice : "Rs.200");
-        tvOriginalPrice.setPaintFlags(tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-        // Compute savings if possible
-        if (price != null && origPrice != null) {
-            try {
-                int sale = Integer.parseInt(price.replaceAll("[^0-9]", ""));
-                int orig = Integer.parseInt(origPrice.replaceAll("[^0-9]", ""));
-                tvSavings.setText("Save Rs." + (orig - sale));
-            } catch (NumberFormatException ignored) {
-                tvSavings.setText("Special Offer");
-            }
+        if (tvOriginalPrice != null) {
+            tvOriginalPrice.setText(origPrice != null ? origPrice : "Rs.200");
+            tvOriginalPrice.setPaintFlags(tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
 
@@ -133,16 +123,29 @@ public class ProductDetailsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnSaveDeal.setOnClickListener(v ->
-                Toast.makeText(this, "Deal saved! 🔖", Toast.LENGTH_SHORT).show());
+        // Delivery / Pick Up toggle
+        btnDelivery.setOnClickListener(v -> {
+            isDeliverySelected = true;
+            btnDelivery.setBackgroundResource(R.drawable.bg_distance_chip_active);
+            btnDelivery.setTextColor(ContextCompat.getColor(this, R.color.white));
+            btnPickUp.setBackgroundResource(R.drawable.bg_distance_chip);
+            btnPickUp.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
+        });
 
-        btnAddToCart.setOnClickListener(v ->
-                Toast.makeText(this,
-                        tvProductName.getText() + " added to cart 🛒",
-                        Toast.LENGTH_SHORT).show());
+        btnPickUp.setOnClickListener(v -> {
+            isDeliverySelected = false;
+            btnPickUp.setBackgroundResource(R.drawable.bg_distance_chip_active);
+            btnPickUp.setTextColor(ContextCompat.getColor(this, R.color.white));
+            btnDelivery.setBackgroundResource(R.drawable.bg_distance_chip);
+            btnDelivery.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
+        });
 
-        findViewById(R.id.btnCart).setOnClickListener(v ->
-                Toast.makeText(this, "Cart (coming soon)", Toast.LENGTH_SHORT).show());
+        btnPlaceOrder.setOnClickListener(v -> {
+            String type = isDeliverySelected ? "Delivery" : "Pick Up";
+            Toast.makeText(this,
+                    "Order placed! (" + type + " – Cash on Delivery) ✅",
+                    Toast.LENGTH_LONG).show();
+        });
     }
 }
 

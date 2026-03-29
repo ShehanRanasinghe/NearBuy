@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +18,13 @@ public class NotificationsActivity extends AppCompatActivity {
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.nb_teal_dark));
         setContentView(R.layout.activity_notifications);
         if (getSupportActionBar() != null) getSupportActionBar().hide();
+        setupBackButton();
         setupMarkRead();
         setupCardClicks();
+    }
+    private void setupBackButton() {
+        ImageView btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
     }
     private void setupMarkRead() {
         TextView tvMarkRead = findViewById(R.id.tv_mark_read);

@@ -1,4 +1,4 @@
-package com.example.nearbuy.deals;
+package com.example.nearbuy.discounts;
 
 import android.content.Context;
 import android.graphics.Paint;

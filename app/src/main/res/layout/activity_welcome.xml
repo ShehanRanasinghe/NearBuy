@@ -24,13 +24,13 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/welcome_to" android:textColor="#A7B0C0" android:textSize="16sp" android:layout_marginBottom="4dp"/>
+            android:text="@string/welcome_to" android:textColor="#FFFFFF" android:textSize="16sp" android:layout_marginBottom="4dp"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="@string/welcome_app_name" android:textColor="#FFFFFF" android:textSize="36sp"
             android:textStyle="bold" android:layout_marginBottom="10dp"/>
         <View android:layout_width="48dp" android:layout_height="4dp" android:background="@drawable/btn_orange" android:layout_marginBottom="14dp"/>
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="@string/welcome_desc" android:textColor="#94A3B8" android:textSize="14sp"
+            android:text="@string/welcome_desc" android:textColor="#FFFFFF" android:textSize="14sp"
             android:gravity="center" android:lineSpacingMultiplier="1.5" android:layout_marginBottom="28dp"/>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="vertical" android:layout_marginBottom="32dp">
@@ -46,7 +46,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:text="@string/welcome_feature1_title" android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="@string/welcome_feature1_sub" android:textColor="#7A8FA6" android:textSize="11sp"/>
+                        android:text="@string/welcome_feature1_sub" android:textColor="#FFFFFF" android:textSize="11sp"/>
                 </LinearLayout>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text=">" android:textColor="#FF6D00" android:textSize="20sp" android:textStyle="bold"/>
@@ -63,7 +63,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:text="@string/welcome_feature2_title" android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="@string/welcome_feature2_sub" android:textColor="#7A8FA6" android:textSize="11sp"/>
+                        android:text="@string/welcome_feature2_sub" android:textColor="#FFFFFF" android:textSize="11sp"/>
                 </LinearLayout>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text=">" android:textColor="#FF6D00" android:textSize="20sp" android:textStyle="bold"/>
@@ -80,7 +80,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:text="@string/welcome_feature3_title" android:textColor="#FFFFFF" android:textSize="13sp" android:textStyle="bold"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="@string/welcome_feature3_sub" android:textColor="#7A8FA6" android:textSize="11sp"/>
+                        android:text="@string/welcome_feature3_sub" android:textColor="#FFFFFF" android:textSize="11sp"/>
                 </LinearLayout>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text=">" android:textColor="#FF6D00" android:textSize="20sp" android:textStyle="bold"/>
@@ -93,7 +93,7 @@
             android:background="@drawable/btn_orange" android:elevation="4dp" android:layout_marginBottom="16dp"/>
         <TextView android:id="@+id/tvAlreadyHaveAccount"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/welcome_login" android:textColor="#94A3B8"
+            android:text="@string/welcome_login" android:textColor="#FFFFFF" android:textStyle="bold"
             android:textSize="14sp" android:paddingTop="8dp" android:paddingBottom="8dp"/>
     </LinearLayout>
 </ScrollView>

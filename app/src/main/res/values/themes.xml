@@ -11,6 +11,8 @@
         <item name="android:statusBarColor">@color/nb_primary_dark</item>
         <item name="android:navigationBarColor">@color/bg_white</item>
         <item name="android:windowBackground">@color/bg_light_grey</item>
+        <!-- Opt out of edge-to-edge enforcement (Android 15 / API 35+) -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
     </style>
 
     <!-- Splash theme – full screen deep teal -->

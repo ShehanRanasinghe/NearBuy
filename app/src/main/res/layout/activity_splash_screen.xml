@@ -116,6 +116,18 @@
             android:layout_marginTop="16dp"/>
     </LinearLayout>
 
+    <!-- Loading indicator pinned near the bottom -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:indeterminateTint="@color/nb_accent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="72dp" />
+
     <!-- Version text at bottom -->
     <TextView
         android:id="@+id/tvVersion"

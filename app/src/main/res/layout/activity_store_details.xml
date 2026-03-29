@@ -17,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- TOP BAR -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,20 +47,6 @@
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/btn_share"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_icon_circle_white"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔗"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
         </LinearLayout>
 
         <ScrollView
@@ -73,61 +60,38 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <!-- STORE HERO (no rating stars) -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="180dp"
                     android:orientation="vertical"
                     android:background="@drawable/bg_header"
                     android:gravity="center">
 
                     <LinearLayout
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
                         android:background="@drawable/bg_store_image_circle"
                         android:gravity="center"
                         android:layout_marginBottom="12dp">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="🏪"
-                            android:textSize="48sp" />
+                            android:textSize="44sp" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_store_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Keells Super"
+                        android:text="FreshMart Grocery"
                         android:textColor="#FFFFFF"
                         android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="6dp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⭐⭐⭐⭐⭐"
-                            android:textSize="13sp"
-                            android:layout_marginEnd="6dp" />
-
-                        <TextView
-                            android:id="@+id/tv_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4.8 (320 reviews)"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
+                        android:textStyle="bold" />
                 </LinearLayout>
 
+                <!-- QUICK STATS (Active Deals + Distance only – no Rating chip) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,7 +110,6 @@
                         android:padding="10dp"
                         android:layout_marginEnd="8dp"
                         android:gravity="center_horizontal">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -154,7 +117,6 @@
                             android:textColor="#E03B2F"
                             android:textSize="20sp"
                             android:textStyle="bold" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -170,34 +132,7 @@
                         android:orientation="vertical"
                         android:background="@drawable/bg_chip_white"
                         android:padding="10dp"
-                        android:layout_marginEnd="8dp"
                         android:gravity="center_horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4.8"
-                            android:textColor="#F5A623"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rating"
-                            android:textColor="#9AA0AC"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:background="@drawable/bg_chip_white"
-                        android:padding="10dp"
-                        android:gravity="center_horizontal">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -205,7 +140,6 @@
                             android:textColor="#27AE60"
                             android:textSize="20sp"
                             android:textStyle="bold" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -215,12 +149,14 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- MAIN CONTENT CARDS -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
+                    <!-- STORE INFO CARD -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -239,164 +175,94 @@
                             android:letterSpacing="0.1"
                             android:layout_marginBottom="14dp" />
 
+                        <!-- Location row -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
                             android:layout_marginBottom="12dp">
-
                             <LinearLayout
                                 android:layout_width="38dp"
                                 android:layout_height="38dp"
                                 android:background="@drawable/bg_icon_circle_blue"
                                 android:gravity="center"
                                 android:layout_marginEnd="12dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="📍"
-                                    android:textSize="16sp" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="📍" android:textSize="16sp" />
                             </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Location"
-                                    android:textColor="#9AA0AC"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_location"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Location" android:textColor="#9AA0AC" android:textSize="10sp" />
+                                <TextView android:id="@+id/tv_location"
+                                    android:layout_width="wrap_content" android:layout_height="wrap_content"
                                     android:text="No. 45, Galle Road, Colombo 03"
-                                    android:textColor="#1B2D4F"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
+                                    android:textColor="#1B2D4F" android:textSize="13sp" android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#F0F0F0"
-                            android:layout_marginBottom="12dp" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp"
+                            android:background="#F0F0F0" android:layout_marginBottom="12dp" />
 
+                        <!-- Contact row -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
                             android:layout_marginBottom="12dp">
-
                             <LinearLayout
                                 android:layout_width="38dp"
                                 android:layout_height="38dp"
                                 android:background="@drawable/bg_icon_circle_blue"
                                 android:gravity="center"
                                 android:layout_marginEnd="12dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="📞"
-                                    android:textSize="16sp" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="📞" android:textSize="16sp" />
                             </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Contact"
-                                    android:textColor="#9AA0AC"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_contact"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Contact" android:textColor="#9AA0AC" android:textSize="10sp" />
+                                <TextView android:id="@+id/tv_contact"
+                                    android:layout_width="wrap_content" android:layout_height="wrap_content"
                                     android:text="+94 11 234 5678"
-                                    android:textColor="#1B2D4F"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
+                                    android:textColor="#1B2D4F" android:textSize="13sp" android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#F0F0F0"
-                            android:layout_marginBottom="12dp" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp"
+                            android:background="#F0F0F0" android:layout_marginBottom="12dp" />
 
+                        <!-- Opening Hours row (no "Open" badge) -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical">
-
                             <LinearLayout
                                 android:layout_width="38dp"
                                 android:layout_height="38dp"
                                 android:background="@drawable/bg_icon_circle_blue"
                                 android:gravity="center"
                                 android:layout_marginEnd="12dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="🕐"
-                                    android:textSize="16sp" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🕐" android:textSize="16sp" />
                             </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Opening Hours"
-                                    android:textColor="#9AA0AC"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_hours"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="7:00 AM - 10:00 PM Daily"
-                                    android:textColor="#1B2D4F"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Opening Hours" android:textColor="#9AA0AC" android:textSize="10sp" />
+                                <TextView android:id="@+id/tv_hours"
+                                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="7:00 AM – 10:00 PM Daily"
+                                    android:textColor="#1B2D4F" android:textSize="13sp" android:textStyle="bold" />
                             </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Open"
-                                android:textColor="#27AE60"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:paddingHorizontal="10dp"
-                                android:paddingVertical="4dp"
-                                android:background="@drawable/bg_status_delivered" />
                         </LinearLayout>
                     </LinearLayout>
 
+                    <!-- PRODUCTS CARD -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -406,557 +272,260 @@
                         android:elevation="4dp"
                         android:layout_marginBottom="12dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="14dp">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="AVAILABLE DEALS"
-                                android:textColor="#9AA0AC"
-                                android:textSize="10sp"
-                                android:letterSpacing="0.1" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="See All"
-                                android:textColor="#E03B2F"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/bg_deal_item"
-                            android:padding="12dp"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="8dp">
-
-                            <LinearLayout
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white"
-                                android:gravity="center"
-                                android:layout_marginEnd="12dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="🍚"
-                                    android:textSize="24sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Samba Rice 5kg"
-                                    android:textColor="#1B2D4F"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="රු 1,275  •  Expires Mar 10"
-                                    android:textColor="#9AA0AC"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="15%\nOFF"
-                                android:textColor="#FFFFFF"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="4dp"
-                                android:background="@drawable/bg_tab_active" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/bg_deal_item"
-                            android:padding="12dp"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="8dp">
-
-                            <LinearLayout
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white"
-                                android:gravity="center"
-                                android:layout_marginEnd="12dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="🥥"
-                                    android:textSize="24sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Fresh Coconut Oil"
-                                    android:textColor="#1B2D4F"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="රු 485  •  Expires Mar 08"
-                                    android:textColor="#9AA0AC"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="25%\nOFF"
-                                android:textColor="#FFFFFF"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="4dp"
-                                android:background="@drawable/bg_tab_active" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/bg_deal_item"
-                            android:padding="12dp"
-                            android:gravity="center_vertical">
-
-                            <LinearLayout
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white"
-                                android:gravity="center"
-                                android:layout_marginEnd="12dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="🍵"
-                                    android:textSize="24sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Ceylon Tea 100g"
-                                    android:textColor="#1B2D4F"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="රු 215  •  Expires Mar 15"
-                                    android:textColor="#9AA0AC"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="23%\nOFF"
-                                android:textColor="#FFFFFF"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="4dp"
-                                android:background="@drawable/bg_tab_active" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/bg_order_card"
-                        android:padding="16dp"
-                        android:elevation="4dp"
-                        android:layout_marginBottom="12dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="14dp">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="RATINGS and REVIEWS"
-                                android:textColor="#9AA0AC"
-                                android:textSize="10sp"
-                                android:letterSpacing="0.1" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="See All"
-                                android:textColor="#E03B2F"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="16dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="center_horizontal"
-                                android:layout_marginEnd="20dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="4.8"
-                                    android:textColor="#1B2D4F"
-                                    android:textSize="40sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="⭐⭐⭐⭐⭐"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="320 reviews"
-                                    android:textColor="#9AA0AC"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical"
-                                    android:layout_marginBottom="4dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="5⭐"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="8dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/bg_rating_bar_fill"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="72%"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical"
-                                    android:layout_marginBottom="4dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="4⭐"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="8dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/bg_rating_bar_mid"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="18%"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical"
-                                    android:layout_marginBottom="4dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="3⭐"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="8dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/bg_rating_bar_low"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="6%"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical"
-                                    android:layout_marginBottom="4dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="2⭐"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="8dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/bg_rating_bar_low"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="3%"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="1⭐"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="8dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/bg_rating_bar_low"
-                                        android:layout_marginEnd="6dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="1%"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp" />
-                                </LinearLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#F0F0F0"
+                            android:text="OUR PRODUCTS"
+                            android:textColor="#9AA0AC"
+                            android:textSize="10sp"
+                            android:letterSpacing="0.1"
                             android:layout_marginBottom="14dp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@drawable/bg_deal_item"
-                            android:padding="12dp"
-                            android:layout_marginBottom="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:layout_marginBottom="6dp">
-
-                                <LinearLayout
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:background="@drawable/bg_icon_circle_blue"
-                                    android:gravity="center"
-                                    android:layout_marginEnd="10dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="👤"
-                                        android:textSize="16sp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Nimal Perera"
-                                        android:textColor="#1B2D4F"
-                                        android:textSize="13sp"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="⭐⭐⭐⭐⭐  Mar 01, 2026"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp" />
-                                </LinearLayout>
+                        <!-- Product 1 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_chip_white" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🍎" android:textSize="24sp" />
                             </LinearLayout>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Great deals and fresh products. Very clean store and friendly staff!"
-                                android:textColor="#1B2D4F"
-                                android:textSize="12sp"
-                                android:lineSpacingExtra="3dp" />
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Fresh Red Apples" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Fruits  •  Rs.120" android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="In Stock" android:textColor="#27AE60"
+                                android:textSize="11sp" android:textStyle="bold" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@drawable/bg_deal_item"
-                            android:padding="12dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:layout_marginBottom="6dp">
-
-                                <LinearLayout
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    android:background="@drawable/bg_icon_circle_blue"
-                                    android:gravity="center"
-                                    android:layout_marginEnd="10dp">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="👤"
-                                        android:textSize="16sp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Sathoshi Fernando"
-                                        android:textColor="#1B2D4F"
-                                        android:textSize="13sp"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="⭐⭐⭐⭐  Feb 28, 2026"
-                                        android:textColor="#9AA0AC"
-                                        android:textSize="11sp" />
-                                </LinearLayout>
+                        <!-- Product 2 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_chip_white" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🍌" android:textSize="24sp" />
                             </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Bananas 1kg" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Fruits  •  Rs.60" android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="In Stock" android:textColor="#27AE60"
+                                android:textSize="11sp" android:textStyle="bold" />
+                        </LinearLayout>
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Good variety of local products. Prices are reasonable and deals are genuine."
-                                android:textColor="#1B2D4F"
-                                android:textSize="12sp"
-                                android:lineSpacingExtra="3dp" />
+                        <!-- Product 3 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_chip_white" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🍓" android:textSize="24sp" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Mixed Berries 250g" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Fruits  •  Rs.280" android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="In Stock" android:textColor="#27AE60"
+                                android:textSize="11sp" android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- AVAILABLE DEALS CARD -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_order_card"
+                        android:padding="16dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AVAILABLE DEALS"
+                            android:textColor="#9AA0AC"
+                            android:textSize="10sp"
+                            android:letterSpacing="0.1"
+                            android:layout_marginBottom="14dp" />
+
+                        <!-- Deal 1 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_chip_white" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🍚" android:textSize="24sp" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Samba Rice 5kg" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="රු 1,275  •  Expires Apr 10" android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="15%\nOFF" android:textColor="#FFFFFF" android:textSize="11sp"
+                                android:textStyle="bold" android:gravity="center"
+                                android:paddingHorizontal="8dp" android:paddingVertical="4dp"
+                                android:background="@drawable/bg_tab_active" />
+                        </LinearLayout>
+
+                        <!-- Deal 2 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_chip_white" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🥥" android:textSize="24sp" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Fresh Coconut Oil" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="රු 485  •  Expires Apr 08" android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="25%\nOFF" android:textColor="#FFFFFF" android:textSize="11sp"
+                                android:textStyle="bold" android:gravity="center"
+                                android:paddingHorizontal="8dp" android:paddingVertical="4dp"
+                                android:background="@drawable/bg_tab_active" />
+                        </LinearLayout>
+
+                        <!-- Deal 3 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_chip_white" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🍵" android:textSize="24sp" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Ceylon Tea 100g" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="රු 215  •  Expires Apr 15" android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="23%\nOFF" android:textColor="#FFFFFF" android:textSize="11sp"
+                                android:textStyle="bold" android:gravity="center"
+                                android:paddingHorizontal="8dp" android:paddingVertical="4dp"
+                                android:background="@drawable/bg_tab_active" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- PROMOTIONS CARD -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_order_card"
+                        android:padding="16dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PROMOTIONS"
+                            android:textColor="#9AA0AC"
+                            android:textSize="10sp"
+                            android:letterSpacing="0.1"
+                            android:layout_marginBottom="14dp" />
+
+                        <!-- Promo 1 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_icon_circle_orange" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🎁" android:textSize="22sp" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Double Points Weekend" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Earn 2x reward points  •  2 days left"
+                                    android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Promo 2 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_icon_circle_teal" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="🚚" android:textSize="22sp" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Free Delivery Over Rs.500" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Valid this weekend  •  Today only"
+                                    android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Promo 3 -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
+                            android:padding="12dp" android:gravity="center_vertical">
+                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                                android:background="@drawable/bg_icon_circle_orange" android:gravity="center"
+                                android:layout_marginEnd="12dp">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="💳" android:textSize="22sp" />
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Rs.100 Cashback" android:textColor="#1B2D4F"
+                                    android:textSize="13sp" android:textStyle="bold" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="On orders above Rs.1000  •  4 days left"
+                                    android:textColor="#9AA0AC" android:textSize="11sp" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -964,6 +533,7 @@
             </LinearLayout>
         </ScrollView>
 
+        <!-- BOTTOM ACTION BAR -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -983,20 +553,10 @@
                 android:gravity="center"
                 android:background="@drawable/bg_cancel_btn"
                 android:layout_marginEnd="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📞  "
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Call"
-                    android:textColor="#E03B2F"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="📞  " android:textSize="15sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Call" android:textColor="#E03B2F" android:textSize="15sp" android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -1007,20 +567,11 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:background="@drawable/bg_tab_active">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🏷  "
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="View All Deals"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="🏷  " android:textSize="15sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="View All Deals" android:textColor="#FFFFFF"
+                    android:textSize="15sp" android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
@@ -1028,3 +579,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
