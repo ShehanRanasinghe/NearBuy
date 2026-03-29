@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_light_grey">
+
+    <!-- TOP HEADER BAR -->
+    <LinearLayout
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="14dp"
+        android:background="@drawable/bg_topbar_curved"
+        android:elevation="4dp">
+
+        <!-- Logo + Name -->
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+            <ImageView android:id="@+id/imgAppLogo"
+                android:layout_width="36dp" android:layout_height="36dp"
+                android:src="@drawable/nearbuy_logo" android:scaleType="centerCrop"
+                android:contentDescription="@string/logo_desc"/>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginStart="12dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="NearBuy" android:textColor="@color/white"
+                    android:textSize="18sp" android:textStyle="bold" android:letterSpacing="0.03"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Customer" android:textColor="#FFFF9E40"
+                    android:textSize="11sp" android:textStyle="bold" android:letterSpacing="0.08"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Notification icon -->
+        <ImageView android:id="@+id/btnNotifications"
+            android:layout_width="38dp" android:layout_height="38dp"
+            android:padding="7dp" android:src="@drawable/ic_notification"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/notifications"
+            app:tint="@color/white"/>
+    </LinearLayout>
+
+    <!-- SCROLLABLE CONTENT -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="18dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="90dp">
+
+            <!-- CUSTOMER WELCOME BANNER (like HQ but for customer) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_welcome_banner"
+                android:padding="20dp"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/hello_greeting" android:textColor="@color/text_on_dark_secondary"
+                        android:textSize="14sp"/>
+                    <TextView android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/dashboard_user_name" android:textColor="@color/white"
+                        android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="2dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/dashboard_subtitle" android:textColor="@color/text_on_dark_secondary"
+                        android:textSize="12sp" android:layout_marginTop="6dp"/>
+                </LinearLayout>
+
+                <!-- Avatar circle -->
+                <LinearLayout android:layout_width="52dp" android:layout_height="52dp"
+                    android:gravity="center" android:background="@drawable/bg_profile_avatar">
+                    <TextView android:id="@+id/tvAvatarInitial"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="J" android:textColor="@color/white"
+                        android:textSize="22sp" android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- CUSTOMER STATS CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_stat_card"
+                android:padding="20dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="My Activity" android:textColor="@color/white"
+                    android:textSize="15sp" android:textStyle="bold" android:layout_marginBottom="14dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:baselineAligned="false">
+
+                    <!-- Orders -->
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="horizontal"
+                        android:gravity="center_vertical" android:background="@drawable/bg_metric_box_rounded"
+                        android:padding="12dp" android:layout_marginEnd="6dp">
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:layout_marginStart="8dp">
+                            <TextView android:id="@+id/tvOrderCount"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="12" android:textColor="@color/white"
+                                android:textSize="22sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="@string/stat_orders" android:textColor="@color/text_on_dark_secondary"
+                                android:textSize="11sp" android:layout_marginTop="2dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Total Spent -->
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="horizontal"
+                        android:gravity="center_vertical" android:background="@drawable/bg_metric_box_rounded"
+                        android:padding="12dp" android:layout_marginStart="6dp" android:layout_marginEnd="6dp">
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:layout_marginStart="8dp">
+                            <TextView android:id="@+id/tvTotalSpent"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Rs.4,250" android:textColor="@color/white"
+                                android:textSize="16sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="@string/stat_spent" android:textColor="@color/text_on_dark_secondary"
+                                android:textSize="11sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Total Saved -->
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="horizontal"
+                        android:gravity="center_vertical" android:background="@drawable/bg_metric_box_rounded"
+                        android:padding="12dp" android:layout_marginStart="6dp">
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:layout_marginStart="8dp">
+                            <TextView android:id="@+id/tvTotalSaved"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Rs.890" android:textColor="@color/white"
+                                android:textSize="16sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="@string/stat_saved" android:textColor="@color/text_on_dark_secondary"
+                                android:textSize="11sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- LATEST DEALS SECTION -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/section_latest_deals"
+                    android:textColor="@color/text_dark_secondary" android:textSize="12sp"
+                    android:textStyle="bold" android:letterSpacing="0.10"/>
+                <TextView android:id="@+id/tvViewAllDeals"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/view_all" android:textColor="@color/nb_primary"
+                    android:textSize="13sp" android:textStyle="bold"
+                    android:clickable="true" android:focusable="true"/>
+            </LinearLayout>
+
+            <!-- Deals Horizontal Scroll -->
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:scrollbars="none" android:layout_marginBottom="24dp">
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Deal Card 1 -->
+                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
+                        android:orientation="vertical" android:background="@drawable/bg_deal_card"
+                        android:padding="16dp" android:layout_marginEnd="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="50% OFF" android:textColor="@color/white"
+                            android:textSize="20sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Fresh Apples" android:textColor="@color/white"
+                            android:textSize="14sp" android:layout_marginTop="4dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="FreshMart • 0.8 km" android:textColor="#CCFFFFFF"
+                            android:textSize="11sp" android:layout_marginTop="8dp"/>
+                    </LinearLayout>
+
+                    <!-- Deal Card 2 -->
+                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
+                        android:orientation="vertical" android:background="@drawable/bg_promo_card_teal"
+                        android:padding="16dp" android:layout_marginEnd="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="BUY 1 GET 1" android:textColor="@color/white"
+                            android:textSize="18sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Orange Juice" android:textColor="@color/white"
+                            android:textSize="14sp" android:layout_marginTop="4dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="QuickMart • 1.2 km" android:textColor="#CCFFFFFF"
+                            android:textSize="11sp"/>
+                    </LinearLayout>
+
+                    <!-- Deal Card 3 -->
+                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
+                        android:orientation="vertical" android:background="@drawable/bg_deal_card"
+                        android:padding="16dp" android:layout_marginEnd="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="30% OFF" android:textColor="@color/white"
+                            android:textSize="20sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="Potato Chips" android:textColor="@color/white"
+                            android:textSize="14sp" android:layout_marginTop="4dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="SnackHub • 2.1 km" android:textColor="#CCFFFFFF"
+                            android:textSize="11sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- ACTIVE PROMOTIONS SECTION -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/section_promotions"
+                    android:textColor="@color/text_dark_secondary" android:textSize="12sp"
+                    android:textStyle="bold" android:letterSpacing="0.10"/>
+                <TextView android:id="@+id/tvViewAllPromos"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/view_all" android:textColor="@color/nb_primary"
+                    android:textSize="13sp" android:textStyle="bold"
+                    android:clickable="true" android:focusable="true"/>
+            </LinearLayout>
+
+            <!-- Promo Card 1 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:background="@drawable/bg_card_white" android:padding="16dp"
+                android:layout_marginBottom="10dp" android:elevation="2dp">
+                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                    android:gravity="center" android:background="@drawable/bg_icon_circle_orange">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🎁" android:textSize="22sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Double Points Weekend" android:textColor="@color/text_dark_primary"
+                        android:textSize="14sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Earn 2x reward points at all partner stores" android:textColor="@color/text_dark_secondary"
+                        android:textSize="12sp" android:layout_marginTop="2dp"/>
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="2 days left" android:textColor="@color/nb_primary"
+                    android:textSize="11sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- Promo Card 2 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:background="@drawable/bg_card_white" android:padding="16dp"
+                android:layout_marginBottom="24dp" android:elevation="2dp">
+                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🚚" android:textSize="22sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Free Delivery Over Rs.500" android:textColor="@color/text_dark_primary"
+                        android:textSize="14sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Valid at select stores this weekend" android:textColor="@color/text_dark_secondary"
+                        android:textSize="12sp" android:layout_marginTop="2dp"/>
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Today only" android:textColor="@color/error_red"
+                    android:textSize="11sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- BROWSE CATEGORIES SECTION -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/section_categories" android:textColor="@color/text_dark_secondary"
+                android:textSize="12sp" android:textStyle="bold" android:letterSpacing="0.10"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:weightSum="4" android:layout_marginBottom="8dp">
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="80dp"
+                    android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                    android:background="@drawable/bg_card_white" android:layout_margin="4dp"
+                    android:id="@+id/catGroceries" android:clickable="true" android:focusable="true">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛒" android:textSize="26sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Groceries" android:textColor="@color/text_dark_primary" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="80dp"
+                    android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                    android:background="@drawable/bg_card_white" android:layout_margin="4dp"
+                    android:id="@+id/catFresh" android:clickable="true" android:focusable="true">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🥦" android:textSize="26sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Fresh" android:textColor="@color/text_dark_primary" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="80dp"
+                    android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                    android:background="@drawable/bg_card_white" android:layout_margin="4dp"
+                    android:id="@+id/catFood" android:clickable="true" android:focusable="true">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🍔" android:textSize="26sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Food" android:textColor="@color/text_dark_primary" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="80dp"
+                    android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                    android:background="@drawable/bg_card_white" android:layout_margin="4dp"
+                    android:id="@+id/catMore" android:clickable="true" android:focusable="true">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:textSize="26sp" android:textColor="@color/nb_primary" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="More" android:textColor="@color/nb_primary" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- NEARBY SHOPS SECTION -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="12dp" android:layout_marginTop="8dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/section_nearby_shops"
+                    android:textColor="@color/text_dark_secondary" android:textSize="12sp"
+                    android:textStyle="bold" android:letterSpacing="0.10"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/view_all" android:textColor="@color/nb_primary"
+                    android:textSize="13sp" android:textStyle="bold"
+                    android:clickable="true" android:focusable="true"/>
+            </LinearLayout>
+
+            <!-- Shop Card: FreshMart -->
+            <LinearLayout android:id="@+id/shopFreshMart"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:background="@drawable/bg_card_white" android:padding="14dp"
+                android:layout_marginBottom="10dp" android:elevation="2dp"
+                android:clickable="true" android:focusable="true">
+                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🏪" android:textSize="22sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="FreshMart Grocery" android:textColor="@color/text_dark_primary"
+                        android:textSize="14sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="📍 0.8 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
+                        android:textSize="12sp" android:layout_marginTop="2dp"/>
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="5 deals" android:textColor="@color/nb_primary"
+                    android:textSize="11sp" android:textStyle="bold"
+                    android:background="@drawable/bg_distance_badge"
+                    android:paddingStart="8dp" android:paddingEnd="8dp"
+                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
+            </LinearLayout>
+
+            <!-- Shop Card: QuickMart -->
+            <LinearLayout android:id="@+id/shopQuickMart"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:background="@drawable/bg_card_white" android:padding="14dp"
+                android:layout_marginBottom="10dp" android:elevation="2dp"
+                android:clickable="true" android:focusable="true">
+                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                    android:gravity="center" android:background="@drawable/bg_icon_circle_orange">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🛒" android:textSize="22sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="QuickMart" android:textColor="@color/text_dark_primary"
+                        android:textSize="14sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="📍 1.1 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
+                        android:textSize="12sp" android:layout_marginTop="2dp"/>
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="3 deals" android:textColor="@color/nb_primary"
+                    android:textSize="11sp" android:textStyle="bold"
+                    android:background="@drawable/bg_distance_badge"
+                    android:paddingStart="8dp" android:paddingEnd="8dp"
+                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
+            </LinearLayout>
+
+            <!-- Shop Card: GreenLeaf -->
+            <LinearLayout android:id="@+id/shopGreenLeaf"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:background="@drawable/bg_card_white" android:padding="14dp"
+                android:layout_marginBottom="10dp" android:elevation="2dp"
+                android:clickable="true" android:focusable="true">
+                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
+                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🥦" android:textSize="22sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="GreenLeaf Store" android:textColor="@color/text_dark_primary"
+                        android:textSize="14sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="📍 0.5 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
+                        android:textSize="12sp" android:layout_marginTop="2dp"/>
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="2 deals" android:textColor="@color/nb_primary"
+                    android:textSize="11sp" android:textStyle="bold"
+                    android:background="@drawable/bg_distance_badge"
+                    android:paddingStart="8dp" android:paddingEnd="8dp"
+                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <LinearLayout
+        android:id="@+id/bottomNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_bottom_nav_bar"
+        android:elevation="12dp"
+        android:baselineAligned="false">
+
+        <!-- Home -->
+        <LinearLayout android:id="@+id/navHome"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navHomeIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_home" app:tint="@color/nb_primary"/>
+            <TextView android:id="@+id/navHomeText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_home" android:textSize="10sp" android:textColor="@color/nb_primary" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Search -->
+        <LinearLayout android:id="@+id/navSearch"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navSearchIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_search" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navSearchText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_search" android:textSize="10sp" android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+
+        <!-- Deals -->
+        <LinearLayout android:id="@+id/navDeals"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navDealsIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_cart" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navDealsText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_deals" android:textSize="10sp" android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+
+        <!-- Profile -->
+        <LinearLayout android:id="@+id/navProfile"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navProfileIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_profile" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navProfileText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_profile" android:textSize="10sp" android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+

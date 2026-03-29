@@ -1,318 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F5F5">
-
-    <!-- Search Header -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:elevation="4dp">
-
-        <!-- Search Input -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_search_bar"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_search"
-                android:contentDescription="@string/search_hint"
-                app:tint="#999999"/>
-
-            <EditText
-                android:id="@+id/search_input"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:hint="Search for deals or stores..."
-                android:textColorHint="#999999"
-                android:textColor="@color/text_color_primary"
-                android:textSize="14sp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:inputType="text"
-                android:imeOptions="actionSearch"/>
-
-            <ImageView
-                android:id="@+id/clear_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:contentDescription="@string/search_hint"
-                app:tint="#999999"
-                android:visibility="gone"/>
-
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg_light_grey">
+    <!-- Header -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:background="@drawable/bg_topbar_curved"
+        android:paddingStart="18dp" android:paddingEnd="18dp"
+        android:paddingTop="16dp" android:paddingBottom="20dp" android:elevation="4dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Find Products Near You" android:textColor="@color/white"
+            android:textSize="20sp" android:textStyle="bold" android:layout_marginBottom="12dp"/>
+        <!-- Search Bar -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:background="@drawable/bg_input_field" android:paddingStart="12dp" android:paddingEnd="12dp">
+            <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                android:src="@drawable/ic_search" app:tint="@color/text_dark_hint"/>
+            <EditText android:id="@+id/etSearch"
+                android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:background="@null"
+                android:hint="@string/search_hint" android:textSize="14sp"
+                android:textColor="@color/text_dark_primary" android:textColorHint="@color/text_dark_hint"
+                android:paddingStart="8dp" android:imeOptions="actionSearch"
+                android:inputType="text" android:singleLine="true"/>
         </LinearLayout>
-
-        <!-- Filter Chips -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:scrollbars="none">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/filter_chip_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleSelection="false">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_all"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="All"
-                    android:textColor="@color/text_color_primary"
-                    app:chipBackgroundColor="@color/nb_teal_circle"
-                    app:chipStrokeWidth="0dp"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_nearby"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nearby"
-                    android:textColor="@color/text_color_primary"
-                    app:chipBackgroundColor="#E0E0E0"
-                    app:chipStrokeWidth="0dp"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_deals"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deals"
-                    android:textColor="@color/text_color_primary"
-                    app:chipBackgroundColor="#E0E0E0"
-                    app:chipStrokeWidth="0dp"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_stores"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stores"
-                    android:textColor="@color/text_color_primary"
-                    app:chipBackgroundColor="#E0E0E0"
-                    app:chipStrokeWidth="0dp"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_popular"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Popular"
-                    android:textColor="@color/text_color_primary"
-                    app:chipBackgroundColor="#E0E0E0"
-                    app:chipStrokeWidth="0dp"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </HorizontalScrollView>
-
     </LinearLayout>
-
-    <!-- Category Suggestions -->
-    <LinearLayout
-        android:id="@+id/category_suggestions_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Popular Categories"
-            android:textColor="@color/text_color_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp"/>
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginEnd="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#E8F5E9"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🥬"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Vegetables"
-                            android:textColor="@color/text_color_primary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="8dp"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginEnd="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#FCE4EC"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🍎"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Fruits"
-                            android:textColor="@color/text_color_primary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="8dp"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginEnd="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#FFEBEE"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🍟"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Snacks"
-                            android:textColor="@color/text_color_primary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="8dp"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginEnd="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#E0F2F1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🥤"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Beverages"
-                            android:textColor="@color/text_color_primary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="8dp"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
+    <!-- Distance filter chips -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:background="@color/bg_white"
+        android:paddingStart="18dp" android:paddingEnd="18dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp" android:elevation="2dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/distance_label" android:textColor="@color/text_dark_secondary"
+                android:textSize="13sp" android:textStyle="bold" android:layout_marginEnd="10dp"/>
+            <HorizontalScrollView android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:scrollbars="none">
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView android:id="@+id/chip1km" android:layout_width="wrap_content" android:layout_height="34dp"
+                        android:text="1 km" android:textSize="13sp" android:textStyle="bold"
+                        android:textColor="@color/white" android:gravity="center"
+                        android:paddingStart="14dp" android:paddingEnd="14dp"
+                        android:background="@drawable/bg_distance_chip_active" android:layout_marginEnd="8dp"
+                        android:clickable="true" android:focusable="true"/>
+                    <TextView android:id="@+id/chip2km" android:layout_width="wrap_content" android:layout_height="34dp"
+                        android:text="2 km" android:textSize="13sp" android:textStyle="bold"
+                        android:textColor="@color/nb_primary" android:gravity="center"
+                        android:paddingStart="14dp" android:paddingEnd="14dp"
+                        android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
+                        android:clickable="true" android:focusable="true"/>
+                    <TextView android:id="@+id/chip5km" android:layout_width="wrap_content" android:layout_height="34dp"
+                        android:text="5 km" android:textSize="13sp" android:textStyle="bold"
+                        android:textColor="@color/nb_primary" android:gravity="center"
+                        android:paddingStart="14dp" android:paddingEnd="14dp"
+                        android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
+                        android:clickable="true" android:focusable="true"/>
+                    <TextView android:id="@+id/chip10km" android:layout_width="wrap_content" android:layout_height="34dp"
+                        android:text="10 km" android:textSize="13sp" android:textStyle="bold"
+                        android:textColor="@color/nb_primary" android:gravity="center"
+                        android:paddingStart="14dp" android:paddingEnd="14dp"
+                        android:background="@drawable/bg_distance_chip"
+                        android:clickable="true" android:focusable="true"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+        <!-- Sort row -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/sort_by" android:textColor="@color/text_dark_secondary"
+                android:textSize="13sp" android:layout_marginEnd="10dp"/>
+            <TextView android:id="@+id/sortDistance"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="@string/sort_distance" android:textSize="12sp" android:textStyle="bold"
+                android:textColor="@color/white" android:gravity="center"
+                android:paddingStart="12dp" android:paddingEnd="12dp"
+                android:background="@drawable/bg_distance_chip_active" android:layout_marginEnd="8dp"
+                android:clickable="true" android:focusable="true"/>
+            <TextView android:id="@+id/sortPrice"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="@string/sort_price" android:textSize="12sp" android:textStyle="bold"
+                android:textColor="@color/nb_primary" android:gravity="center"
+                android:paddingStart="12dp" android:paddingEnd="12dp"
+                android:background="@drawable/bg_distance_chip"
+                android:clickable="true" android:focusable="true"/>
+        </LinearLayout>
     </LinearLayout>
-
-    <!-- Search Results -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Search Results"
-            android:textColor="@color/text_color_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:padding="16dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_results_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:clipToPadding="false"/>
-
+    <!-- Results header -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:paddingStart="18dp" android:paddingEnd="18dp"
+        android:paddingTop="14dp" android:paddingBottom="6dp">
+        <TextView android:id="@+id/tvResultCount"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="12 results found"
+            android:textColor="@color/text_dark_secondary" android:textSize="13sp"/>
     </LinearLayout>
-
+    <!-- Results List -->
+    <ListView android:id="@+id/listSearchResults"
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:divider="@null"
+        android:paddingStart="18dp" android:paddingEnd="18dp"
+        android:paddingBottom="12dp" android:clipToPadding="false"/>
 </LinearLayout>
-

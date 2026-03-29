@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_light_grey">
+
+    <!-- HEADER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_topbar_curved"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:elevation="4dp">
+
+        <!-- App logo + title -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/nearbuy_logo"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/logo_desc"
+                android:layout_marginEnd="10dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deals &amp; Offers"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Best deals near you"
+                    android:textColor="#FFFF9E40"
+                    android:textSize="11sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Notification bell -->
+        <ImageView
+            android:id="@+id/btnNotifications"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:padding="7dp"
+            android:src="@drawable/ic_notification"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Notifications"
+            app:tint="@color/white"/>
+    </LinearLayout>
+
+    <!-- STATS BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/bg_white"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:elevation="2dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_chip_white"
+            android:padding="8dp"
+            android:layout_marginEnd="6dp">
+            <TextView
+                android:id="@+id/tvTotalDeals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24"
+                android:textColor="@color/nb_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Live Deals"
+                android:textColor="@color/text_dark_hint"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_chip_white"
+            android:padding="8dp"
+            android:layout_marginEnd="6dp">
+            <TextView
+                android:id="@+id/tvExpiringSoon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:textColor="@color/stat_red"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expiring Soon"
+                android:textColor="@color/text_dark_hint"
+                android:textSize="10sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_chip_white"
+            android:padding="8dp">
+            <TextView
+                android:id="@+id/tvMaxSaving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60%"
+                android:textColor="@color/stat_green"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Max Saving"
+                android:textColor="@color/text_dark_hint"
+                android:textSize="10sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- FILTER TABS -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:background="@color/bg_white"
+        android:elevation="1dp">
+        <LinearLayout
+            android:id="@+id/filterTabs"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_vertical">
+
+            <TextView android:id="@+id/tabAll"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="All Deals" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold"
+                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:background="@drawable/bg_distance_chip_active" android:layout_marginEnd="8dp"
+                android:clickable="true" android:focusable="true"/>
+
+            <TextView android:id="@+id/tabFood"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="🍛 Food" android:textColor="@color/nb_primary" android:textSize="12sp"
+                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
+                android:clickable="true" android:focusable="true"/>
+
+            <TextView android:id="@+id/tabGroceries"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="🛒 Groceries" android:textColor="@color/nb_primary" android:textSize="12sp"
+                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
+                android:clickable="true" android:focusable="true"/>
+
+            <TextView android:id="@+id/tabFresh"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="🥦 Fresh" android:textColor="@color/nb_primary" android:textSize="12sp"
+                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:background="@drawable/bg_distance_chip" android:layout_marginEnd="8dp"
+                android:clickable="true" android:focusable="true"/>
+
+            <TextView android:id="@+id/tabPromos"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="🎉 Promos" android:textColor="@color/nb_primary" android:textSize="12sp"
+                android:gravity="center" android:paddingStart="16dp" android:paddingEnd="16dp"
+                android:background="@drawable/bg_distance_chip"
+                android:clickable="true" android:focusable="true"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Result count -->
+    <TextView
+        android:id="@+id/tvResultCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="24 deals found"
+        android:textColor="@color/text_dark_secondary"
+        android:textSize="13sp"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="6dp"/>
+
+    <!-- Deals List -->
+    <ListView
+        android:id="@+id/listDeals"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="72dp"
+        android:clipToPadding="false"/>
+
+    <!-- BOTTOM NAVIGATION -->
+    <LinearLayout
+        android:id="@+id/bottomNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_bottom_nav_bar"
+        android:elevation="12dp"
+        android:baselineAligned="false">
+
+        <LinearLayout android:id="@+id/navHome"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navHomeIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_home" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navHomeText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_home" android:textSize="10sp" android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navSearch"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navSearchIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_search" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navSearchText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_search" android:textSize="10sp" android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navDeals"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navDealsIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_cart" app:tint="@color/nb_primary"/>
+            <TextView android:id="@+id/navDealsText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_deals" android:textSize="10sp" android:textColor="@color/nb_primary" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navProfile"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navProfileIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_profile" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navProfileText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_profile" android:textSize="10sp" android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+

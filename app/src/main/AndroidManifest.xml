@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,60 +17,124 @@
         android:theme="@style/Theme.NearBuy"
         tools:targetApi="31">
 
-        <!-- Splash Screen - Launcher -->
+        <!-- ── SPLASH SCREEN – Main launcher ── -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".app.startup.SplashScreen"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.NearBuy.Splash"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Login Screen -->
+        <!-- ── WELCOME ── -->
         <activity
-            android:name=".Login"
-            android:exported="false" />
+            android:name=".app.startup.WelcomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NearBuy.Auth"
+            android:windowSoftInputMode="adjustResize" />
 
-        <!-- Home Screen -->
+        <!-- ── AUTH ── -->
         <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-
-        <!-- Search Screen -->
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
+            android:name=".auth.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NearBuy.Auth"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".Settings"
-            android:exported="false" />
+            android:name=".auth.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NearBuy.Auth"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
-            android:name=".DashboardUI"
-            android:exported="false" />
+            android:name=".auth.OTPVerificationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NearBuy.Auth"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
-            android:name=".Profile"
-            android:exported="false" />
+            android:name=".auth.ForgotPasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NearBuy.Auth"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── DASHBOARD ── -->
         <activity
-            android:name=".Saved_Deals"
-            android:exported="false" />
+            android:name=".dashboard.DashboardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── SEARCH ── -->
         <activity
-            android:name=".deal_details"
-            android:exported="false" />
+            android:name=".search.SearchActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- ── DEALS ── -->
         <activity
-            android:name=".Store_Details"
-            android:exported="false" />
+            android:name=".deals.DealsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── PROFILE ── -->
         <activity
-            android:name=".CategoriesActivity"
+            android:name=".profile.ProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── NOTIFICATIONS ── -->
+        <activity
+            android:name=".notifications.NotificationsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NearBuy.Screen"
+            android:label="@string/notif_screen_title" />
+
+        <!-- ── CATEGORIES ── -->
+        <activity
+            android:name=".categories.CategoriesActivity"
             android:exported="true"
             android:theme="@style/Theme.NearBuy.Categories"
             android:label="@string/categories_title" />
+
+        <!-- ── ORDERS ── -->
         <activity
-            android:name=".NotificationsActivity"
-            android:exported="true"
-            android:theme="@style/Theme.NearBuy.Screen"
-            android:label="@string/notif_screen_title" />
+            android:name=".orders.OrdersActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── PRODUCT DETAILS ── -->
+        <activity
+            android:name=".product.ProductDetailsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── STORE DETAILS ── -->
+        <activity
+            android:name=".store.StoreDetailsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── DEAL DETAILS ── -->
+        <activity
+            android:name=".deals.DealDetailsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── SAVED DEALS ── -->
+        <activity
+            android:name=".deals.SavedDealsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── SETTINGS ── -->
+        <activity
+            android:name=".profile.SettingsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
