@@ -1,5 +1,6 @@
 [versions]
 agp = "8.13.2"
+googleServices = "4.4.2"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
@@ -9,6 +10,12 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 recyclerview = "1.3.2"
 cardview = "1.0.0"
+
+# Firebase
+firebaseBom = "33.9.0"
+
+# Google Play Services – Location (for nearby-distance features)
+playServicesLocation = "21.3.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -21,6 +28,17 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 
+# ── Firebase (versions managed by BOM) ──────────────────────────────────────
+firebase-bom        = { group = "com.google.firebase", name = "firebase-bom",            version.ref = "firebaseBom" }
+firebase-auth       = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-firestore  = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-storage    = { group = "com.google.firebase", name = "firebase-storage" }
+firebase-messaging  = { group = "com.google.firebase", name = "firebase-messaging" }
+
+# ── Google Play Services ─────────────────────────────────────────────────────
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+google-services     = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 
