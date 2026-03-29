@@ -1,7 +1,6 @@
 *.iml
 .gradle
 /local.properties
-.idea/
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -14,6 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+.env
 
 # Ignore Android Studio IDE files and build files
 .idea/

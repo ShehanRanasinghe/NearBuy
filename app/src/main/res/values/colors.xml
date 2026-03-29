@@ -1,49 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+
+    <!-- NearBuy Customer App Brand Colors – Teal + Orange -->
+    <color name="nb_primary">#FF0097A7</color>
+    <color name="nb_primary_dark">#FF006064</color>
+    <color name="nb_primary_light">#FF4DB6AC</color>
+    <color name="nb_primary_surface">#1A0097A7</color>
+
+    <color name="nb_accent">#FFFF6D00</color>
+    <color name="nb_accent_dark">#FFE65100</color>
+    <color name="nb_accent_light">#FFFF9E40</color>
+    <color name="nb_accent_surface">#1AFF6D00</color>
+
+    <!-- Backgrounds -->
+    <color name="bg_light_grey">#FFF2F3F5</color>
+    <color name="bg_white">#FFFFFFFF</color>
+    <color name="bg_screen">#FFE0F7FA</color>
+
+    <!-- Text -->
+    <color name="text_dark_primary">#FF1A1A2E</color>
+    <color name="text_dark_secondary">#FF6B7280</color>
+    <color name="text_dark_hint">#FF9CA3AF</color>
+    <color name="text_on_dark_primary">#FFFFFFFF</color>
+    <color name="text_on_dark_secondary">#B3FFFFFF</color>
+    <color name="text_color_primary">#FF2C3E50</color>
+
+    <!-- Dividers -->
+    <color name="divider_light">#FFE5E7EB</color>
+
+    <!-- Stat / Status colors -->
+    <color name="stat_green">#FF10B981</color>
+    <color name="stat_green_bg">#1A10B981</color>
+    <color name="stat_blue">#FF3B82F6</color>
+    <color name="stat_blue_bg">#1A3B82F6</color>
+    <color name="stat_orange">#FFF59E0B</color>
+    <color name="stat_orange_bg">#1AF59E0B</color>
+    <color name="stat_red">#FFEF4444</color>
+    <color name="stat_red_bg">#1AEF4444</color>
+
+    <!-- Alert Colors -->
+    <color name="success_green">#FF10B981</color>
+    <color name="error_red">#FFEF4444</color>
+    <color name="warning_orange">#FFF59E0B</color>
+
+    <!-- Alpha overlays -->
+    <color name="white_alpha_20">#33FFFFFF</color>
+    <color name="white_alpha_10">#1AFFFFFF</color>
+    <color name="black_alpha_10">#1A000000</color>
+
+    <!-- Legacy colors preserved for existing layouts -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="pastel_blue_light">#FFE3F2FD</color>
+    <color name="pastel_blue_medium">#FFBBDEFB</color>
+    <color name="pastel_blue_dark">#FF90CAF9</color>
+    <color name="pastel_blue_accent">#FF64B5F6</color>
 
-    <!-- Pastel Blue Colors -->
-    <color name="pastel_blue_light">#E3F2FD</color>
-    <color name="pastel_blue_medium">#BBDEFB</color>
-    <color name="pastel_blue_dark">#90CAF9</color>
-    <color name="pastel_blue_accent">#64B5F6</color>
-    <color name="text_color_primary">#2C3E50</color>
+    <!-- Categories palette -->
+    <color name="cat_bg">#FFE0F7FA</color>
+    <color name="cat_toolbar">#FF0097A7</color>
+    <color name="cat_toolbar_dark">#FF006064</color>
+    <color name="cat_icon_circle">#FFB2EBF2</color>
+    <color name="cat_icon_tint">#FF00838F</color>
+    <color name="cat_text_label">#FF004D40</color>
+    <color name="cat_card_stroke">#FF80DEEA</color>
+    <color name="cat_orange">#FFFF6D00</color>
+    <color name="cat_orange_light">#FFFFF3E0</color>
 
-    <!-- Categories Screen – blue-green + orange palette -->
-    <color name="cat_bg">#E0F7FA</color>
-    <color name="cat_toolbar">#0097A7</color>
-    <color name="cat_toolbar_dark">#006064</color>
-    <color name="cat_icon_circle">#B2EBF2</color>
-    <color name="cat_icon_tint">#00838F</color>
-    <color name="cat_text_label">#004D40</color>
-    <color name="cat_card_stroke">#80DEEA</color>
-    <!-- Orange accent (logo swoosh colour) -->
-    <color name="cat_orange">#FF6D00</color>
-    <color name="cat_orange_light">#FFF3E0</color>
-
-    <!-- NearBuy brand – teal/cyan + orange palette -->
-    <color name="nb_bg">#E0F7FA</color>
-    <color name="nb_header_start">#004D40</color>
-    <color name="nb_header_end">#00ACC1</color>
-    <color name="nb_teal_dark">#006064</color>
-    <color name="nb_teal">#0097A7</color>
-    <color name="nb_teal_mid">#00838F</color>
-    <color name="nb_teal_circle">#B2EBF2</color>
-    <color name="nb_text_dark">#004D40</color>
-    <color name="nb_text_sub">#00838F</color>
-    <color name="nb_orange">#FF6D00</color>
-    <color name="nb_orange_dark">#E65100</color>
-    <color name="nb_orange_circle">#FFE0B2</color>
-    <color name="nb_card_border">#80DEEA</color>
-    <color name="nb_divider">#E0F2F1</color>
-    <color name="nb_expiring_circle">#FCE4EC</color>
-    <color name="nb_expiring_icon">#C62828</color>
-    <color name="nb_promo_circle">#F3E5F5</color>
-    <color name="nb_promo_icon">#6A1B9A</color>
+    <!-- NearBuy brand extended -->
+    <color name="nb_bg">#FFE0F7FA</color>
+    <color name="nb_header_start">#FF004D40</color>
+    <color name="nb_header_end">#FF00ACC1</color>
+    <color name="nb_teal_dark">#FF006064</color>
+    <color name="nb_teal">#FF0097A7</color>
+    <color name="nb_teal_mid">#FF00838F</color>
+    <color name="nb_teal_circle">#FFB2EBF2</color>
+    <color name="nb_text_dark">#FF004D40</color>
+    <color name="nb_text_sub">#FF00838F</color>
+    <color name="nb_orange">#FFFF6D00</color>
+    <color name="nb_orange_dark">#FFE65100</color>
+    <color name="nb_orange_circle">#FFFFE0B2</color>
+    <color name="nb_card_border">#FF80DEEA</color>
+    <color name="nb_divider">#FFE0F2F1</color>
+    <color name="nb_expiring_circle">#FFFCE4EC</color>
+    <color name="nb_expiring_icon">#FFC62828</color>
+    <color name="nb_promo_circle">#FFF3E5F5</color>
+    <color name="nb_promo_icon">#FF6A1B9A</color>
+    <color name="nb_distance_chip">#FFE0F2F1</color>
+    <color name="nb_distance_chip_active">#FF0097A7</color>
 </resources>

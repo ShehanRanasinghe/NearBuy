@@ -1,6 +1,89 @@
 <resources>
     <string name="app_name">NearBuy</string>
 
+    <!-- Splash -->
+    <string name="splash_tagline">Discover Deals Near You</string>
+    <string name="splash_version">v1.0</string>
+
+    <!-- Welcome -->
+    <string name="welcome_badge">CUSTOMER APP</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="welcome_app_name">NearBuy</string>
+    <string name="welcome_desc">Find the best local deals, promotions and products near you — sorted by distance and price.</string>
+    <string name="welcome_feature1_title">Nearby Deals</string>
+    <string name="welcome_feature1_sub">Discover deals from shops around you</string>
+    <string name="welcome_feature2_title">Smart Search</string>
+    <string name="welcome_feature2_sub">Search products by name, sorted by distance</string>
+    <string name="welcome_feature3_title">Live Promotions</string>
+    <string name="welcome_feature3_sub">Get real-time promotions from local stores</string>
+    <string name="welcome_get_started">Get Started</string>
+    <string name="welcome_login">Already have an account? Log In</string>
+
+    <!-- Auth -->
+    <string name="login_title">Log In</string>
+    <string name="login_subtitle">Welcome back!</string>
+    <string name="hint_email">Email address</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="btn_login">Log In</string>
+    <string name="no_account">Don\'t have an account? </string>
+    <string name="link_sign_up">Sign Up</string>
+    <string name="have_account">Already have an account? </string>
+    <string name="link_log_in">Log In</string>
+
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Join NearBuy today</string>
+    <string name="hint_full_name">Full name</string>
+    <string name="hint_phone">Phone number</string>
+    <string name="hint_confirm_password">Confirm password</string>
+    <string name="btn_register">Create Account</string>
+
+    <string name="otp_title">Verify Your Number</string>
+    <string name="otp_subtitle">Enter the 6-digit code sent to</string>
+    <string name="otp_resend">Resend OTP</string>
+    <string name="btn_verify">Verify</string>
+
+    <string name="forgot_title">Forgot Password</string>
+    <string name="forgot_subtitle">Enter your email and we\'ll send you a reset link.</string>
+    <string name="hint_reset_email">Your email address</string>
+    <string name="btn_send_reset">Send Reset Link</string>
+    <string name="back_to_login">Back to Login</string>
+
+    <!-- Dashboard -->
+    <string name="hello_greeting">Hello,</string>
+    <string name="dashboard_user_name">John Doe</string>
+    <string name="dashboard_subtitle">Find deals near you today!</string>
+    <string name="logo_desc">NearBuy Logo</string>
+    <string name="notifications">Notifications</string>
+    <string name="search">Search</string>
+
+    <string name="stat_orders">Orders</string>
+    <string name="stat_spent">Total Spent</string>
+    <string name="stat_saved">Total Saved</string>
+
+    <string name="section_latest_deals">LATEST DEALS</string>
+    <string name="section_promotions">ACTIVE PROMOTIONS</string>
+    <string name="section_categories">BROWSE CATEGORIES</string>
+    <string name="section_nearby_shops">NEARBY SHOPS</string>
+    <string name="view_all">View All</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_deals">Deals</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search products, shops…</string>
+    <string name="search_results">Results</string>
+    <string name="search_popular_categories">Popular Categories</string>
+    <string name="distance_label">Within</string>
+    <string name="km_suffix">km</string>
+    <string name="sort_by">Sort:</string>
+    <string name="sort_distance">Nearest</string>
+    <string name="sort_price">Lowest Price</string>
+    <string name="no_results">No products found nearby</string>
+
     <!-- Categories Screen -->
     <string name="categories_title">NearBuy</string>
     <string name="categories_subtitle">Explore by Category</string>
@@ -16,35 +99,24 @@
     <!-- Notifications Screen -->
     <string name="notif_screen_title">Notifications</string>
     <string name="notif_tagline">Your deals, your alerts</string>
-
-    <!-- New Deal notifications -->
-    <string name="notif_nd_1_title">🛍 New Deal: 50% off Pizza Palace</string>
+    <string name="notif_nd_1_title">🛍 New Deal: 50%% off Pizza Palace</string>
     <string name="notif_nd_1_body">Limited time offer at Pizza Palace near you. Grab it before it\'s gone!</string>
     <string name="notif_nd_1_time">2 min ago</string>
-
     <string name="notif_nd_2_title">🛍 New Deal: Buy 1 Get 1 at FreshMart</string>
     <string name="notif_nd_2_body">FreshMart is offering BOGO on selected groceries. Valid today only.</string>
     <string name="notif_nd_2_time">18 min ago</string>
-
-    <!-- Expiring Deal notifications -->
-    <string name="notif_exp_1_title">⏰ Expiring Soon: Tech Zone 30% off</string>
+    <string name="notif_exp_1_title">⏰ Expiring Soon: Tech Zone 30%% off</string>
     <string name="notif_exp_1_body">Your saved deal at Tech Zone expires in 2 hours. Don\'t miss out!</string>
     <string name="notif_exp_1_time">1 hr ago</string>
-
     <string name="notif_exp_2_title">⏰ Expiring Soon: Fashion Hub Flash Sale</string>
-    <string name="notif_exp_2_body">Flash sale ending at midnight. Up to 70% off selected clothing.</string>
+    <string name="notif_exp_2_body">Flash sale ending at midnight. Up to 70%% off selected clothing.</string>
     <string name="notif_exp_2_time">3 hr ago</string>
-
-    <!-- Promotional offer notifications -->
     <string name="notif_promo_1_title">🎁 Promo: Earn 200 Reward Points</string>
-    <string name="notif_promo_1_body">Shop at any partner store today and earn double reward points on every purchase.</string>
+    <string name="notif_promo_1_body">Shop at any partner store today and earn double reward points.</string>
     <string name="notif_promo_1_time">Yesterday</string>
-
     <string name="notif_promo_2_title">🎁 Promo: Free Delivery Weekend</string>
-    <string name="notif_promo_2_body">Enjoy free delivery on all orders above Rs. 500 this weekend at select stores.</string>
+    <string name="notif_promo_2_body">Enjoy free delivery on all orders above Rs. 500 this weekend.</string>
     <string name="notif_promo_2_time">Yesterday</string>
-
-    <!-- Section labels -->
     <string name="notif_section_new">New Deals</string>
     <string name="notif_section_expiring">Expiring Soon</string>
     <string name="notif_section_promo">Promotional Offers</string>
@@ -53,24 +125,62 @@
     <string name="notif_badge_promo">PROMO</string>
     <string name="notif_mark_read">Mark all as read</string>
 
-    <!-- Splash Screen -->
-    <string name="splash_tagline">Discover Deals Near You</string>
-    <string name="splash_version">Version 1.0</string>
+    <!-- Profile -->
+    <string name="profile_title">My Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Log Out</string>
+    <string name="settings_title">Settings</string>
 
-    <!-- Home Screen -->
+    <!-- Home Screen (legacy keys) -->
     <string name="home_greeting">Hello,</string>
-    <string name="home_username">John Don</string>
+    <string name="home_username">John Doe</string>
     <string name="home_search_hint">Search</string>
     <string name="home_category_title">Category</string>
     <string name="home_promos_title">Promos</string>
-
-    <!-- Search Screen -->
-    <string name="search_hint">Search for deals or stores…</string>
-    <string name="search_popular_categories">Popular Categories</string>
-    <string name="search_results">Search Results</string>
     <string name="filter_all">All</string>
     <string name="filter_nearby">Nearby</string>
     <string name="filter_deals">Deals</string>
     <string name="filter_stores">Stores</string>
     <string name="filter_popular">Popular</string>
+
+    <!-- Orders Screen -->
+    <string name="orders_title">My Orders</string>
+    <string name="orders_subtitle">Track your purchases</string>
+    <string name="order_status_delivered">Delivered</string>
+    <string name="order_status_processing">Processing</string>
+    <string name="order_status_cancelled">Cancelled</string>
+    <string name="order_tab_all">All</string>
+    <string name="stat_total_orders">Total Orders</string>
+    <string name="stat_delivered">Delivered</string>
+    <string name="stat_total_spent">Total Spent</string>
+
+    <!-- Product Details Screen -->
+    <string name="product_details_title">Product Details</string>
+    <string name="in_stock">✓ In Stock</string>
+    <string name="btn_add_to_cart">Add to Cart</string>
+    <string name="btn_save_deal">Save Deal</string>
+    <string name="btn_view_store">View Store</string>
+    <string name="from_the_shop">FROM THE SHOP</string>
+    <string name="product_details_section">PRODUCT DETAILS</string>
+
+    <!-- Store Details Screen -->
+    <string name="store_details_title">Store Details</string>
+    <string name="store_active_deals">Active Deals</string>
+    <string name="store_browse_products">Browse Products</string>
+    <string name="store_rating">Rating</string>
+    <string name="store_open">Open Now</string>
+
+    <!-- Deals Screen -->
+    <string name="deals_title">Deals &amp; Offers</string>
+    <string name="deals_subtitle">Best deals near you</string>
+    <string name="tab_all_deals">All Deals</string>
+    <string name="tab_food">Food</string>
+    <string name="tab_groceries">Groceries</string>
+    <string name="tab_fresh">Fresh</string>
+    <string name="tab_promos">Promos</string>
+    <string name="deals_available">deals available</string>
+    <string name="live_deals">Live Deals</string>
+    <string name="expiring_soon_count">Expiring Soon</string>
+    <string name="max_saving">Max Saving</string>
+
 </resources>

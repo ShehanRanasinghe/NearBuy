@@ -1,36 +1,55 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.NearBuy" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+
+    <!-- Base NearBuy customer app theme – Light, teal/orange accent -->
+    <style name="Theme.NearBuy" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/nb_primary</item>
+        <item name="colorPrimaryVariant">@color/nb_primary_dark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="colorSecondary">@color/nb_accent</item>
+        <item name="colorSecondaryVariant">@color/nb_accent_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:navigationBarColor">@color/bg_white</item>
+        <item name="android:windowBackground">@color/bg_light_grey</item>
     </style>
 
-    <!-- Theme for the Categories screen – blue-green, no default action bar -->
-    <style name="Theme.NearBuy.Categories" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/cat_toolbar</item>
-        <item name="colorPrimaryVariant">@color/cat_toolbar_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/cat_icon_tint</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/cat_toolbar_dark</item>
+    <!-- Splash theme – full screen deep teal -->
+    <style name="Theme.NearBuy.Splash" parent="Theme.NearBuy">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:navigationBarColor">@color/nb_primary_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 
-    <!-- Shared NearBuy screen theme – no default action bar -->
-    <style name="Theme.NearBuy.Screen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/nb_teal</item>
-        <item name="colorPrimaryVariant">@color/nb_teal_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/nb_orange</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/nb_teal_dark</item>
+    <!-- Auth screens theme – dark teal header -->
+    <style name="Theme.NearBuy.Auth" parent="Theme.NearBuy">
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
     </style>
+
+    <!-- Theme for the Categories screen -->
+    <style name="Theme.NearBuy.Categories" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/nb_primary</item>
+        <item name="colorPrimaryVariant">@color/nb_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/nb_accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+    </style>
+
+    <!-- Shared screen theme -->
+    <style name="Theme.NearBuy.Screen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/nb_primary</item>
+        <item name="colorPrimaryVariant">@color/nb_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/nb_accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+    </style>
+
 </resources>
+

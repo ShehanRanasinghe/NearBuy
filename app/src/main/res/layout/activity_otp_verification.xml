@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:gravity="center_horizontal"
+    android:padding="24dp" android:background="@color/nb_primary_dark">
+    <ImageView android:layout_width="100dp" android:layout_height="70dp"
+        android:src="@drawable/nearbuy_logo" android:contentDescription="@string/logo_desc"
+        android:layout_marginTop="48dp" android:scaleType="fitCenter"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/otp_title" android:textSize="26sp" android:textStyle="bold"
+        android:textColor="@color/white" android:layout_marginTop="20dp"/>
+    <TextView android:id="@+id/tvOtpSubtitle"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/otp_subtitle" android:textSize="13sp"
+        android:textColor="@color/text_on_dark_secondary" android:gravity="center"
+        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
+    <TextView android:id="@+id/tvPhoneNumber"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="+94 77 123 4567" android:textSize="15sp" android:textStyle="bold"
+        android:textColor="@color/nb_accent_light" android:layout_marginBottom="36dp"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center" android:layout_marginBottom="32dp">
+        <EditText android:id="@+id/otp1" android:layout_width="48dp" android:layout_height="56dp"
+            android:inputType="number" android:maxLength="1" android:gravity="center"
+            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
+            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/otp2" android:layout_width="48dp" android:layout_height="56dp"
+            android:inputType="number" android:maxLength="1" android:gravity="center"
+            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
+            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/otp3" android:layout_width="48dp" android:layout_height="56dp"
+            android:inputType="number" android:maxLength="1" android:gravity="center"
+            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
+            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/otp4" android:layout_width="48dp" android:layout_height="56dp"
+            android:inputType="number" android:maxLength="1" android:gravity="center"
+            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
+            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/otp5" android:layout_width="48dp" android:layout_height="56dp"
+            android:inputType="number" android:maxLength="1" android:gravity="center"
+            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
+            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/otp6" android:layout_width="48dp" android:layout_height="56dp"
+            android:inputType="number" android:maxLength="1" android:gravity="center"
+            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
+            android:background="@drawable/bg_otp_box"/>
+    </LinearLayout>
+    <Button android:id="@+id/btnVerify"
+        android:layout_width="match_parent" android:layout_height="56dp"
+        android:text="@string/btn_verify" android:textColor="@color/white"
+        android:textSize="17sp" android:textStyle="bold"
+        android:background="@drawable/btn_orange" android:elevation="4dp" android:layout_marginBottom="20dp"/>
+    <TextView android:id="@+id/tvResendOtp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/otp_resend" android:textColor="@color/nb_accent_light"
+        android:textSize="14sp" android:textStyle="bold" android:clickable="true" android:focusable="true"/>
+</LinearLayout>
