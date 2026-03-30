@@ -147,6 +147,20 @@ public class SessionManager {
         return prefs.getFloat(KEY_SEARCH_RADIUS, DEFAULT_RADIUS_KM);
     }
 
+    // ── FCM Token ─────────────────────────────────────────────────────────────
+
+    private static final String KEY_FCM_TOKEN = "fcmToken";
+
+    /** Save the FCM registration token when it is issued or refreshed. */
+    public void saveFcmToken(String token) {
+        prefs.edit().putString(KEY_FCM_TOKEN, token).apply();
+    }
+
+    /** Returns the last saved FCM token, or empty string if not yet set. */
+    public String getFcmToken() {
+        return prefs.getString(KEY_FCM_TOKEN, "");
+    }
+
     // ── Session control ───────────────────────────────────────────────────────
 
     /** Returns true when a UID is stored in the session. */
