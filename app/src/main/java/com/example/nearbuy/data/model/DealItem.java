@@ -99,6 +99,38 @@ public class DealItem {
     public void setShopLongitude(double lng) { this.shopLongitude = lng; }
     public void setDistanceKm(double km)     { this.distanceKm    = km; }
 
+    // ── Field setters (used when constructing a DealItem for saving) ──────────
+
+    /** Sets the Firestore document ID – used when saving a deal from DealDetailsActivity. */
+    public void setId(String id)               { this.id = id; }
+
+    /** Sets the parent shop document ID – required for saved_deals writes. */
+    public void setShopId(String shopId)       { this.shopId = shopId; }
+
+    /** Sets the deal title. */
+    public void setTitle(String title)         { this.title = title; }
+
+    /** Sets the discount label (e.g. "50% OFF"). */
+    public void setDiscountLabel(String label) { this.discountLabel = label; }
+
+    /** Sets the sale price. */
+    public void setSalePrice(double price)     { this.salePrice = price; }
+
+    /** Sets the original price before the discount. */
+    public void setOriginalPrice(double price) { this.originalPrice = price; }
+
+    /** Sets the category (e.g. "Fruits"). */
+    public void setCategory(String category)   { this.category = category; }
+
+    /** Marks whether this item is a promotion (true) or a deal (false). */
+    public void setPromotion(boolean isPromo)  { this.isPromotion = isPromo; }
+
+    /** Sets the expiry epoch timestamp in milliseconds. */
+    public void setExpiresAt(long ts)          { this.expiresAt = ts; }
+
+    /** Sets the creation epoch timestamp in milliseconds. */
+    public void setCreatedAt(long ts)          { this.createdAt = ts; }
+
     // ── Firestore serialisation ───────────────────────────────────────────────
 
     public static DealItem fromMap(String id, String shopId, Map<String, Object> map) {
