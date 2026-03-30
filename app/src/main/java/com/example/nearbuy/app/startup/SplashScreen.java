@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,32 +31,51 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * SplashScreen – first activity launched on app start.
+ * SplashScreen – first activity launched on every app start.
  *
- * Startup sequence (mirrors NearBuyHQ admin app):
- *   1. initFirebase()               – manually initialise Firebase from .env BuildConfig values
- *                                     (replaces the old NearBuyApplication class)
- *   2. checkPermissionsAndProceed() – request location permission (needed for nearby search)
- *   3. checkConnectivityAndNavigate()– ensure internet is available; wait via NetworkCallback
- *   4. navigate()                   – server-side Firebase auth verify (handles deleted accounts),
- *                                     then route → DashboardActivity or WelcomeActivity
+ * Startup sequence:
+ *
+ *   1. initFirebase()
+ *        Confirms the google-services plugin auto-initialised Firebase and
+ *        logs the result.  No manual FirebaseOptions.Builder needed.
+ *
+ *   2. checkPermissionsAndProceed()
+ *        Requests runtime permissions in order:
+ *          a. POST_NOTIFICATIONS (Android 13 / API 33+)  – push deal alerts
+ *          b. ACCESS_FINE_LOCATION + ACCESS_COARSE_LOCATION – nearby search
+ *        Navigation always continues even if the user denies either permission.
+ *
+ *   3. checkConnectivityAndNavigate()
+ *        Ensures the device has an active, validated internet connection before
+ *        proceeding.  Registers a NetworkCallback if offline and waits.
+ *
+ *   4. navigate()
+ *        Performs a server-side Firebase Auth verification (firebaseUser.reload())
+ *        to catch deleted / suspended accounts.
+ *          • Valid session  → DashboardActivity  (login screens skipped)
+ *          • No / invalid session → WelcomeActivity (login required)
  */
 public class SplashScreen extends AppCompatActivity {
 
-    private static final String TAG                   = "NearBuy.Splash";
-    private static final int    SPLASH_DELAY_MS       = 2500;
-    private static final int    REQ_LOCATION_PERMISSION = 100;
+    private static final String TAG = "NearBuy.Splash";
 
-    private ConnectivityManager                  connectivityManager;
-    private ConnectivityManager.NetworkCallback  networkCallback;
-    private boolean navigated = false; // guard – navigate() runs at most once
+    // Minimum time the splash screen is visible before any navigation
+    private static final int SPLASH_DELAY_MS = 2500;
+
+    // Request codes for runtime permissions
+    private static final int REQ_NOTIFICATIONS_PERMISSION = 101;
+    private static final int REQ_LOCATION_PERMISSION      = 100;
+
+    private ConnectivityManager                 connectivityManager;
+    private ConnectivityManager.NetworkCallback networkCallback;
+    private boolean navigated = false; // guard – navigate() fires at most once
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Full-screen immersive splash
+        // Full-screen immersive splash – hides status and navigation bars
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -72,28 +92,21 @@ public class SplashScreen extends AppCompatActivity {
         connectivityManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        // ── Step 1: Initialise Firebase immediately (before the splash delay)
-        // Done here instead of a custom Application class so the .env → BuildConfig
-        // values are used and no google-services.json is required.
+        // Step 1 – confirm Firebase is initialised
         initFirebase();
 
-        // Steps 2-4 start after the minimum splash display time
+        // Steps 2–4 begin after the minimum splash display time
         handler.postDelayed(this::checkPermissionsAndProceed, SPLASH_DELAY_MS);
     }
 
-    // ── Step 1 – Firebase manual initialisation ───────────────────────────────
+    // ── Step 1 – Firebase confirmation ────────────────────────────────────────
 
     /**
-     * Firebase is auto-initialised by the google-services plugin, which reads
-     * app/google-services.json at build time and registers FirebaseInitProvider
-     * in the merged AndroidManifest.  No manual FirebaseOptions.Builder is needed.
+     * Logs whether the google-services plugin successfully auto-initialised
+     * Firebase from  google-services.json.  No manual Options.Builder needed.
      *
-     * This method exists only to:
-     *   • honour the FIREBASE_ENABLED feature flag from .env
-     *   • log the initialisation result so it is visible in Logcat
-     *
-     * Safe to call multiple times – FirebaseInitProvider runs before onCreate(),
-     * so FirebaseApp.getApps() will already be non-empty by the time we arrive here.
+     * If the app was built with  FIREBASE_ENABLED=false  in .env, it will
+     * run in stub / offline mode and skip all live Firebase calls.
      */
     private void initFirebase() {
         if (!BuildConfig.FIREBASE_ENABLED) {
@@ -108,26 +121,47 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    // ── Step 2 – Runtime permission check ────────────────────────────────────
+    // ── Step 2 – Permission checks ────────────────────────────────────────────
 
     /**
-     * Request every runtime permission the customer app needs before navigation.
+     * Requests runtime permissions in the correct order:
+     *   1. POST_NOTIFICATIONS (Android 13+ / API 33+) – required to show push
+     *      deal alerts on newer Android versions.
+     *   2. ACCESS_FINE_LOCATION – required for nearby shop / product search.
      *
-     * Permissions requested:
-     *   • ACCESS_FINE_LOCATION   – required for nearby product/shop distance calculation
-     *   • ACCESS_COARSE_LOCATION – fallback for lower-accuracy location
-     *
-     * Navigation always proceeds after the user responds, even if denied.
-     * Location is only required for the nearby search feature, not for core browsing.
+     * Navigation always continues even if the user denies either permission.
+     * Features that need each permission degrade gracefully:
+     *   - No notification permission → push alerts are silently dropped by Android.
+     *   - No location permission → search uses the last saved GPS fix or Colombo centre.
      */
     private void checkPermissionsAndProceed() {
+        // On Android 13+ (API 33), POST_NOTIFICATIONS requires an explicit runtime grant
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            boolean notifGranted = ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED;
+
+            if (!notifGranted) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        REQ_NOTIFICATIONS_PERMISSION);
+                return; // Wait for the result before proceeding to location
+            }
+        }
+
+        // Notification permission is either already granted or not needed
+        checkLocationPermission();
+    }
+
+    /** Requests ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION. */
+    private void checkLocationPermission() {
         boolean fineGranted = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
 
         if (fineGranted) {
-            // Permission already granted – skip the dialog
-            checkConnectivityAndNavigate();
+            checkConnectivityAndNavigate(); // Already granted – proceed
         } else {
             ActivityCompat.requestPermissions(
                     this,
@@ -144,28 +178,36 @@ public class SplashScreen extends AppCompatActivity {
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQ_LOCATION_PERMISSION) {
+
+        if (requestCode == REQ_NOTIFICATIONS_PERMISSION) {
+            // POST_NOTIFICATIONS result – log outcome and move on to location
+            boolean granted = grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+            Log.d(TAG, "POST_NOTIFICATIONS permission "
+                    + (granted ? "granted." : "denied (notifications will be silent)."));
+            // Continue to location permission regardless
+            checkLocationPermission();
+
+        } else if (requestCode == REQ_LOCATION_PERMISSION) {
+            // Location result – log outcome and proceed to connectivity check
             boolean granted = grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED;
             if (!granted) {
                 Toast.makeText(this,
-                        "Location permission denied. " +
-                        "Nearby search will use your last known location. " +
-                        "You can grant it later in Settings.",
+                        "Location permission denied. Nearby search will use a default location.",
                         Toast.LENGTH_LONG).show();
             }
-            // Always continue regardless of the user's choice
             checkConnectivityAndNavigate();
         }
     }
 
-    // ── Step 3 – Connectivity check ──────────────────────────────────────────
+    // ── Step 3 – Connectivity check ───────────────────────────────────────────
 
     /**
-     * Check if the device has an active, validated internet connection.
-     * If yes → proceed to navigate().
-     * If no  → show toast and register a NetworkCallback to proceed
-     *           automatically when internet returns.
+     * Verifies that the device has an active, validated internet connection.
+     * If connected → proceed to navigate().
+     * If offline  → show a Toast and register a NetworkCallback to resume
+     *               automatically when the connection is restored.
      */
     private void checkConnectivityAndNavigate() {
         if (isNetworkAvailable()) {
@@ -195,25 +237,22 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    // ── Step 4 – Auth check + navigation ─────────────────────────────────────
+    // ── Step 4 – Auth check + routing ────────────────────────────────────────
 
     /**
-     * Verify the cached Firebase user still exists on the server (handles
-     * accounts deleted via the Firebase Console), then route to the right screen.
+     * Performs a server-side Firebase Auth check to verify the cached user
+     * still exists (handles accounts deleted via the Firebase Console), then
+     * routes to the appropriate screen.
      *
-     * reload() makes a live network call:
-     *   • Success → user is valid → go to DashboardActivity
-     *   • FirebaseAuthInvalidUserException → account deleted/disabled → sign out → WelcomeActivity
-     *   • Any other failure → treat as logged-out → WelcomeActivity
-     *
-     * When Firebase is disabled (FIREBASE_ENABLED=false in .env), falls back to
-     * SessionManager only so stub/offline mode still works.
+     *   firebaseUser.reload() succeeds  → session is valid → DashboardActivity
+     *   FirebaseAuthInvalidUserException → account deleted/disabled → sign out → WelcomeActivity
+     *   Any other reload failure         → treat as logged-out → WelcomeActivity
+     *   No cached Firebase user          → WelcomeActivity (login required)
      */
     private void navigate() {
         if (navigated) return;
 
-        // If Firebase failed to initialise (e.g. missing keys), go straight to Welcome
-        // to avoid an IllegalStateException from FirebaseAuth.getInstance().
+        // If Firebase failed to initialise (e.g. missing google-services.json), go to Welcome
         if (FirebaseApp.getApps(this).isEmpty()) {
             Log.w(TAG, "FirebaseApp not initialised – routing to WelcomeActivity.");
             navigated = true;
@@ -224,21 +263,23 @@ public class SplashScreen extends AppCompatActivity {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser == null) {
-            // No cached user → straight to Welcome
+            // No cached credentials → show login / welcome flow
             navigated = true;
             goTo(WelcomeActivity.class);
             return;
         }
 
-        // Server-side verification: catches deleted / disabled accounts
+        // Server-side reload verifies the account still exists and is not disabled
         firebaseUser.reload()
                 .addOnSuccessListener(unused -> {
                     navigated = true;
+                    Log.d(TAG, "Session valid – routing to DashboardActivity.");
                     goTo(DashboardActivity.class);
                 })
                 .addOnFailureListener(e -> {
                     if (e instanceof FirebaseAuthInvalidUserException) {
-                        // Account deleted or disabled → clear local auth cache
+                        // Account deleted or disabled in Firebase Console → force sign out
+                        Log.w(TAG, "Account disabled/deleted – signing out.");
                         FirebaseAuth.getInstance().signOut();
                     }
                     navigated = true;
@@ -248,7 +289,10 @@ public class SplashScreen extends AppCompatActivity {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    /** Launch an activity and clear the entire back stack. */
+    /**
+     * Launches an activity and clears the entire back stack so the user
+     * cannot navigate back to the splash screen.
+     */
     private void goTo(Class<?> activityClass) {
         Intent intent = new Intent(this, activityClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -256,7 +300,11 @@ public class SplashScreen extends AppCompatActivity {
         finish();
     }
 
-    /** Returns true when the device has a working, validated internet connection. */
+    /**
+     * Returns true when the device has a working, validated internet connection.
+     * Checks both connectivity and capability validation so VPN/captive-portal
+     * scenarios are handled correctly.
+     */
     private boolean isNetworkAvailable() {
         if (connectivityManager == null) return false;
         Network activeNetwork = connectivityManager.getActiveNetwork();
@@ -271,6 +319,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Unregister the connectivity callback to prevent memory leaks
         if (networkCallback != null && connectivityManager != null) {
             try {
                 connectivityManager.unregisterNetworkCallback(networkCallback);
@@ -279,6 +328,4 @@ public class SplashScreen extends AppCompatActivity {
         handler.removeCallbacksAndMessages(null);
     }
 }
-
-
 
