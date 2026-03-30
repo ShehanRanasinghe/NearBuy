@@ -90,21 +90,38 @@ public class Product {
 
     // ── Firestore serialisation ───────────────────────────────────────────────
 
-    /** Reconstructs a Product from a Firestore document map. */
+    /** Reconstructs a Product from a Firestore document map.
+     *  Handles both NearBuyHQ admin field names and legacy field names. */
     public static Product fromMap(String id, String shopId, Map<String, Object> map) {
         if (map == null) return null;
         Product p = new Product();
         p.id            = id;
         p.shopId        = shopId;
-        p.name          = str(map.get("name"));
-        p.description   = str(map.get("description"));
+        // NearBuyHQ uses "name" (and sometimes "itemName") for the product name
+        String name = str(map.get("name"));
+        if (name.isEmpty()) name = str(map.get("itemName"));
+        p.name          = name;
+        // NearBuyHQ uses "description" and "itemDetails" for description
+        String desc = str(map.get("description"));
+        if (desc.isEmpty()) desc = str(map.get("itemDetails"));
+        p.description   = desc;
         p.category      = str(map.get("category"));
         p.price         = dbl(map.get("price"));
         p.originalPrice = dbl(map.get("originalPrice"));
         p.unit          = str(map.get("unit"));
-        p.stockQty      = intVal(map.get("stockQty"));
+        // NearBuyHQ uses "stockQuantity" and "quantity" instead of "stockQty"
+        int stockQty = intVal(map.get("stockQty"));
+        if (stockQty == 0) stockQty = intVal(map.get("stockQuantity"));
+        if (stockQty == 0) stockQty = intVal(map.get("quantity"));
+        p.stockQty      = stockQty;
         p.imageUrl      = str(map.get("imageUrl"));
-        p.isAvailable   = bool(map.get("isAvailable"), true);
+        // NearBuyHQ stores availability as status:"Available" string
+        Object isAvailObj = map.get("isAvailable");
+        if (isAvailObj != null) {
+            p.isAvailable = bool(isAvailObj, true);
+        } else {
+            p.isAvailable = "Available".equalsIgnoreCase(str(map.get("status")));
+        }
         p.createdAt     = lng(map.get("createdAt"));
         p.updatedAt     = lng(map.get("updatedAt"));
         return p;
