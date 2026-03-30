@@ -1,57 +1,272 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:gravity="center_horizontal"
-    android:padding="24dp" android:background="@color/nb_primary_dark">
-    <ImageView android:layout_width="100dp" android:layout_height="70dp"
-        android:src="@drawable/nearbuy_logo" android:contentDescription="@string/logo_desc"
-        android:layout_marginTop="48dp" android:scaleType="fitCenter"/>
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="@string/otp_title" android:textSize="26sp" android:textStyle="bold"
-        android:textColor="@color/white" android:layout_marginTop="20dp"/>
-    <TextView android:id="@+id/tvOtpSubtitle"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="@string/otp_subtitle" android:textSize="13sp"
-        android:textColor="@color/text_on_dark_secondary" android:gravity="center"
-        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
-    <TextView android:id="@+id/tvPhoneNumber"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="+94 77 123 4567" android:textSize="15sp" android:textStyle="bold"
-        android:textColor="@color/nb_accent_light" android:layout_marginBottom="36dp"/>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:gravity="center" android:layout_marginBottom="32dp">
-        <EditText android:id="@+id/otp1" android:layout_width="48dp" android:layout_height="56dp"
-            android:inputType="number" android:maxLength="1" android:gravity="center"
-            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
-            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
-        <EditText android:id="@+id/otp2" android:layout_width="48dp" android:layout_height="56dp"
-            android:inputType="number" android:maxLength="1" android:gravity="center"
-            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
-            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
-        <EditText android:id="@+id/otp3" android:layout_width="48dp" android:layout_height="56dp"
-            android:inputType="number" android:maxLength="1" android:gravity="center"
-            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
-            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
-        <EditText android:id="@+id/otp4" android:layout_width="48dp" android:layout_height="56dp"
-            android:inputType="number" android:maxLength="1" android:gravity="center"
-            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
-            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
-        <EditText android:id="@+id/otp5" android:layout_width="48dp" android:layout_height="56dp"
-            android:inputType="number" android:maxLength="1" android:gravity="center"
-            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
-            android:background="@drawable/bg_otp_box" android:layout_marginEnd="8dp"/>
-        <EditText android:id="@+id/otp6" android:layout_width="48dp" android:layout_height="56dp"
-            android:inputType="number" android:maxLength="1" android:gravity="center"
-            android:textSize="22sp" android:textStyle="bold" android:textColor="@color/nb_primary_dark"
-            android:background="@drawable/bg_otp_box"/>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/nb_primary_dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingBottom="40dp">
+
+        <!-- ── Branded Header ──────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="56dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="32dp">
+
+
+        </LinearLayout>
+
+        <!-- ── Content Body ──────────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="32dp"
+            android:paddingEnd="24dp">
+
+            <!-- 🔐 Icon circle -->
+            <FrameLayout
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@drawable/bg_icon_circle_teal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/logo_desc"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/nearbuy_logo" />
+            </FrameLayout>
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/otp_title"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Email hint – set dynamically from intent -->
+            <TextView
+                android:id="@+id/tvEmailSentTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/otp_subtitle"
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="14sp" />
+
+            <!-- ── OTP Input Boxes ─────────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/otp1"
+                    android:layout_width="48dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/bg_otp_box_dark"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/otp2"
+                    android:layout_width="48dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/bg_otp_box_dark"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/otp3"
+                    android:layout_width="48dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/bg_otp_box_dark"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <!-- Dash separator between the two groups of 3 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
+                    android:text="–"
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="22sp" />
+
+                <EditText
+                    android:id="@+id/otp4"
+                    android:layout_width="48dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/bg_otp_box_dark"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/otp5"
+                    android:layout_width="48dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/bg_otp_box_dark"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/otp6"
+                    android:layout_width="48dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/bg_otp_box_dark"
+                    android:cursorVisible="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Expiry note -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/otp_expiry_note"
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="12sp" />
+
+            <!-- ── Verify Button ──────────────────────────────────────── -->
+            <Button
+                android:id="@+id/btnVerify"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/btn_orange"
+                android:elevation="4dp"
+                android:text="@string/otp_verify_code"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <!-- ── Resend / Countdown Section ────────────────────────── -->
+            <!-- Countdown / status label (hidden until OTP is sent) -->
+            <TextView
+                android:id="@+id/tvCountdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/otp_sending"
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- "Didn't receive … Resend" row -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Didn\'t receive the code?  "
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/btnResendOTP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/otp_resend"
+                    android:textColor="@color/nb_accent_light"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- ── Security Tip ───────────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_alert_info"
+                android:orientation="horizontal"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔒 "
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/otp_security_tip"
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
-    <Button android:id="@+id/btnVerify"
-        android:layout_width="match_parent" android:layout_height="56dp"
-        android:text="@string/btn_verify" android:textColor="@color/white"
-        android:textSize="17sp" android:textStyle="bold"
-        android:background="@drawable/btn_orange" android:elevation="4dp" android:layout_marginBottom="20dp"/>
-    <TextView android:id="@+id/tvResendOtp"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="@string/otp_resend" android:textColor="@color/nb_accent_light"
-        android:textSize="14sp" android:textStyle="bold" android:clickable="true" android:focusable="true"/>
-</LinearLayout>
+</ScrollView>

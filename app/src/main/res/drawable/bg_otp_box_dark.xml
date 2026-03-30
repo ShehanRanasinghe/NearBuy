@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- OTP digit input box for use on dark (teal) backgrounds.
+     Semi-transparent white fill with a lighter white border + rounded corners. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#26FFFFFF" />   <!-- 15 % white fill -->
+    <stroke android:width="1.5dp" android:color="#59FFFFFF" />   <!-- 35 % white border -->
+    <corners android:radius="10dp" />
+</shape>
+

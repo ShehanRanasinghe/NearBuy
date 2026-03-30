@@ -61,6 +61,7 @@
             android:paddingHorizontal="18dp"
             android:paddingTop="18dp"
             android:paddingBottom="90dp">
+            <!-- NOTE: Static deal/promo/shop cards replaced by RecyclerViews below -->
 
             <!-- CUSTOMER WELCOME BANNER (like HQ but for customer) -->
             <LinearLayout
@@ -114,58 +115,78 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="80dp"
                     android:orientation="horizontal" android:baselineAligned="false">
 
-                    <!-- Orders -->
+                    <!-- Orders (flattened: removed inner wrapper LinearLayout) -->
                     <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
-                        android:layout_weight="1" android:orientation="horizontal"
+                        android:layout_weight="1" android:orientation="vertical"
                         android:gravity="center_vertical" android:background="@drawable/bg_metric_box_rounded"
-                        android:padding="12dp" android:layout_marginEnd="6dp">
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:orientation="vertical" android:layout_marginStart="8dp">
-                            <TextView android:id="@+id/tvOrderCount"
-                                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="12" android:textColor="@color/white"
-                                android:textSize="17sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="@string/stat_orders" android:textColor="@color/text_on_dark_secondary"
-                                android:textSize="13sp" android:layout_marginTop="2dp"/>
-                        </LinearLayout>
+                        android:paddingStart="20dp" android:paddingEnd="12dp"
+                        android:paddingTop="12dp" android:paddingBottom="12dp"
+                        android:layout_marginEnd="6dp">
+                        <TextView android:id="@+id/tvOrderCount"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="—" android:textColor="@color/white"
+                            android:textSize="17sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/stat_orders" android:textColor="@color/text_on_dark_secondary"
+                            android:textSize="13sp" android:layout_marginTop="2dp"/>
                     </LinearLayout>
 
-                    <!-- Total Spent -->
+                    <!-- Total Spent (flattened) -->
                     <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
-                        android:layout_weight="1" android:orientation="horizontal"
+                        android:layout_weight="1" android:orientation="vertical"
                         android:gravity="center_vertical" android:background="@drawable/bg_metric_box_rounded"
-                        android:padding="12dp" android:layout_marginStart="6dp" android:layout_marginEnd="6dp">
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:orientation="vertical" android:layout_marginStart="8dp">
-                            <TextView android:id="@+id/tvTotalSpent"
-                                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="Rs.4,250" android:textColor="@color/white"
-                                android:textSize="17sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="@string/stat_spent" android:textColor="@color/text_on_dark_secondary"
-                                android:textSize="13sp"/>
-                        </LinearLayout>
+                        android:paddingStart="20dp" android:paddingEnd="12dp"
+                        android:paddingTop="12dp" android:paddingBottom="12dp"
+                        android:layout_marginStart="6dp" android:layout_marginEnd="6dp">
+                        <TextView android:id="@+id/tvTotalSpent"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="—" android:textColor="@color/white"
+                            android:textSize="17sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/stat_spent" android:textColor="@color/text_on_dark_secondary"
+                            android:textSize="13sp"/>
                     </LinearLayout>
 
-                    <!-- Total Saved -->
+                    <!-- Total Saved (flattened) -->
                     <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
-                        android:layout_weight="1" android:orientation="horizontal"
+                        android:layout_weight="1" android:orientation="vertical"
                         android:gravity="center_vertical" android:background="@drawable/bg_metric_box_rounded"
-                        android:padding="12dp" android:layout_marginStart="6dp">
-                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:orientation="vertical" android:layout_marginStart="8dp">
-                            <TextView android:id="@+id/tvTotalSaved"
-                                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="Rs.890" android:textColor="@color/white"
-                                android:textSize="17sp" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="@string/stat_saved" android:textColor="@color/text_on_dark_secondary"
-                                android:textSize="13sp"/>
-                        </LinearLayout>
+                        android:paddingStart="20dp" android:paddingEnd="12dp"
+                        android:paddingTop="12dp" android:paddingBottom="12dp"
+                        android:layout_marginStart="6dp">
+                        <TextView android:id="@+id/tvTotalSaved"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="—" android:textColor="@color/white"
+                            android:textSize="17sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/stat_saved" android:textColor="@color/text_on_dark_secondary"
+                            android:textSize="13sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <!-- PRODUCTS SECTION (from NearBuyHQ shops) -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="PRODUCTS NEARBY"
+                    android:textColor="@color/text_dark_secondary" android:textSize="12sp"
+                    android:textStyle="bold" android:letterSpacing="0.10"/>
+                <TextView android:id="@+id/tvViewAllProducts"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/view_all" android:textColor="@color/nb_primary"
+                    android:textSize="13sp" android:textStyle="bold"
+                    android:clickable="true" android:focusable="true"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:overScrollMode="never"
+                android:clipToPadding="false"/>
 
             <!-- LATEST DEALS SECTION -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -182,88 +203,17 @@
                     android:clickable="true" android:focusable="true"/>
             </LinearLayout>
 
-            <!-- Deals Horizontal Scroll -->
-            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:scrollbars="none" android:layout_marginBottom="24dp">
-                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Deal Card 1 -->
-                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
-                        android:orientation="vertical" android:background="@drawable/bg_deal_card"
-                        android:padding="16dp" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="50% OFF" android:textColor="@color/white"
-                            android:textSize="20sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Fresh Apples" android:textColor="@color/white"
-                            android:textSize="14sp" android:layout_marginTop="4dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="FreshMart • 0.8 km" android:textColor="#CCFFFFFF"
-                            android:textSize="11sp" android:layout_marginTop="8dp"/>
-                    </LinearLayout>
-
-                    <!-- Deal Card 2 -->
-                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
-                        android:orientation="vertical" android:background="@drawable/bg_promo_card_teal"
-                        android:padding="16dp" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="BUY 1 GET 1" android:textColor="@color/white"
-                            android:textSize="18sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Orange Juice" android:textColor="@color/white"
-                            android:textSize="14sp" android:layout_marginTop="4dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="QuickMart • 1.2 km" android:textColor="#CCFFFFFF"
-                            android:textSize="11sp"/>
-                    </LinearLayout>
-
-                    <!-- Deal Card 3 -->
-                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
-                        android:orientation="vertical" android:background="@drawable/bg_deal_card"
-                        android:padding="16dp" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="30% OFF" android:textColor="@color/white"
-                            android:textSize="20sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Potato Chips" android:textColor="@color/white"
-                            android:textSize="14sp" android:layout_marginTop="4dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="SnackHub • 2.1 km" android:textColor="#CCFFFFFF"
-                            android:textSize="11sp"/>
-                    </LinearLayout>
-
-                    <!-- Deal Card 4 -->
-                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
-                        android:orientation="vertical" android:background="@drawable/bg_promo_card_teal"
-                        android:padding="16dp" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="20% OFF" android:textColor="@color/white"
-                            android:textSize="20sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Whole Wheat Bread" android:textColor="@color/white"
-                            android:textSize="14sp" android:layout_marginTop="4dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="BakeryPlus • 1.5 km" android:textColor="#CCFFFFFF"
-                            android:textSize="11sp"/>
-                    </LinearLayout>
-
-                    <!-- Deal Card 5 -->
-                    <LinearLayout android:layout_width="200dp" android:layout_height="120dp"
-                        android:orientation="vertical" android:background="@drawable/bg_deal_card"
-                        android:padding="16dp" android:layout_marginEnd="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="15% OFF" android:textColor="@color/white"
-                            android:textSize="20sp" android:textStyle="bold"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="Farm Fresh Eggs" android:textColor="@color/white"
-                            android:textSize="14sp" android:layout_marginTop="4dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="NatureFarm • 0.9 km" android:textColor="#CCFFFFFF"
-                            android:textSize="11sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
+            <!--
+                FIX: was HorizontalScrollView > LinearLayout > 5 hardcoded deal cards.
+                RecyclerView only inflates the 2-3 cards visible at a time.
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvDeals"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="24dp"
+                android:overScrollMode="never"
+                android:clipToPadding="false"/>
 
             <!-- ACTIVE PROMOTIONS SECTION -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -280,280 +230,40 @@
                     android:clickable="true" android:focusable="true"/>
             </LinearLayout>
 
-            <!-- Promo Card 1 -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="16dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_orange">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🎁" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Double Points Weekend" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Earn 2x reward points at all partner stores" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="2 days left" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"/>
-            </LinearLayout>
-
-            <!-- Promo Card 2 -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="16dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🚚" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Free Delivery Over Rs.500" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Valid at select stores this weekend" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Today only" android:textColor="@color/error_red"
-                    android:textSize="11sp" android:textStyle="bold"/>
-            </LinearLayout>
-
-            <!-- Promo Card 3 -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="16dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="💳" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Rs.100 Cashback" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="On orders above Rs.1000 at FreshMart" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="4 days left" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"/>
-            </LinearLayout>
-
-            <!-- Promo Card 4 -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="16dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_orange">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🏷" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Weekend Flash Sale" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="Up to 40% off at QuickMart" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Sat &amp; Sun" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"/>
-            </LinearLayout>
-
-            <!-- Promo Card 5 -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="16dp"
-                android:layout_marginBottom="24dp" android:elevation="2dp">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_orange">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🎉" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="New Member Bonus" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="First order 15% off • code WELCOME" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Ongoing" android:textColor="@color/stat_green"
-                    android:textSize="11sp" android:textStyle="bold"/>
-            </LinearLayout>
+            <!--
+                FIX: was 5 hardcoded promo cards (each with 4-level nested LinearLayouts).
+                nestedScrollingEnabled=false lets the outer ScrollView handle all scrolling.
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPromos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"/>
 
             <!-- NEARBY SHOPS SECTION -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:layout_marginBottom="12dp" android:layout_marginTop="8dp">
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="@string/section_nearby_shops"
-                    android:textColor="@color/text_dark_secondary" android:textSize="12sp"
-                    android:textStyle="bold" android:letterSpacing="0.10"/>
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/section_nearby_shops"
+                android:textColor="@color/text_dark_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.10"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="8dp"/>
 
-            <!-- Shop Card: FreshMart -->
-            <LinearLayout android:id="@+id/shopFreshMart"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="14dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp"
-                android:clickable="true" android:focusable="true">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🏪" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="FreshMart Grocery" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="📍 0.8 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="5 deals" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"
-                    android:background="@drawable/bg_distance_badge"
-                    android:paddingStart="8dp" android:paddingEnd="8dp"
-                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
-            </LinearLayout>
-
-            <!-- Shop Card: QuickMart -->
-            <LinearLayout android:id="@+id/shopQuickMart"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="14dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp"
-                android:clickable="true" android:focusable="true">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_orange">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🛒" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="QuickMart" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="📍 1.1 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="3 deals" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"
-                    android:background="@drawable/bg_distance_badge"
-                    android:paddingStart="8dp" android:paddingEnd="8dp"
-                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
-            </LinearLayout>
-
-            <!-- Shop Card: GreenLeaf -->
-            <LinearLayout android:id="@+id/shopGreenLeaf"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="14dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp"
-                android:clickable="true" android:focusable="true">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🥦" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="GreenLeaf Store" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="📍 0.5 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="2 deals" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"
-                    android:background="@drawable/bg_distance_badge"
-                    android:paddingStart="8dp" android:paddingEnd="8dp"
-                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
-            </LinearLayout>
-
-            <!-- Shop Card: SnackHub -->
-            <LinearLayout android:id="@+id/shopSnackHub"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="14dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp"
-                android:clickable="true" android:focusable="true">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_orange">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🍟" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="SnackHub" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="📍 2.1 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="4 deals" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"
-                    android:background="@drawable/bg_distance_badge"
-                    android:paddingStart="8dp" android:paddingEnd="8dp"
-                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
-            </LinearLayout>
-
-            <!-- Shop Card: BakeryPlus -->
-            <LinearLayout android:id="@+id/shopBakeryPlus"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
-                android:background="@drawable/bg_card_white" android:padding="14dp"
-                android:layout_marginBottom="10dp" android:elevation="2dp"
-                android:clickable="true" android:focusable="true">
-                <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                    android:gravity="center" android:background="@drawable/bg_icon_circle_teal">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="🍞" android:textSize="22sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="BakeryPlus" android:textColor="@color/text_dark_primary"
-                        android:textSize="14sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="📍 1.5 km away  •  Open Now" android:textColor="@color/text_dark_secondary"
-                        android:textSize="12sp" android:layout_marginTop="2dp"/>
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="2 deals" android:textColor="@color/nb_primary"
-                    android:textSize="11sp" android:textStyle="bold"
-                    android:background="@drawable/bg_distance_badge"
-                    android:paddingStart="8dp" android:paddingEnd="8dp"
-                    android:paddingTop="3dp" android:paddingBottom="3dp"/>
-            </LinearLayout>
+            <!--
+                FIX: was 5 hardcoded shop cards (each with 3-level nested LinearLayouts).
+                nestedScrollingEnabled=false lets the outer ScrollView handle all scrolling.
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvShops"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"/>
 
         </LinearLayout>
     </ScrollView>

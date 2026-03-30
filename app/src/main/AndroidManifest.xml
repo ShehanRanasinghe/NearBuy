@@ -2,11 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- ── Network (required for all Firebase calls) ── -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- ── Location (nearby shop / distance search) ── -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- ── Push Notifications (Android 13+ requires runtime grant) ── -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- ── Camera / Storage (profile photo uploads) ── -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- Fallback for Android 12 and below -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
     <application
+        android:name=".app.NearBuyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,7 +32,7 @@
         android:theme="@style/Theme.NearBuy"
         tools:targetApi="31">
 
-        <!-- ── SPLASH SCREEN – Main launcher ── -->
+        <!-- ── SPLASH SCREEN – App entry point ── -->
         <activity
             android:name=".app.startup.SplashScreen"
             android:exported="true"
@@ -95,7 +110,7 @@
         <!-- ── CATEGORIES ── -->
         <activity
             android:name=".categories.CategoriesActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.NearBuy.Categories"
             android:label="@string/categories_title" />
 
@@ -146,6 +161,15 @@
             android:name=".profile.LogoutActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- ── FCM – Firebase Cloud Messaging service ── -->
+        <service
+            android:name=".core.NearBuyMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 

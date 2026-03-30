@@ -38,10 +38,18 @@
     <string name="hint_confirm_password">Confirm password</string>
     <string name="btn_register">Create Account</string>
 
-    <string name="otp_title">Verify Your Number</string>
-    <string name="otp_subtitle">Enter the 6-digit code sent to</string>
-    <string name="otp_resend">Resend OTP</string>
-    <string name="btn_verify">Verify</string>
+    <string name="otp_title">Email Verification</string>
+    <string name="otp_subtitle">Verify your email to complete registration</string>
+    <string name="otp_code_sent_to">A 6-digit code was sent to %s</string>
+    <string name="otp_expiry_note">⏱ Code expires in 10 minutes</string>
+    <string name="otp_sending">Sending code…</string>
+    <string name="otp_resend_in">Resend in %ds</string>
+    <string name="otp_didnt_receive">Didn\'t receive it? Check your spam folder.</string>
+    <string name="otp_resend">Resend</string>
+    <string name="otp_verify_code">Verify Code</string>
+    <string name="otp_verifying">Verifying…</string>
+    <string name="otp_security_tip">Never share this code with anyone. NearBuy staff will never ask for your OTP.</string>
+    <string name="btn_verify">Verify Code</string>
 
     <string name="forgot_title">Forgot Password</string>
     <string name="forgot_subtitle">Enter your email and we\'ll send you a reset link.</string>

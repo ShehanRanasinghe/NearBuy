@@ -279,76 +279,14 @@
                             android:textColor="#9AA0AC"
                             android:textSize="10sp"
                             android:letterSpacing="0.1"
-                            android:layout_marginBottom="14dp" />
+                            android:layout_marginBottom="10dp" />
 
-                        <!-- Product 1 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🍎" android:textSize="24sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Fresh Red Apples" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Fruits  •  Rs.120" android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="In Stock" android:textColor="#27AE60"
-                                android:textSize="11sp" android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Product 2 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🍌" android:textSize="24sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Bananas 1kg" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Fruits  •  Rs.60" android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="In Stock" android:textColor="#27AE60"
-                                android:textSize="11sp" android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Product 3 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🍓" android:textSize="24sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Mixed Berries 250g" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Fruits  •  Rs.280" android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="In Stock" android:textColor="#27AE60"
-                                android:textSize="11sp" android:textStyle="bold" />
-                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvStoreProducts"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"/>
                     </LinearLayout>
 
                     <!-- AVAILABLE DEALS CARD -->
@@ -368,82 +306,14 @@
                             android:textColor="#9AA0AC"
                             android:textSize="10sp"
                             android:letterSpacing="0.1"
-                            android:layout_marginBottom="14dp" />
+                            android:layout_marginBottom="10dp" />
 
-                        <!-- Deal 1 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🍚" android:textSize="24sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Samba Rice 5kg" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="රු 1,275  •  Expires Apr 10" android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="15%\nOFF" android:textColor="#FFFFFF" android:textSize="11sp"
-                                android:textStyle="bold" android:gravity="center"
-                                android:paddingHorizontal="8dp" android:paddingVertical="4dp"
-                                android:background="@drawable/bg_tab_active" />
-                        </LinearLayout>
-
-                        <!-- Deal 2 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🥥" android:textSize="24sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Fresh Coconut Oil" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="රු 485  •  Expires Apr 08" android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="25%\nOFF" android:textColor="#FFFFFF" android:textSize="11sp"
-                                android:textStyle="bold" android:gravity="center"
-                                android:paddingHorizontal="8dp" android:paddingVertical="4dp"
-                                android:background="@drawable/bg_tab_active" />
-                        </LinearLayout>
-
-                        <!-- Deal 3 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_chip_white" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🍵" android:textSize="24sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Ceylon Tea 100g" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="රු 215  •  Expires Apr 15" android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="23%\nOFF" android:textColor="#FFFFFF" android:textSize="11sp"
-                                android:textStyle="bold" android:gravity="center"
-                                android:paddingHorizontal="8dp" android:paddingVertical="4dp"
-                                android:background="@drawable/bg_tab_active" />
-                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvStoreDeals"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"/>
                     </LinearLayout>
 
                     <!-- PROMOTIONS CARD -->
@@ -463,70 +333,14 @@
                             android:textColor="#9AA0AC"
                             android:textSize="10sp"
                             android:letterSpacing="0.1"
-                            android:layout_marginBottom="14dp" />
+                            android:layout_marginBottom="10dp" />
 
-                        <!-- Promo 1 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_icon_circle_orange" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🎁" android:textSize="22sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Double Points Weekend" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Earn 2x reward points  •  2 days left"
-                                    android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <!-- Promo 2 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_icon_circle_teal" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="🚚" android:textSize="22sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Free Delivery Over Rs.500" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Valid this weekend  •  Today only"
-                                    android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <!-- Promo 3 -->
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:background="@drawable/bg_deal_item"
-                            android:padding="12dp" android:gravity="center_vertical">
-                            <LinearLayout android:layout_width="48dp" android:layout_height="48dp"
-                                android:background="@drawable/bg_icon_circle_orange" android:gravity="center"
-                                android:layout_marginEnd="12dp">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="💳" android:textSize="22sp" />
-                            </LinearLayout>
-                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="Rs.100 Cashback" android:textColor="#1B2D4F"
-                                    android:textSize="13sp" android:textStyle="bold" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:text="On orders above Rs.1000  •  4 days left"
-                                    android:textColor="#9AA0AC" android:textSize="11sp" />
-                            </LinearLayout>
-                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvStorePromos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"/>
                     </LinearLayout>
 
                 </LinearLayout>

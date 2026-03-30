@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_dashboard_promo.xml
+    Single promo row used in the "Active Promotions" RecyclerView on the Dashboard.
+    Uses a flat 2-level hierarchy (root + one inner vertical LinearLayout) to
+    keep measure/layout passes cheap.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_card_white"
+    android:padding="16dp"
+    android:layout_marginBottom="10dp"
+    android:elevation="2dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Icon circle – single ImageView (no FrameLayout wrapper needed) -->
+    <ImageView
+        android:id="@+id/ivPromoIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_notif_promo"
+        android:background="@drawable/bg_icon_circle_orange"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="Promo icon"/>
+
+    <!-- Title + description (one nested LinearLayout instead of two) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp">
+
+        <TextView
+            android:id="@+id/tvPromoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Double Points Weekend"
+            android:textColor="@color/text_dark_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:id="@+id/tvPromoDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Earn 2x reward points at all partner stores"
+            android:textColor="@color/text_dark_secondary"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPromoExpiry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 days"
+        android:textColor="@color/nb_primary"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"/>
+
+</LinearLayout>
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_dashboard_product.xml
+    Product card used in the "Products" RecyclerView on the Dashboard.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card_white"
+    android:padding="12dp"
+    android:layout_marginEnd="10dp"
+    android:elevation="2dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Product emoji / icon -->
+    <LinearLayout
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:gravity="center"
+        android:background="@drawable/bg_icon_circle_teal"
+        android:layout_marginBottom="8dp">
+        <TextView
+            android:id="@+id/tvProductEmoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🛒"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <!-- Product name -->
+    <TextView
+        android:id="@+id/tvProductName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Product"
+        android:textColor="@color/text_dark_primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"/>
+
+    <!-- Price -->
+    <TextView
+        android:id="@+id/tvProductPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rs. 0"
+        android:textColor="@color/nb_primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp"/>
+
+    <!-- Shop name -->
+    <TextView
+        android:id="@+id/tvProductShop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Shop"
+        android:textColor="@color/text_dark_hint"
+        android:textSize="11sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginTop="2dp"/>
+
+</LinearLayout>
+

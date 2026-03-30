@@ -1,21 +1,21 @@
 [versions]
-agp = "8.13.2"
-googleServices = "4.4.2"
+agp = "8.13.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 appcompat = "1.7.1"
 material = "1.13.0"
-activity = "1.8.0"
-constraintlayout = "2.1.4"
+activity = "1.9.3"
+constraintlayout = "2.2.1"
+firebaseBom = "34.11.0"
+googleServices = "4.4.2"
+playServicesLocation = "21.3.0"
+playServicesMaps = "18.2.0"
+places = "3.3.0"
 recyclerview = "1.3.2"
 cardview = "1.0.0"
-
-# Firebase
-firebaseBom = "33.9.0"
-
-# Google Play Services – Location (for nearby-distance features)
-playServicesLocation = "21.3.0"
+mpandroidchart = "v3.1.0"
+androidMail = "1.6.7"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -29,16 +29,27 @@ recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 
 # ── Firebase (versions managed by BOM) ──────────────────────────────────────
-firebase-bom        = { group = "com.google.firebase", name = "firebase-bom",            version.ref = "firebaseBom" }
-firebase-auth       = { group = "com.google.firebase", name = "firebase-auth" }
-firebase-firestore  = { group = "com.google.firebase", name = "firebase-firestore" }
-firebase-storage    = { group = "com.google.firebase", name = "firebase-storage" }
-firebase-messaging  = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-appcheck-debug = { group = "com.google.firebase", name = "firebase-appcheck-debug" }
 
 # ── Google Play Services ─────────────────────────────────────────────────────
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+
+# ── Google Places SDK – location search autocomplete ─────────────────────────
+places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
+
+# ── MPAndroidChart – analytics bar/line charts ───────────────────────────────
+mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
+
+# ── JavaMail for Android – OTP email delivery via Gmail SMTP ─────────────────
+android-mail = { group = "com.sun.mail", name = "android-mail", version.ref = "androidMail" }
+android-activation = { group = "com.sun.mail", name = "android-activation", version.ref = "androidMail" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-google-services     = { id = "com.google.gms.google-services", version.ref = "googleServices" }
-
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
