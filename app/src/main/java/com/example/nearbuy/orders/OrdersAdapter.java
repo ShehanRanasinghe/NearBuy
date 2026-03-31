@@ -16,7 +16,7 @@ import com.example.nearbuy.R;
 import java.util.List;
 
 /**
- * ArrayAdapter for displaying OrderItem objects in the OrdersActivity ListView.
+ * ArrayAdapter for displayed the OrderItem objects in the OrdersActivity ListView.
  */
 public class OrdersAdapter extends ArrayAdapter<OrderItem> {
 
