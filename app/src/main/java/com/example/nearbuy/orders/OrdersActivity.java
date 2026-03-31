@@ -1,6 +1,9 @@
 package com.example.nearbuy.orders;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
@@ -11,26 +14,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.nearbuy.R;
+import com.example.nearbuy.app.startup.WelcomeActivity;
+import com.example.nearbuy.core.SessionManager;
+import com.example.nearbuy.data.repository.DataCallback;
+import com.example.nearbuy.data.repository.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * OrdersActivity – Shows customer order history with filter tabs.
+ * OrdersActivity – displays the customer's order history with filter tabs.
  *
- * Displays all past orders with status (Delivered / Processing / Cancelled),
- * item summary, shop name, order date and total amount.
+ * Orders are loaded from Firestore via OrderRepository using the customer UID
+ * from SessionManager.  If no orders exist yet, an empty-state message is shown.
+ *
+ * Filter tabs: All | Delivered | Processing | Cancelled
+ * Stats shown: total order count and a formatted total spent amount.
+ *
+ * No sample / hardcoded order data is used in this activity.
  */
 public class OrdersActivity extends AppCompatActivity {
 
-    private ListView   listOrders;
-    private TextView   tvResultLabel, tvOrderCount;
-    private TextView   tabAll, tabDelivered, tabProcessing, tabCancelled;
+    private static final String TAG = "NearBuy.Orders";
 
-    private OrdersAdapter  adapter;
-    private List<OrderItem> allOrders;
-    private List<OrderItem> filteredOrders;
-    private String activeFilter = "All";
+    // ── UI references ──────────────────────────────────────────────────────────
+    private ListView listOrders;
+    private TextView tvResultLabel, tvOrderCount, tvStatTotal, tvStatSpent;
+    private TextView tabAll, tabDelivered, tabProcessing, tabCancelled;
+    private View     layoutEmpty;  // empty-state container (if present in layout)
+
+    // ── Data ───────────────────────────────────────────────────────────────────
+    private OrdersAdapter   adapter;
+    private List<OrderItem> allOrders      = new ArrayList<>();
+    private List<OrderItem> filteredOrders = new ArrayList<>();
+    private String          activeFilter   = "All";
+
+    // ── Dependencies ───────────────────────────────────────────────────────────
+    private OrderRepository orderRepository;
+    private SessionManager  sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,96 +64,179 @@ public class OrdersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_orders);
         if (getSupportActionBar() != null) getSupportActionBar().hide();
 
+        orderRepository = new OrderRepository();
+        sessionManager  = SessionManager.getInstance(this);
+
+        // ── Session guard ─────────────────────────────────────────────────────
+        if (!sessionManager.isLoggedIn()) {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            finish();
+            return;
+        }
+
         initViews();
-        loadSampleOrders();
         setupTabs();
 
         // Back button
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        View btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        applyFilter("All");
+        // Load real orders from Firestore
+        loadOrders();
     }
+
+    // ── View binding ───────────────────────────────────────────────────────────
 
     private void initViews() {
         listOrders   = findViewById(R.id.listOrders);
-        tvResultLabel= findViewById(R.id.tvResultLabel);
+        tvResultLabel = findViewById(R.id.tvResultLabel);
         tvOrderCount = findViewById(R.id.tvOrderCount);
         tabAll       = findViewById(R.id.tabAll);
         tabDelivered = findViewById(R.id.tabDelivered);
         tabProcessing= findViewById(R.id.tabProcessing);
         tabCancelled = findViewById(R.id.tabCancelled);
+        layoutEmpty  = findViewById(R.id.layoutEmpty);  // optional – hide if not in layout
 
-        // Stats
-        ((TextView) findViewById(R.id.tvStatTotal)).setText("12");
-        ((TextView) findViewById(R.id.tvStatSpent)).setText("Rs.4,250");
+        // Stats row – show loading indicators until Firestore responds
+        tvStatTotal = findViewById(R.id.tvStatTotal);
+        tvStatSpent = findViewById(R.id.tvStatSpent);
+        if (tvStatTotal != null) tvStatTotal.setText("—");
+        if (tvStatSpent != null) tvStatSpent.setText("—");
     }
 
-    private void loadSampleOrders() {
-        allOrders = new ArrayList<>();
-        allOrders.add(new OrderItem("2024001", "FreshMart Grocery", "🏪",
-                "Mar 25, 2026", "Red Apples x2, Milk 1L x1", "Rs.350", "Delivered", 3));
-        allOrders.add(new OrderItem("2024002", "QuickMart", "🛒",
-                "Mar 22, 2026", "Orange Juice 1L, Potato Chips", "Rs.275", "Delivered", 2));
-        allOrders.add(new OrderItem("2024003", "GreenLeaf Store", "🥦",
-                "Mar 20, 2026", "Broccoli 500g, Tomatoes 1kg", "Rs.150", "Delivered", 2));
-        allOrders.add(new OrderItem("2024004", "DairyPlus", "🥛",
-                "Mar 18, 2026", "Milk 2L x2, Curd 400g", "Rs.420", "Delivered", 3));
-        allOrders.add(new OrderItem("2024005", "BakeryPlus", "🍞",
-                "Mar 15, 2026", "Whole Wheat Bread, Croissant x4", "Rs.310", "Delivered", 2));
-        allOrders.add(new OrderItem("2024006", "SeaFresh Market", "🐟",
-                "Mar 12, 2026", "Salmon Fillet 500g", "Rs.750", "Delivered", 1));
-        allOrders.add(new OrderItem("2024007", "NatureFarm", "🥚",
-                "Mar 10, 2026", "Farm Fresh Eggs 12, Butter 200g", "Rs.460", "Delivered", 2));
-        allOrders.add(new OrderItem("2024008", "SnackHub", "🍟",
-                "Mar 08, 2026", "Chips 100g x3, Cookies 200g", "Rs.380", "Delivered", 4));
-        allOrders.add(new OrderItem("2024009", "TropicFresh", "🥭",
-                "Mar 05, 2026", "Mango 1kg, Pineapple 1 unit", "Rs.290", "Delivered", 2));
-        allOrders.add(new OrderItem("2024010", "MeatHub", "🍗",
-                "Mar 03, 2026", "Chicken Breast 1kg", "Rs.550", "Processing", 1));
-        allOrders.add(new OrderItem("2024011", "FreshMart Grocery", "🏪",
-                "Mar 01, 2026", "Mixed Berries, Blueberries 250g", "Rs.480", "Processing", 2));
-        allOrders.add(new OrderItem("2024012", "QuickMart", "🛒",
-                "Feb 27, 2026", "Energy Drink x4, Vitamin C", "Rs.620", "Cancelled", 5));
-        filteredOrders = new ArrayList<>(allOrders);
-    }
+    // ── Firestore data load ────────────────────────────────────────────────────
 
-    private void setupTabs() {
-        tabAll.setOnClickListener(v       -> applyFilter("All"));
-        tabDelivered.setOnClickListener(v -> applyFilter("Delivered"));
-        tabProcessing.setOnClickListener(v-> applyFilter("Processing"));
-        tabCancelled.setOnClickListener(v -> applyFilter("Cancelled"));
+    /**
+     * Loads the signed-in customer's order history from Firestore.
+     * On success: updates the order list and stats.
+     * On failure: shows a toast and an empty state.
+     */
+    private void loadOrders() {
+        String uid = sessionManager.getUserId();
+        if (uid.isEmpty()) {
+            showEmptyState("Please log in to view your orders.");
+            return;
+        }
 
-        listOrders.setOnItemClickListener((parent, view, pos, id) -> {
-            OrderItem item = filteredOrders.get(pos);
-            Toast.makeText(this,
-                    "Order #" + item.getOrderId() + " — " + item.getStatus(),
-                    Toast.LENGTH_SHORT).show();
+        orderRepository.getOrderHistory(uid, new DataCallback<List<OrderItem>>() {
+            @Override
+            public void onSuccess(List<OrderItem> orders) {
+                allOrders = orders;
+
+                // Calculate displayed stats from the loaded data
+                updateStats();
+
+                // Apply the currently selected filter
+                applyFilter(activeFilter);
+
+                if (orders.isEmpty()) {
+                    showEmptyState("You haven't placed any orders yet.");
+                } else {
+                    hideEmptyState();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e(TAG, "Failed to load orders", e);
+                showEmptyState("Could not load orders. Please try again.");
+                Toast.makeText(OrdersActivity.this,
+                        "Error loading orders: " + e.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
+    // ── Stats ──────────────────────────────────────────────────────────────────
+
+    /**
+     * Calculates and updates the header stats (order count + total spent)
+     * from the currently loaded allOrders list.
+     */
+    private void updateStats() {
+        double totalSpent = 0;
+        for (OrderItem o : allOrders) totalSpent += o.getTotalAmountRaw();
+
+        if (tvStatTotal != null)
+            tvStatTotal.setText(String.valueOf(allOrders.size()));
+        if (tvStatSpent != null)
+            tvStatSpent.setText(totalSpent > 0
+                    ? String.format("Rs.%.0f", totalSpent) : "Rs.0");
+    }
+
+    // ── Filter tabs ────────────────────────────────────────────────────────────
+
+    /** Wires up the four filter tabs and the list item click handler. */
+    private void setupTabs() {
+        if (tabAll       != null) tabAll.setOnClickListener(v       -> applyFilter("All"));
+        if (tabDelivered != null) tabDelivered.setOnClickListener(v -> applyFilter("Delivered"));
+        if (tabProcessing!= null) tabProcessing.setOnClickListener(v-> applyFilter("Processing"));
+        if (tabCancelled != null) tabCancelled.setOnClickListener(v -> applyFilter("Cancelled"));
+
+        if (listOrders != null) {
+            listOrders.setOnItemClickListener((parent, view, pos, id) -> {
+                OrderItem item = filteredOrders.get(pos);
+                Toast.makeText(this,
+                        "Order #" + item.getOrderId() + " — " + item.getStatus(),
+                        Toast.LENGTH_SHORT).show();
+            });
+        }
+    }
+
+    /**
+     * Filters the loaded allOrders list by the given status string and
+     * refreshes the ListView adapter.
+     *
+     * @param filter "All", "Delivered", "Processing", or "Cancelled"
+     */
     private void applyFilter(String filter) {
-        activeFilter = filter;
+        activeFilter   = filter;
         filteredOrders = new ArrayList<>();
+
         for (OrderItem o : allOrders) {
             if (filter.equals("All") || o.getStatus().equals(filter)) {
                 filteredOrders.add(o);
             }
         }
+
         adapter = new OrdersAdapter(this, filteredOrders);
-        listOrders.setAdapter(adapter);
+        if (listOrders != null) listOrders.setAdapter(adapter);
 
         int count = filteredOrders.size();
-        tvResultLabel.setText(count + " order" + (count != 1 ? "s" : "") + " found");
-        tvOrderCount.setText(allOrders.size() + " Orders");
+        if (tvResultLabel != null)
+            tvResultLabel.setText(count + " order" + (count != 1 ? "s" : ""));
+        if (tvOrderCount  != null)
+            tvOrderCount.setText(allOrders.size() + " Orders");
 
-        // Highlight active tab
+        // Update tab highlight state
         setTabActive(tabAll,        filter.equals("All"));
         setTabActive(tabDelivered,  filter.equals("Delivered"));
         setTabActive(tabProcessing, filter.equals("Processing"));
         setTabActive(tabCancelled,  filter.equals("Cancelled"));
     }
 
+    // ── Empty state ────────────────────────────────────────────────────────────
+
+    private void showEmptyState(String message) {
+        if (layoutEmpty != null) {
+            layoutEmpty.setVisibility(View.VISIBLE);
+            TextView tvMsg = layoutEmpty.findViewWithTag("emptyMsg");
+            if (tvMsg == null) tvMsg = (TextView) ((android.view.ViewGroup) layoutEmpty)
+                    .getChildAt(0);
+            if (tvMsg != null) tvMsg.setText(message);
+        }
+        if (listOrders != null) listOrders.setVisibility(View.GONE);
+    }
+
+    private void hideEmptyState() {
+        if (layoutEmpty != null) layoutEmpty.setVisibility(View.GONE);
+        if (listOrders  != null) listOrders.setVisibility(View.VISIBLE);
+    }
+
+    // ── Helpers ────────────────────────────────────────────────────────────────
+
     private void setTabActive(TextView tab, boolean active) {
+        if (tab == null) return;
         if (active) {
             tab.setBackgroundResource(R.drawable.bg_distance_chip_active);
             tab.setTextColor(ContextCompat.getColor(this, R.color.white));
@@ -142,4 +246,3 @@ public class OrdersActivity extends AppCompatActivity {
         }
     }
 }
-
