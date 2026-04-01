@@ -296,6 +296,19 @@
                 android:textColor="@color/text_dark_hint"/>
         </LinearLayout>
 
+        <LinearLayout android:id="@+id/navMap"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navMapIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_map" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navMapText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_map" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+
         <LinearLayout android:id="@+id/navDeals"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="1" android:orientation="vertical"
@@ -323,4 +336,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</LinearLayout>

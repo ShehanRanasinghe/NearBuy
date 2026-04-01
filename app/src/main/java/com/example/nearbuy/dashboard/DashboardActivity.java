@@ -28,6 +28,7 @@ import com.example.nearbuy.data.repository.ProductRepository;
 import com.example.nearbuy.data.repository.ShopRepository;
 import com.example.nearbuy.discounts.DealsAndPromoActivity;
 import com.example.nearbuy.notifications.NotificationsActivity;
+import com.example.nearbuy.map.NearbyMapActivity;
 import com.example.nearbuy.orders.OrdersActivity;
 import com.example.nearbuy.product.ProductDetailsActivity;
 import com.example.nearbuy.profile.ProfileActivity;
@@ -60,9 +61,9 @@ public class DashboardActivity extends AppCompatActivity {
     private static final String TAG = "NearBuy.Dashboard";
 
     // ── Bottom navigation ──────────────────────────────────────────────────────
-    private LinearLayout navHome, navSearch, navDeals, navProfile;
-    private ImageView    navHomeIcon, navSearchIcon, navDealsIcon, navProfileIcon;
-    private TextView     navHomeText, navSearchText, navDealsText, navProfileText;
+    private LinearLayout navHome, navSearch, navMap, navDeals, navProfile;
+    private ImageView    navHomeIcon, navSearchIcon, navMapIcon, navDealsIcon, navProfileIcon;
+    private TextView     navHomeText, navSearchText, navMapText, navDealsText, navProfileText;
 
     // ── Header / Welcome banner ────────────────────────────────────────────────
     private TextView tvUserName, tvAvatarInitial;
@@ -144,16 +145,19 @@ public class DashboardActivity extends AppCompatActivity {
     private void initViews() {
         navHome    = findViewById(R.id.navHome);
         navSearch  = findViewById(R.id.navSearch);
+        navMap     = findViewById(R.id.navMap);
         navDeals   = findViewById(R.id.navDeals);
         navProfile = findViewById(R.id.navProfile);
 
         navHomeIcon    = findViewById(R.id.navHomeIcon);
         navSearchIcon  = findViewById(R.id.navSearchIcon);
+        navMapIcon     = findViewById(R.id.navMapIcon);
         navDealsIcon   = findViewById(R.id.navDealsIcon);
         navProfileIcon = findViewById(R.id.navProfileIcon);
 
         navHomeText    = findViewById(R.id.navHomeText);
         navSearchText  = findViewById(R.id.navSearchText);
+        navMapText     = findViewById(R.id.navMapText);
         navDealsText   = findViewById(R.id.navDealsText);
         navProfileText = findViewById(R.id.navProfileText);
 
@@ -260,6 +264,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         navSearch.setOnClickListener(v ->
                 startActivity(new Intent(this, SearchActivity.class)));
+        navMap.setOnClickListener(v ->
+                startActivity(new Intent(this, NearbyMapActivity.class)));
         navDeals.setOnClickListener(v ->
                 startActivity(new Intent(this, OrdersActivity.class)));
         navProfile.setOnClickListener(v ->
@@ -433,17 +439,14 @@ public class DashboardActivity extends AppCompatActivity {
             navHomeIcon.setColorFilter(ContextCompat.getColor(this, R.color.nb_primary));
         if (navHomeText != null)
             navHomeText.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
-        if (navSearchIcon != null)
-            navSearchIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navSearchText != null)
-            navSearchText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navDealsIcon != null)
-            navDealsIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navDealsText != null)
-            navDealsText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navProfileIcon != null)
-            navProfileIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navProfileText != null)
-            navProfileText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
+        int hint = ContextCompat.getColor(this, R.color.text_dark_hint);
+        if (navSearchIcon  != null) navSearchIcon.setColorFilter(hint);
+        if (navSearchText  != null) navSearchText.setTextColor(hint);
+        if (navMapIcon     != null) navMapIcon.setColorFilter(hint);
+        if (navMapText     != null) navMapText.setTextColor(hint);
+        if (navDealsIcon   != null) navDealsIcon.setColorFilter(hint);
+        if (navDealsText   != null) navDealsText.setTextColor(hint);
+        if (navProfileIcon != null) navProfileIcon.setColorFilter(hint);
+        if (navProfileText != null) navProfileText.setTextColor(hint);
     }
 }

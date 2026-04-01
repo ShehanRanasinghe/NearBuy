@@ -22,6 +22,7 @@ import com.example.nearbuy.core.SessionManager;
 import com.example.nearbuy.dashboard.DashboardActivity;
 import com.example.nearbuy.data.repository.AuthRepository;
 import com.example.nearbuy.data.repository.OperationCallback;
+import com.example.nearbuy.map.NearbyMapActivity;
 import com.example.nearbuy.orders.OrdersActivity;
 import com.example.nearbuy.search.SearchActivity;
 
@@ -45,9 +46,9 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int REQ_LOCATION_PICKER = 1001;
 
     // ── Bottom navigation ──────────────────────────────────────────────────────
-    private LinearLayout navHome, navSearch, navDeals, navProfile;
-    private ImageView    navHomeIcon, navSearchIcon, navDealsIcon, navProfileIcon;
-    private TextView     navHomeText, navSearchText, navDealsText, navProfileText;
+    private LinearLayout navHome, navSearch, navMap, navDeals, navProfile;
+    private ImageView    navHomeIcon, navSearchIcon, navMapIcon, navDealsIcon, navProfileIcon;
+    private TextView     navHomeText, navSearchText, navMapText, navDealsText, navProfileText;
 
     // ── Dependencies ───────────────────────────────────────────────────────────
     private SessionManager sessionManager;
@@ -320,16 +321,19 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         navHome    = findViewById(R.id.navHome);
         navSearch  = findViewById(R.id.navSearch);
+        navMap     = findViewById(R.id.navMap);
         navDeals   = findViewById(R.id.navDeals);
         navProfile = findViewById(R.id.navProfile);
 
         navHomeIcon    = findViewById(R.id.navHomeIcon);
         navSearchIcon  = findViewById(R.id.navSearchIcon);
+        navMapIcon     = findViewById(R.id.navMapIcon);
         navDealsIcon   = findViewById(R.id.navDealsIcon);
         navProfileIcon = findViewById(R.id.navProfileIcon);
 
         navHomeText    = findViewById(R.id.navHomeText);
         navSearchText  = findViewById(R.id.navSearchText);
+        navMapText     = findViewById(R.id.navMapText);
         navDealsText   = findViewById(R.id.navDealsText);
         navProfileText = findViewById(R.id.navProfileText);
 
@@ -345,8 +349,11 @@ public class ProfileActivity extends AppCompatActivity {
         });
         if (navSearch != null) navSearch.setOnClickListener(v ->
                 startActivity(new Intent(this, SearchActivity.class)));
+        if (navMap    != null) navMap.setOnClickListener(v ->
+                startActivity(new Intent(this, NearbyMapActivity.class)));
         if (navDeals  != null) navDeals.setOnClickListener(v ->
                 startActivity(new Intent(this, OrdersActivity.class)));
+        // navProfile = current page, no action
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────

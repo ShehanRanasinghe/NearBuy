@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    activity_nearby_map.xml – Nearby Shops Map screen
+    ─────────────────────────────────────────────────
+    Shows the customer's location, a blue radius circle (radius = profile setting),
+    and teal shop markers for all nearby shops. All rendering is done client-side
+    via the Google Maps SDK – no paid API calls are required.
+
+    Layout structure:
+      LinearLayout (vertical root)
+      ├── Top header bar
+      ├── FrameLayout (map + info overlay)  ← takes all remaining height
+      │   ├── SupportMapFragment            ← full map canvas
+      │   └── Info card (radius + shop count)  ← floating card at map top
+      └── Bottom navigation bar (5 tabs: Home | Search | Map | Orders | Profile)
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- ══════════ TOP HEADER BAR ══════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_topbar_curved"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:elevation="4dp">
+
+        <!-- Logo + title -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/nearbuy_logo"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/logo_desc" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nearby Shops"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Map View"
+                    android:textColor="#FFFF9E40"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Notification icon -->
+        <ImageView
+            android:id="@+id/btnNotifications"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:padding="7dp"
+            android:src="@drawable/ic_notification"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/notifications"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <!-- ══════════ MAP + OVERLAY ══════════ -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- Google Maps fragment – fills the entire FrameLayout -->
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- ── Floating info card (top of map) ── -->
+        <LinearLayout
+            android:id="@+id/layoutMapInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="horizontal"
+            android:background="#E8F8F5"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:elevation="6dp">
+
+            <!-- Radius info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Blue circle legend dot -->
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/bg_icon_circle_blue"
+                    android:layout_marginEnd="6dp" />
+
+                <TextView
+                    android:id="@+id/tvRadiusInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search radius: 2 km"
+                    android:textColor="@color/text_dark_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Shop count -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_map_shop"
+                    android:layout_marginEnd="4dp"
+                    android:contentDescription="Shops" />
+
+                <TextView
+                    android:id="@+id/tvShopCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading shops…"
+                    android:textColor="@color/text_dark_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ── Legend card (bottom-left of map, above nav bar) ── -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="12dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_white"
+            android:elevation="6dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LEGEND"
+                android:textColor="@color/text_dark_secondary"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.12"
+                android:layout_marginBottom="6dp" />
+
+            <!-- Customer legend -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_map_customer"
+                    android:layout_marginEnd="6dp"
+                    android:contentDescription="Customer" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="You"
+                    android:textColor="@color/text_dark_primary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Shop legend -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_map_shop"
+                    android:layout_marginEnd="6dp"
+                    android:contentDescription="Shop" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shop"
+                    android:textColor="@color/text_dark_primary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Circle legend -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <View
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/bg_icon_circle_blue"
+                    android:layout_marginEnd="6dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Radius"
+                    android:textColor="@color/text_dark_primary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- ══════════ BOTTOM NAVIGATION BAR (5 tabs) ══════════ -->
+    <LinearLayout
+        android:id="@+id/bottomNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_bottom_nav_bar"
+        android:elevation="12dp"
+        android:baselineAligned="false">
+
+        <!-- Home -->
+        <LinearLayout android:id="@+id/navHome"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navHomeIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_home" app:tint="@color/text_dark_hint" />
+            <TextView android:id="@+id/navHomeText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_home" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint" />
+        </LinearLayout>
+
+        <!-- Search -->
+        <LinearLayout android:id="@+id/navSearch"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navSearchIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_search" app:tint="@color/text_dark_hint" />
+            <TextView android:id="@+id/navSearchText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_search" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint" />
+        </LinearLayout>
+
+        <!-- Map (ACTIVE / middle) -->
+        <LinearLayout android:id="@+id/navMap"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navMapIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_map" app:tint="@color/nb_primary" />
+            <TextView android:id="@+id/navMapText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_map" android:textSize="10sp"
+                android:textColor="@color/nb_primary" android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Orders -->
+        <LinearLayout android:id="@+id/navDeals"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navDealsIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_orders" app:tint="@color/text_dark_hint" />
+            <TextView android:id="@+id/navDealsText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_orders" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint" />
+        </LinearLayout>
+
+        <!-- Profile -->
+        <LinearLayout android:id="@+id/navProfile"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navProfileIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_profile" app:tint="@color/text_dark_hint" />
+            <TextView android:id="@+id/navProfileText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_profile" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

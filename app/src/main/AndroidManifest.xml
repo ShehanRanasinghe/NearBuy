@@ -84,6 +84,12 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- ── NEARBY MAP ── -->
+        <activity
+            android:name=".map.NearbyMapActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
         <!-- ── SEARCH ── -->
         <activity
             android:name=".search.SearchActivity"

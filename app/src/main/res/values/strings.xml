@@ -78,6 +78,7 @@
     <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_search">Search</string>
+    <string name="nav_map">Map</string>
     <string name="nav_deals">Orders</string>
     <string name="nav_orders">Orders</string>
     <string name="nav_profile">Profile</string>
