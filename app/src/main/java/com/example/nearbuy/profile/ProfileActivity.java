@@ -78,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         populateProfileData();
         setupButtons();
+        setupSearchRadiusSection();
         setupBottomNavigation();
     }
 
@@ -260,6 +261,58 @@ public class ProfileActivity extends AppCompatActivity {
                         Toast.makeText(ProfileActivity.this, msg, Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    // ── Search Radius Section ─────────────────────────────────────────────────
+
+    private static final float[] RADIUS_OPTIONS = {1f, 2f, 5f, 10f, 20f};
+    private final int[] CHIP_IDS = {R.id.chip_radius_1, R.id.chip_radius_2,
+            R.id.chip_radius_5, R.id.chip_radius_10, R.id.chip_radius_20};
+
+    /**
+     * Sets up the search-radius chip row in the profile page.
+     * Highlights the currently saved radius and updates SessionManager on selection.
+     */
+    private void setupSearchRadiusSection() {
+        float current = sessionManager.getSearchRadius();
+        updateRadiusChips(current);
+
+        for (int i = 0; i < CHIP_IDS.length; i++) {
+            final float radius = RADIUS_OPTIONS[i];
+            View chip = findViewById(CHIP_IDS[i]);
+            if (chip != null) {
+                chip.setOnClickListener(v -> {
+                    sessionManager.saveSearchRadius(radius);
+                    updateRadiusChips(radius);
+                    String label = radius == (int) radius
+                            ? String.valueOf((int) radius) : String.valueOf(radius);
+                    Toast.makeText(this, "Search distance set to " + label + " km",
+                            Toast.LENGTH_SHORT).show();
+                });
+            }
+        }
+    }
+
+    /**
+     * Refreshes the chip backgrounds and text colours to reflect the selected radius,
+     * and updates the summary TextView above the chips.
+     */
+    private void updateRadiusChips(float selectedRadius) {
+        for (int i = 0; i < CHIP_IDS.length; i++) {
+            TextView chip = findViewById(CHIP_IDS[i]);
+            if (chip == null) continue;
+            boolean active = (RADIUS_OPTIONS[i] == selectedRadius);
+            chip.setBackground(ContextCompat.getDrawable(this,
+                    active ? R.drawable.bg_distance_chip_active : R.drawable.bg_distance_chip));
+            chip.setTextColor(ContextCompat.getColor(this,
+                    active ? R.color.white : R.color.text_dark_primary));
+        }
+
+        // Update the summary label
+        String label = selectedRadius == (int) selectedRadius
+                ? String.valueOf((int) selectedRadius) : String.valueOf(selectedRadius);
+        boolean isDefault = (selectedRadius == 2f);
+        setTextSafe(R.id.tv_search_radius, label + " km" + (isDefault ? " (default)" : ""));
     }
 
     // ── Bottom navigation ──────────────────────────────────────────────────────

@@ -311,6 +311,152 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- NEARBY SEARCH DISTANCE CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white"
+                android:padding="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:elevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="10dp">
+
+                    <LinearLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_icon_circle_teal"
+                        android:gravity="center"
+                        android:layout_marginEnd="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="📡"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="NEARBY SEARCH DISTANCE"
+                            android:textColor="@color/text_dark_hint"
+                            android:textSize="10sp"
+                            android:letterSpacing="0.1"/>
+                        <TextView
+                            android:id="@+id/tv_search_radius"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2 km (default)"
+                            android:textColor="@color/text_dark_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shops and deals within this radius will be shown on your home screen."
+                    android:textColor="@color/text_dark_hint"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="14dp"/>
+
+                <!-- Distance chip row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/chip_radius_1"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="1 km"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_dark_primary"
+                        android:background="@drawable/bg_distance_chip"
+                        android:layout_marginEnd="6dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                    <TextView
+                        android:id="@+id/chip_radius_2"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="2 km"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:background="@drawable/bg_distance_chip_active"
+                        android:layout_marginEnd="6dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                    <TextView
+                        android:id="@+id/chip_radius_5"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="5 km"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_dark_primary"
+                        android:background="@drawable/bg_distance_chip"
+                        android:layout_marginEnd="6dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                    <TextView
+                        android:id="@+id/chip_radius_10"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="10 km"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_dark_primary"
+                        android:background="@drawable/bg_distance_chip"
+                        android:layout_marginEnd="6dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                    <TextView
+                        android:id="@+id/chip_radius_20"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="20 km"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_dark_primary"
+                        android:background="@drawable/bg_distance_chip"
+                        android:clickable="true"
+                        android:focusable="true"/>
+                </LinearLayout>
+            </LinearLayout>
+
             <!-- EDIT PROFILE BUTTON -->
             <LinearLayout
                 android:id="@+id/btn_edit_profile"
