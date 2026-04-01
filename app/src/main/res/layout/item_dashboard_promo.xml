@@ -17,15 +17,15 @@
     android:clickable="true"
     android:focusable="true">
 
-    <!-- Icon circle – single ImageView (no FrameLayout wrapper needed) -->
-    <ImageView
-        android:id="@+id/ivPromoIcon"
+    <!-- Icon circle – emoji TextView (random icon assigned by adapter) -->
+    <TextView
+        android:id="@+id/tvPromoIcon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/ic_notif_promo"
+        android:text="🎁"
+        android:textSize="20sp"
+        android:gravity="center"
         android:background="@drawable/bg_icon_circle_orange"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
         android:contentDescription="Promo icon"/>
 
     <!-- Title + description (one nested LinearLayout instead of two) -->

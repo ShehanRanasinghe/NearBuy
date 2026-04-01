@@ -22,7 +22,7 @@ import com.example.nearbuy.core.SessionManager;
 import com.example.nearbuy.dashboard.DashboardActivity;
 import com.example.nearbuy.data.repository.AuthRepository;
 import com.example.nearbuy.data.repository.OperationCallback;
-import com.example.nearbuy.discounts.DealsActivity;
+import com.example.nearbuy.orders.OrdersActivity;
 import com.example.nearbuy.search.SearchActivity;
 
 /**
@@ -228,7 +228,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (navSearch != null) navSearch.setOnClickListener(v ->
                 startActivity(new Intent(this, SearchActivity.class)));
         if (navDeals  != null) navDeals.setOnClickListener(v ->
-                startActivity(new Intent(this, DealsActivity.class)));
+                startActivity(new Intent(this, OrdersActivity.class)));
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────

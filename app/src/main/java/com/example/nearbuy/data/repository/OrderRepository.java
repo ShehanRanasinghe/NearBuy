@@ -8,6 +8,7 @@ import com.example.nearbuy.data.remote.firebase.FirebaseCollections;
 import com.example.nearbuy.orders.OrderItem;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -132,7 +133,79 @@ public class OrderRepository {
                 });
     }
 
-    // ── Customer stats ─────────────────────────────────────────────────────────
+    // ── Customer stats (real-time) ─────────────────────────────────────────────
+
+    /**
+     * Attaches a real-time listener on the customer's Firestore profile document.
+     * The callback fires immediately with the current values and again whenever
+     * the NearBuyHQ admin app updates totalOrders / totalSpent / totalSaved.
+     *
+     * Call {@link ListenerRegistration#remove()} in the activity's onDestroy() to
+     * prevent memory leaks.
+     *
+     * @param customerId customer UID
+     * @param callback   fires on every update (or on error)
+     * @return           registration token – call .remove() when done
+     */
+    public ListenerRegistration listenToCustomerStats(String customerId,
+                                                      DataCallback<Customer> callback) {
+        return firestore.collection(FirebaseCollections.CUSTOMERS)
+                .document(customerId)
+                .addSnapshotListener((doc, error) -> {
+                    if (error != null) {
+                        callback.onError(error);
+                        return;
+                    }
+                    if (doc != null && doc.exists()) {
+                        Customer c = Customer.fromMap(customerId, doc.getData());
+                        callback.onSuccess(c != null ? c : new Customer(customerId, "", "", ""));
+                    } else {
+                        callback.onSuccess(new Customer(customerId, "", "", ""));
+                    }
+                });
+    }
+
+    /**
+     * Computes customer stats directly from the orders sub-collection.
+     * Used as a fallback when the customer document's cached stats are zero,
+     * which can happen before the NearBuyHQ admin app has processed orders.
+     *
+     * - totalOrders = count of ALL order documents
+     * - totalSpent  = sum of totalAmountRaw for non-Cancelled orders
+     *
+     * @param customerId customer UID
+     * @param callback   DataCallback<Customer> with computed totals
+     */
+    public void computeStatsFromOrders(String customerId, DataCallback<Customer> callback) {
+        if (!FirebaseConfig.isFirebaseEnabled()) {
+            callback.onError(new IllegalStateException("Firebase is not enabled."));
+            return;
+        }
+        firestore.collection(FirebaseCollections.CUSTOMERS)
+                .document(customerId)
+                .collection(FirebaseCollections.CUSTOMER_ORDERS)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    int    totalOrders = 0;
+                    double totalSpent  = 0;
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        OrderItem order = OrderItem.fromMap(doc.getId(), doc.getData());
+                        if (order != null) {
+                            totalOrders++;
+                            if (!"Cancelled".equals(order.getStatus())) {
+                                totalSpent += order.getTotalAmountRaw();
+                            }
+                        }
+                    }
+                    Customer c = new Customer(customerId, "", "", "");
+                    c.setTotalOrders(totalOrders);
+                    c.setTotalSpent(totalSpent);
+                    callback.onSuccess(c);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    // ── Customer stats (one-shot) ──────────────────────────────────────────────
 
     /**
      * Reads the customer's Firestore profile document to get lifetime stats:

@@ -16,13 +16,22 @@ import java.util.List;
 /**
  * DashboardShopAdapter – vertical RecyclerView adapter for the
  * "Nearby Shops" section on the Dashboard.
- *
- * Replaces five hardcoded static shop cards from activity_dashboard.xml.
- * RecyclerView recycles item views so only the visible ones are in the
- * view hierarchy at any time, keeping performTraversals() cheap.
  */
 public class DashboardShopAdapter
         extends RecyclerView.Adapter<DashboardShopAdapter.ViewHolder> {
+
+    // ── Random shop icons (stable within session, assigned per shop) ───────────
+    private static final String[] SHOP_EMOJIS = {
+        "🏪", "🛒", "🏬", "🍎", "🥖", "🥛", "🍗", "🧴", "🍜", "🎂",
+        "🌿", "🏢", "🍦", "🧁", "🛍️", "🥩", "🐟", "🍕", "☕", "🧃"
+    };
+
+    private static final int[] ICON_BACKGROUNDS = {
+        R.drawable.bg_icon_circle_teal,
+        R.drawable.bg_icon_circle_orange,
+        R.drawable.bg_icon_circle_blue,
+        R.drawable.bg_icon_circle_light
+    };
 
     public interface OnShopClickListener {
         void onShopClick(Shop shop);
@@ -55,7 +64,16 @@ public class DashboardShopAdapter
                 ? shop.getOpeningHours() : "Open");
         holder.tvDistStatus.setText(distStatus);
 
-        // The badge shows the distance until a deal count can be loaded from Firestore
+        // Assign a stable random emoji icon based on shop name hash
+        String name = shop.getName() != null ? shop.getName() : "";
+        int emojiIndex = Math.abs((name + position).hashCode()) % SHOP_EMOJIS.length;
+        int bgIndex    = Math.abs((name + position).hashCode()) % ICON_BACKGROUNDS.length;
+        if (holder.tvIcon != null) {
+            holder.tvIcon.setText(SHOP_EMOJIS[emojiIndex]);
+            holder.tvIcon.setBackgroundResource(ICON_BACKGROUNDS[bgIndex]);
+        }
+
+        // The badge shows the distance
         holder.tvDeals.setText(shop.getDistanceLabel());
 
         holder.itemView.setOnClickListener(v -> {
@@ -69,16 +87,17 @@ public class DashboardShopAdapter
     }
 
     static final class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView tvIcon;
         final TextView tvName;
         final TextView tvDistStatus;
         final TextView tvDeals;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvIcon       = itemView.findViewById(R.id.tvShopIcon);
             tvName       = itemView.findViewById(R.id.tvShopName);
             tvDistStatus = itemView.findViewById(R.id.tvShopDistStatus);
             tvDeals      = itemView.findViewById(R.id.tvShopDeals);
         }
     }
 }
-

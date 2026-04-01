@@ -443,9 +443,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✓ Only"
+                android:text="Only"
                 android:textColor="@color/stat_green"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -454,7 +454,7 @@
             android:id="@+id/btnPlaceOrder"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:text="✅  Place Order"
+            android:text="Place Order"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"

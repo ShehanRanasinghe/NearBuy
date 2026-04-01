@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,12 @@ import java.util.List;
  */
 public class DashboardDealAdapter
         extends RecyclerView.Adapter<DashboardDealAdapter.ViewHolder> {
+
+    // ── Random deal emojis (assigned per deal, stable within session) ──────────
+    private static final String[] DEAL_EMOJIS = {
+        "🔥", "💥", "⚡", "🎯", "✨", "💫", "🌟", "🏷️", "🎁", "💰", "🎉", "🛒",
+        "🍎", "🥦", "🥛", "🍞", "🧃", "🍗", "🎀", "💎", "🌈", "🎪"
+    };
 
     public interface OnDealClickListener {
         void onDealClick(DealItem deal);
@@ -49,6 +56,11 @@ public class DashboardDealAdapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DealItem deal = deals.get(position);
+
+        // Pick a stable random emoji based on the deal title hash
+        String title = deal.getTitle() != null ? deal.getTitle() : "";
+        int emojiIndex = Math.abs((title + position).hashCode()) % DEAL_EMOJIS.length;
+        if (holder.tvEmoji != null) holder.tvEmoji.setText(DEAL_EMOJIS[emojiIndex]);
 
         holder.tvDiscount.setText(
                 deal.getDiscountLabel() != null ? deal.getDiscountLabel() : "SALE");
@@ -76,12 +88,14 @@ public class DashboardDealAdapter
     }
 
     static final class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView tvEmoji;
         final TextView tvDiscount;
         final TextView tvTitle;
         final TextView tvShopDist;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvEmoji    = itemView.findViewById(R.id.tvDealEmoji);
             tvDiscount = itemView.findViewById(R.id.tvDealDiscount);
             tvTitle    = itemView.findViewById(R.id.tvDealTitle);
             tvShopDist = itemView.findViewById(R.id.tvDealShopDist);

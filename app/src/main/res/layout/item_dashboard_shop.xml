@@ -16,15 +16,15 @@
     android:clickable="true"
     android:focusable="true">
 
-    <!-- Icon circle (single ImageView – no nested FrameLayout) -->
-    <ImageView
-        android:id="@+id/ivShopIcon"
+    <!-- Icon circle – emoji TextView (random icon assigned by adapter) -->
+    <TextView
+        android:id="@+id/tvShopIcon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/ic_home"
+        android:text="🏪"
+        android:textSize="20sp"
+        android:gravity="center"
         android:background="@drawable/bg_icon_circle_teal"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
         android:contentDescription="Shop icon"/>
 
     <!-- Shop name + distance/status -->

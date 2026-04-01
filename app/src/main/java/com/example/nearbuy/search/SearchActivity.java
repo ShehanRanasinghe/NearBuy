@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,9 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nearbuy.R;
 import com.example.nearbuy.app.startup.WelcomeActivity;
 import com.example.nearbuy.core.SessionManager;
+import com.example.nearbuy.dashboard.DashboardActivity;
 import com.example.nearbuy.data.model.Product;
 import com.example.nearbuy.data.repository.DataCallback;
 import com.example.nearbuy.data.repository.SearchRepository;
+import com.example.nearbuy.orders.OrdersActivity;
+import com.example.nearbuy.profile.ProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +61,12 @@ public class SearchActivity extends AppCompatActivity {
     private EditText     etSearch;
     private RecyclerView rvSearchResults;
     private TextView     tvResultCount;
-    private View         progressBar;   // optional loading spinner in the layout
+    private View         progressBar;
+
+    // ── Bottom navigation ──────────────────────────────────────────────────────
+    private LinearLayout navHome, navSearch, navDeals, navProfile;
+    private ImageView    navHomeIcon, navSearchIcon, navDealsIcon, navProfileIcon;
+    private TextView     navHomeText, navSearchText, navDealsText, navProfileText;
 
     // ── Dependencies ───────────────────────────────────────────────────────────
     private SearchRepository searchRepository;
@@ -93,6 +102,7 @@ public class SearchActivity extends AppCompatActivity {
 
         initViews();
         setupSearch();
+        setupBottomNavigation();
 
         // If the activity was launched with a pre-filled query (e.g. from
         // CategoriesActivity), run that query immediately
@@ -125,6 +135,42 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     // ── Search wiring ──────────────────────────────────────────────────────────
+
+    /**
+     * Sets up the bottom navigation bar, highlighting the Search tab.
+     */
+    private void setupBottomNavigation() {
+        navHome    = findViewById(R.id.navHome);
+        navSearch  = findViewById(R.id.navSearch);
+        navDeals   = findViewById(R.id.navDeals);
+        navProfile = findViewById(R.id.navProfile);
+
+        navHomeIcon    = findViewById(R.id.navHomeIcon);
+        navSearchIcon  = findViewById(R.id.navSearchIcon);
+        navDealsIcon   = findViewById(R.id.navDealsIcon);
+        navProfileIcon = findViewById(R.id.navProfileIcon);
+
+        navHomeText    = findViewById(R.id.navHomeText);
+        navSearchText  = findViewById(R.id.navSearchText);
+        navDealsText   = findViewById(R.id.navDealsText);
+        navProfileText = findViewById(R.id.navProfileText);
+
+        // Highlight Search tab as active
+        if (navSearchIcon != null)
+            navSearchIcon.setColorFilter(ContextCompat.getColor(this, R.color.nb_primary));
+        if (navSearchText != null)
+            navSearchText.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
+
+        if (navHome != null) navHome.setOnClickListener(v -> {
+            startActivity(new Intent(this, DashboardActivity.class));
+            finish();
+        });
+        // navSearch = current page, no action
+        if (navDeals   != null) navDeals.setOnClickListener(v ->
+                startActivity(new Intent(this, OrdersActivity.class)));
+        if (navProfile != null) navProfile.setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class)));
+    }
 
     /**
      * Attaches a TextWatcher that debounces the Firebase search call.

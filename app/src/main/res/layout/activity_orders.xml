@@ -51,7 +51,20 @@
                 android:textSize="11sp"/>
         </LinearLayout>
 
-
+        <!-- Order count badge -->
+        <TextView
+            android:id="@+id/tvOrderCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 Orders"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/bg_distance_chip_active"/>
     </LinearLayout>
 
     <!-- STATS ROW -->
@@ -80,7 +93,7 @@
                 android:id="@+id/tvStatTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12"
+                android:text="—"
                 android:textColor="@color/nb_primary"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
@@ -89,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:text="Total Orders"
                 android:textColor="@color/text_dark_hint"
-                android:textSize="15sp"/>
+                android:textSize="11sp"/>
         </LinearLayout>
 
         <!-- Amount Spent -->
@@ -105,7 +118,7 @@
                 android:id="@+id/tvStatSpent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rs.4,250"
+                android:text="—"
                 android:textColor="@color/nb_accent"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
@@ -114,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:text="Total Spent"
                 android:textColor="@color/text_dark_hint"
-                android:textSize="15sp"/>
+                android:textSize="11sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -151,30 +164,30 @@
                 android:focusable="true"/>
 
             <TextView
-                android:id="@+id/tabDelivered"
+                android:id="@+id/tabProcessing"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
-                android:text="Delivered"
+                android:text="⏳ Processing"
                 android:textColor="@color/nb_primary"
                 android:textSize="13sp"
                 android:gravity="center"
-                android:paddingStart="18dp"
-                android:paddingEnd="18dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:background="@drawable/bg_distance_chip"
                 android:layout_marginEnd="8dp"
                 android:clickable="true"
                 android:focusable="true"/>
 
             <TextView
-                android:id="@+id/tabProcessing"
+                android:id="@+id/tabDelivered"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
-                android:text="Processing"
+                android:text="✅ Delivered"
                 android:textColor="@color/nb_primary"
                 android:textSize="13sp"
                 android:gravity="center"
-                android:paddingStart="18dp"
-                android:paddingEnd="18dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:background="@drawable/bg_distance_chip"
                 android:layout_marginEnd="8dp"
                 android:clickable="true"
@@ -184,12 +197,12 @@
                 android:id="@+id/tabCancelled"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
-                android:text="Cancelled"
+                android:text="❌ Cancelled"
                 android:textColor="@color/nb_primary"
                 android:textSize="13sp"
                 android:gravity="center"
-                android:paddingStart="18dp"
-                android:paddingEnd="18dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:background="@drawable/bg_distance_chip"
                 android:clickable="true"
                 android:focusable="true"/>
@@ -201,15 +214,15 @@
         android:id="@+id/tvResultLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="12 orders found"
+        android:text="0 orders found"
         android:textColor="@color/text_dark_secondary"
         android:textSize="13sp"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
-        android:paddingTop="12dp"
+        android:paddingTop="10dp"
         android:paddingBottom="6dp"/>
 
-    <!-- Empty state (shown when no orders are available) -->
+    <!-- Empty state (shown when no orders match the active filter) -->
     <LinearLayout
         android:id="@+id/layoutEmpty"
         android:layout_width="match_parent"
@@ -246,5 +259,68 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:clipToPadding="false"/>
-</LinearLayout>
 
+    <!-- BOTTOM NAVIGATION BAR -->
+    <LinearLayout
+        android:id="@+id/bottomNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_bottom_nav_bar"
+        android:elevation="12dp"
+        android:baselineAligned="false">
+
+        <LinearLayout android:id="@+id/navHome"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navHomeIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_home" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navHomeText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_home" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navSearch"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navSearchIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_search" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navSearchText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_search" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navDeals"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navDealsIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_orders" app:tint="@color/nb_primary"/>
+            <TextView android:id="@+id/navDealsText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_orders" android:textSize="10sp"
+                android:textColor="@color/nb_primary" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navProfile"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:orientation="vertical"
+            android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/navProfileIcon"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:src="@drawable/ic_profile" app:tint="@color/text_dark_hint"/>
+            <TextView android:id="@+id/navProfileText"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/nav_profile" android:textSize="10sp"
+                android:textColor="@color/text_dark_hint"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

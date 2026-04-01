@@ -16,11 +16,23 @@ import java.util.List;
 /**
  * DashboardPromoAdapter – vertical RecyclerView adapter for the
  * "Active Promotions" section on the Dashboard.
- *
- * Replaces five hardcoded static promo cards from activity_dashboard.xml.
  */
 public class DashboardPromoAdapter
         extends RecyclerView.Adapter<DashboardPromoAdapter.ViewHolder> {
+
+    // ── Random promo icons (assigned per item, stable within session) ──────────
+    private static final String[] PROMO_EMOJIS = {
+        "🎁", "🏷️", "💳", "🎊", "🥳", "💰", "🎉", "✨", "🌟", "🎀", "🛍️", "🎯",
+        "🏅", "🎪", "🪄", "🎶", "🍀", "🌺", "💝", "🪙"
+    };
+
+    // ── Random background colors to rotate through ─────────────────────────────
+    private static final int[] ICON_BACKGROUNDS = {
+        R.drawable.bg_icon_circle_orange,
+        R.drawable.bg_icon_circle_teal,
+        R.drawable.bg_icon_circle_blue,
+        R.drawable.bg_icon_circle_light
+    };
 
     public interface OnPromoClickListener {
         void onPromoClick(DealItem promo);
@@ -49,6 +61,15 @@ public class DashboardPromoAdapter
         holder.tvTitle.setText(promo.getTitle() != null ? promo.getTitle() : "");
         holder.tvDesc.setText(promo.getDescription() != null ? promo.getDescription() : "");
 
+        // Assign a stable random emoji icon based on title hash
+        String title = promo.getTitle() != null ? promo.getTitle() : "";
+        int emojiIndex = Math.abs((title + position).hashCode()) % PROMO_EMOJIS.length;
+        int bgIndex    = Math.abs((title + position).hashCode()) % ICON_BACKGROUNDS.length;
+        if (holder.tvIcon != null) {
+            holder.tvIcon.setText(PROMO_EMOJIS[emojiIndex]);
+            holder.tvIcon.setBackgroundResource(ICON_BACKGROUNDS[bgIndex]);
+        }
+
         // Human-readable expiry label
         int days = promo.daysUntilExpiry();
         if (days < 0) {
@@ -72,12 +93,14 @@ public class DashboardPromoAdapter
     }
 
     static final class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView tvIcon;
         final TextView tvTitle;
         final TextView tvDesc;
         final TextView tvExpiry;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvIcon   = itemView.findViewById(R.id.tvPromoIcon);
             tvTitle  = itemView.findViewById(R.id.tvPromoTitle);
             tvDesc   = itemView.findViewById(R.id.tvPromoDesc);
             tvExpiry = itemView.findViewById(R.id.tvPromoExpiry);

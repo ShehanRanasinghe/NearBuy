@@ -33,6 +33,7 @@ import com.example.nearbuy.product.ProductDetailsActivity;
 import com.example.nearbuy.profile.ProfileActivity;
 import com.example.nearbuy.search.SearchActivity;
 import com.example.nearbuy.store.StoreDetailsActivity;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView tvUserName, tvAvatarInitial;
 
     // ── Stats card ─────────────────────────────────────────────────────────────
-    private TextView tvOrderCount, tvTotalSpent, tvTotalSaved;
+    private TextView tvOrderCount, tvTotalSpent;
 
     // ── Section links ──────────────────────────────────────────────────────────
     private TextView tvViewAllDeals, tvViewAllPromos, tvViewAllProducts;
@@ -98,6 +99,9 @@ public class DashboardActivity extends AppCompatActivity {
 
     // ── Session ────────────────────────────────────────────────────────────────
     private SessionManager sessionManager;
+
+    // ── Real-time Firestore stats listener ────────────────────────────────────
+    private ListenerRegistration statsListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +162,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         tvOrderCount = findViewById(R.id.tvOrderCount);
         tvTotalSpent = findViewById(R.id.tvTotalSpent);
-        tvTotalSaved = findViewById(R.id.tvTotalSaved);
 
         tvViewAllDeals  = findViewById(R.id.tvViewAllDeals);
         tvViewAllPromos = findViewById(R.id.tvViewAllPromos);
@@ -247,7 +250,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
         tvOrderCount.setText("—");
         tvTotalSpent.setText("—");
-        tvTotalSaved.setText("—");
     }
 
     // ── Navigation setup ───────────────────────────────────────────────────────
@@ -287,14 +289,38 @@ public class DashboardActivity extends AppCompatActivity {
         String uid = sessionManager.getUserId();
         if (uid.isEmpty()) return;
 
-        orderRepository.getCustomerStats(uid, new DataCallback<Customer>() {
+        // Remove any previous listener before attaching a new one
+        if (statsListener != null) {
+            statsListener.remove();
+        }
+
+        // Attach a real-time listener on the customer document so the dashboard
+        // reflects stats the moment the NearBuyHQ admin app processes an order.
+        statsListener = orderRepository.listenToCustomerStats(uid, new DataCallback<Customer>() {
             @Override
             public void onSuccess(Customer customer) {
-                tvOrderCount.setText(String.valueOf(customer.getTotalOrders()));
-                tvTotalSpent.setText(customer.getTotalSpent() > 0
-                        ? String.format("Rs.%.0f", customer.getTotalSpent()) : "Rs.0");
-                tvTotalSaved.setText(customer.getTotalSaved() > 0
-                        ? String.format("Rs.%.0f", customer.getTotalSaved()) : "Rs.0");
+                int totalOrders = customer.getTotalOrders();
+
+                // If admin hasn't updated the customer doc stats yet, compute from orders
+                if (totalOrders == 0) {
+                    orderRepository.computeStatsFromOrders(uid, new DataCallback<Customer>() {
+                        @Override
+                        public void onSuccess(Customer computed) {
+                            tvOrderCount.setText(String.valueOf(computed.getTotalOrders()));
+                            tvTotalSpent.setText(computed.getTotalSpent() > 0
+                                    ? String.format("Rs.%.0f", computed.getTotalSpent()) : "Rs.0");
+                        }
+                        @Override
+                        public void onError(Exception e) {
+                            tvOrderCount.setText("0");
+                            tvTotalSpent.setText("Rs.0");
+                        }
+                    });
+                } else {
+                    tvOrderCount.setText(String.valueOf(totalOrders));
+                    tvTotalSpent.setText(customer.getTotalSpent() > 0
+                            ? String.format("Rs.%.0f", customer.getTotalSpent()) : "Rs.0");
+                }
             }
 
             @Override
@@ -302,7 +328,6 @@ public class DashboardActivity extends AppCompatActivity {
                 Log.w(TAG, "Could not load customer stats", e);
                 tvOrderCount.setText("0");
                 tvTotalSpent.setText("Rs.0");
-                tvTotalSaved.setText("Rs.0");
             }
         });
     }
@@ -394,6 +419,12 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     // ── Utility ────────────────────────────────────────────────────────────────
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (statsListener != null) statsListener.remove();
+    }
 
     @Override
     protected void onResume() {

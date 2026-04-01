@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nearbuy.R;
 import com.example.nearbuy.app.startup.WelcomeActivity;
 import com.example.nearbuy.core.SessionManager;
+import com.example.nearbuy.dashboard.DashboardActivity;
 import com.example.nearbuy.data.model.Customer;
 import com.example.nearbuy.data.repository.DataCallback;
 import com.example.nearbuy.data.repository.OrderRepository;
+import com.example.nearbuy.profile.ProfileActivity;
+import com.example.nearbuy.search.SearchActivity;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +33,9 @@ import java.util.List;
 /**
  * OrdersActivity – displays the customer's order history with filter tabs.
  *
- * Orders are loaded from Firestore via OrderRepository using the customer UID
- * from SessionManager.  If no orders exist yet, an empty-state message is shown.
- *
- * Filter tabs: All | Delivered | Processing | Cancelled
- *
- * Stats shown (Total Orders / Total Spent) come from the customer's Firestore
- * profile document – maintained exclusively by the NearBuyHQ admin app.
- * This app NEVER writes to those counters.
+ * Filter tabs: All | Processing | Delivered | Cancelled
+ * Stats (Total Orders / Total Spent) are computed from actual orders AND
+ * from the customer Firestore profile (maintained by NearBuyHQ admin).
  */
 public class OrdersActivity extends AppCompatActivity {
 
@@ -46,6 +47,11 @@ public class OrdersActivity extends AppCompatActivity {
     private TextView tabAll, tabDelivered, tabProcessing, tabCancelled;
     private View     layoutEmpty;
 
+    // ── Bottom navigation ──────────────────────────────────────────────────────
+    private LinearLayout navHome, navSearch, navDeals, navProfile;
+    private ImageView    navHomeIcon, navSearchIcon, navDealsIcon, navProfileIcon;
+    private TextView     navHomeText, navSearchText, navDealsText, navProfileText;
+
     // ── Data ───────────────────────────────────────────────────────────────────
     private OrdersAdapter   adapter;
     private List<OrderItem> allOrders      = new ArrayList<>();
@@ -56,6 +62,9 @@ public class OrdersActivity extends AppCompatActivity {
     private OrderRepository orderRepository;
     private SessionManager  sessionManager;
 
+    // ── Real-time stats listener ───────────────────────────────────────────────
+    private ListenerRegistration statsListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +72,7 @@ public class OrdersActivity extends AppCompatActivity {
         Window w = getWindow();
         w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.nb_primary_dark));
+        w.setNavigationBarColor(ContextCompat.getColor(this, R.color.bg_white));
 
         setContentView(R.layout.activity_orders);
         if (getSupportActionBar() != null) getSupportActionBar().hide();
@@ -70,7 +80,6 @@ public class OrdersActivity extends AppCompatActivity {
         orderRepository = new OrderRepository();
         sessionManager  = SessionManager.getInstance(this);
 
-        // ── Session guard ─────────────────────────────────────────────────────
         if (!sessionManager.isLoggedIn()) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
@@ -79,11 +88,11 @@ public class OrdersActivity extends AppCompatActivity {
 
         initViews();
         setupTabs();
+        setupBottomNavigation();
 
         View btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        // Load orders and stats independently
         loadOrders();
         loadStats();
     }
@@ -100,13 +109,11 @@ public class OrdersActivity extends AppCompatActivity {
         tabCancelled   = findViewById(R.id.tabCancelled);
         layoutEmpty    = findViewById(R.id.layoutEmpty);
 
-        // Stats placeholders
         tvStatTotal = findViewById(R.id.tvStatTotal);
         tvStatSpent = findViewById(R.id.tvStatSpent);
         if (tvStatTotal != null) tvStatTotal.setText("—");
         if (tvStatSpent != null) tvStatSpent.setText("—");
 
-        // Set up RecyclerView
         if (recyclerOrders != null) {
             adapter = new OrdersAdapter(filteredOrders, order ->
                     Toast.makeText(this,
@@ -116,6 +123,41 @@ public class OrdersActivity extends AppCompatActivity {
             recyclerOrders.setAdapter(adapter);
             recyclerOrders.setHasFixedSize(false);
         }
+    }
+
+    // ── Bottom navigation ──────────────────────────────────────────────────────
+
+    private void setupBottomNavigation() {
+        navHome    = findViewById(R.id.navHome);
+        navSearch  = findViewById(R.id.navSearch);
+        navDeals   = findViewById(R.id.navDeals);
+        navProfile = findViewById(R.id.navProfile);
+
+        navHomeIcon    = findViewById(R.id.navHomeIcon);
+        navSearchIcon  = findViewById(R.id.navSearchIcon);
+        navDealsIcon   = findViewById(R.id.navDealsIcon);
+        navProfileIcon = findViewById(R.id.navProfileIcon);
+
+        navHomeText    = findViewById(R.id.navHomeText);
+        navSearchText  = findViewById(R.id.navSearchText);
+        navDealsText   = findViewById(R.id.navDealsText);
+        navProfileText = findViewById(R.id.navProfileText);
+
+        // Highlight Orders tab as active
+        if (navDealsIcon != null)
+            navDealsIcon.setColorFilter(ContextCompat.getColor(this, R.color.nb_primary));
+        if (navDealsText != null)
+            navDealsText.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
+
+        if (navHome != null) navHome.setOnClickListener(v -> {
+            startActivity(new Intent(this, DashboardActivity.class));
+            finish();
+        });
+        if (navSearch != null) navSearch.setOnClickListener(v ->
+                startActivity(new Intent(this, SearchActivity.class)));
+        // navDeals = current page, no action
+        if (navProfile != null) navProfile.setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class)));
     }
 
     // ── Firestore: orders ──────────────────────────────────────────────────────
@@ -136,6 +178,8 @@ public class OrdersActivity extends AppCompatActivity {
                     showEmptyState("You haven't placed any orders yet.");
                 } else {
                     hideEmptyState();
+                    // Update stats from actual orders (immediate, no admin dependency)
+                    updateStatsFromOrders(orders);
                 }
             }
 
@@ -143,40 +187,69 @@ public class OrdersActivity extends AppCompatActivity {
             public void onError(Exception e) {
                 Log.e(TAG, "Failed to load orders", e);
                 showEmptyState("Could not load orders. Please try again.");
-                Toast.makeText(OrdersActivity.this,
-                        "Error loading orders: " + e.getMessage(),
-                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // ── Firestore: stats (read-only; maintained by NearBuyHQ admin app) ────────
+    /** Computes and displays stats directly from the loaded order list. */
+    private void updateStatsFromOrders(List<OrderItem> orders) {
+        int totalOrders = orders.size();
+        double totalSpent = 0;
+        for (OrderItem o : orders) {
+            if (!"Cancelled".equals(o.getStatus())) {
+                totalSpent += o.getTotalAmountRaw();
+            }
+        }
+        if (tvStatTotal != null) tvStatTotal.setText(String.valueOf(totalOrders));
+        if (tvStatSpent != null) {
+            tvStatSpent.setText(totalSpent > 0
+                    ? String.format("Rs.%.0f", totalSpent) : "Rs.0");
+        }
+    }
 
-    /**
-     * Loads lifetime stats from the customer's Firestore profile document.
-     * These values are updated by the NearBuyHQ admin app, never by this app.
-     */
+    // ── Firestore: stats (real-time listener on customer document) ─────────────
+
     private void loadStats() {
         String uid = sessionManager.getUserId();
         if (uid.isEmpty()) return;
 
-        orderRepository.getCustomerStats(uid, new DataCallback<Customer>() {
+        if (statsListener != null) statsListener.remove();
+
+        // Real-time listener: updates UI the moment admin processes orders
+        statsListener = orderRepository.listenToCustomerStats(uid, new DataCallback<Customer>() {
             @Override
             public void onSuccess(Customer customer) {
-                if (tvStatTotal != null)
-                    tvStatTotal.setText(String.valueOf(customer.getTotalOrders()));
-                if (tvStatSpent != null) {
-                    double spent = customer.getTotalSpent();
-                    tvStatSpent.setText(spent > 0
-                            ? String.format("Rs.%.0f", spent) : "Rs.0");
+                // Admin-maintained stats take priority; fallback is computed in loadOrders()
+                if (customer.getTotalOrders() > 0) {
+                    if (tvStatTotal != null)
+                        tvStatTotal.setText(String.valueOf(customer.getTotalOrders()));
+                    if (tvStatSpent != null) {
+                        double spent = customer.getTotalSpent();
+                        tvStatSpent.setText(spent > 0
+                                ? String.format("Rs.%.0f", spent) : "Rs.0");
+                    }
+                } else {
+                    // Fall back to computing from actual orders
+                    orderRepository.computeStatsFromOrders(uid, new DataCallback<Customer>() {
+                        @Override
+                        public void onSuccess(Customer computed) {
+                            if (tvStatTotal != null)
+                                tvStatTotal.setText(String.valueOf(computed.getTotalOrders()));
+                            if (tvStatSpent != null) {
+                                tvStatSpent.setText(computed.getTotalSpent() > 0
+                                        ? String.format("Rs.%.0f", computed.getTotalSpent())
+                                        : "Rs.0");
+                            }
+                        }
+                        @Override
+                        public void onError(Exception e) { /* keep current values */ }
+                    });
                 }
             }
 
             @Override
             public void onError(Exception e) {
                 Log.w(TAG, "Could not load customer stats", e);
-                if (tvStatTotal != null) tvStatTotal.setText("0");
-                if (tvStatSpent != null) tvStatSpent.setText("Rs.0");
             }
         });
     }
@@ -195,7 +268,7 @@ public class OrdersActivity extends AppCompatActivity {
         filteredOrders = new ArrayList<>();
 
         for (OrderItem o : allOrders) {
-            if (filter.equals("All") || o.getStatus().equals(filter)) {
+            if (filter.equals("All") || o.getStatus().equalsIgnoreCase(filter)) {
                 filteredOrders.add(o);
             }
         }
@@ -206,7 +279,7 @@ public class OrdersActivity extends AppCompatActivity {
         if (tvResultLabel != null)
             tvResultLabel.setText(count + " order" + (count != 1 ? "s" : ""));
         if (tvOrderCount  != null)
-            tvOrderCount.setText(allOrders.size() + " Orders");
+            tvOrderCount.setText(allOrders.size() + "");
 
         setTabActive(tabAll,        filter.equals("All"));
         setTabActive(tabDelivered,  filter.equals("Delivered"));
@@ -243,5 +316,11 @@ public class OrdersActivity extends AppCompatActivity {
             tab.setBackgroundResource(R.drawable.bg_distance_chip);
             tab.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (statsListener != null) statsListener.remove();
     }
 }
