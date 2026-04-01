@@ -238,4 +238,83 @@ public class OrderRepository {
                 })
                 .addOnFailureListener(callback::onError);
     }
+
+    // ── Order reports ──────────────────────────────────────────────────────────
+
+    /**
+     * Checks whether the customer has already submitted a report for the given order.
+     * Uses the orderId as the document ID in NearBuyHQ/{shopId}/reports/{orderId}.
+     *
+     * @param shopId    the shop's Firestore document ID
+     * @param orderId   the order's Firestore document ID
+     * @param callback  DataCallback<Boolean> – true if report already exists
+     */
+    public void checkReportExists(String shopId, String orderId,
+                                  DataCallback<Boolean> callback) {
+        if (!FirebaseConfig.isFirebaseEnabled()) {
+            callback.onSuccess(false);
+            return;
+        }
+        firestore.collection(FirebaseCollections.SHOPS)
+                .document(shopId)
+                .collection(FirebaseCollections.SHOP_REPORTS)
+                .document(orderId)
+                .get()
+                .addOnSuccessListener(doc -> callback.onSuccess(doc.exists()))
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "checkReportExists failed", e);
+                    callback.onSuccess(false);
+                });
+    }
+
+    /**
+     * Saves a customer order report to NearBuyHQ/{shopId}/reports/{orderId}.
+     * Uses orderId as the document ID so only one report per order is possible.
+     *
+     * @param shopId       shop document ID
+     * @param orderId      order document ID (becomes the report document ID)
+     * @param customerId   customer UID
+     * @param customerName customer display name
+     * @param shopName     shop display name
+     * @param reportText   the report content (max 200 words enforced by caller)
+     * @param callback     OperationCallback
+     */
+    public void saveReport(String shopId, String orderId, String customerId,
+                           String customerName, String shopName,
+                           String reportText, OperationCallback callback) {
+        if (!FirebaseConfig.isFirebaseEnabled()) {
+            callback.onError(new IllegalStateException("Firebase is not enabled."));
+            return;
+        }
+
+        java.util.Map<String, Object> report = new java.util.HashMap<>();
+        report.put("orderId",      orderId);
+        report.put("shopId",       shopId);
+        report.put("shopName",     shopName != null ? shopName : "");
+        report.put("customerId",   customerId);
+        report.put("customerName", customerName != null ? customerName : "");
+        report.put("reportText",   reportText);
+        report.put("wordCount",    countWords(reportText));
+        report.put("createdAt",    System.currentTimeMillis());
+
+        firestore.collection(FirebaseCollections.SHOPS)
+                .document(shopId)
+                .collection(FirebaseCollections.SHOP_REPORTS)
+                .document(orderId)   // orderId as doc ID → enforces one report per order
+                .set(report)
+                .addOnSuccessListener(unused -> {
+                    Log.d(TAG, "Report saved for order=" + orderId + " shop=" + shopId);
+                    callback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to save report", e);
+                    callback.onError(e);
+                });
+    }
+
+    /** Counts the number of words in a string. */
+    private static int countWords(String text) {
+        if (text == null || text.trim().isEmpty()) return 0;
+        return text.trim().split("\\s+").length;
+    }
 }

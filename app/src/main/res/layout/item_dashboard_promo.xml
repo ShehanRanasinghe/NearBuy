@@ -1,74 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     item_dashboard_promo.xml
-    Single promo row used in the "Active Promotions" RecyclerView on the Dashboard.
-    Uses a flat 2-level hierarchy (root + one inner vertical LinearLayout) to
-    keep measure/layout passes cheap.
+    Expanded promo card for the "Active Promotions" section on the Dashboard.
+    Shows: name, occasion, category, valid date, original price, discount, sale price.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
+    android:orientation="vertical"
     android:background="@drawable/bg_card_white"
-    android:padding="16dp"
-    android:layout_marginBottom="10dp"
+    android:padding="14dp"
+    android:layout_marginBottom="12dp"
     android:elevation="2dp"
     android:clickable="true"
     android:focusable="true">
 
-    <!-- Icon circle – emoji TextView (random icon assigned by adapter) -->
-    <TextView
-        android:id="@+id/tvPromoIcon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:text="🎁"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:background="@drawable/bg_icon_circle_orange"
-        android:contentDescription="Promo icon"/>
-
-    <!-- Title + description (one nested LinearLayout instead of two) -->
+    <!-- Row 1: Icon + Title + Discount Badge -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_marginStart="12dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
+        <!-- Emoji icon circle -->
         <TextView
-            android:id="@+id/tvPromoTitle"
+            android:id="@+id/tvPromoIcon"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:text="🎁"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:background="@drawable/bg_icon_circle_orange"
+            android:contentDescription="Promo icon"/>
+
+        <!-- Title + Occasion -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/tvPromoTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Double Points Weekend"
+                android:textColor="@color/text_dark_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/tvPromoOccasion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekend Sale"
+                android:textColor="@color/nb_primary"
+                android:textSize="11sp"
+                android:layout_marginTop="1dp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <!-- Discount badge -->
+        <TextView
+            android:id="@+id/tvPromoDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Double Points Weekend"
-            android:textColor="@color/text_dark_primary"
-            android:textSize="14sp"
+            android:text="30% OFF"
+            android:textColor="@color/white"
+            android:textSize="11sp"
             android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end"/>
-
-        <TextView
-            android:id="@+id/tvPromoDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Earn 2x reward points at all partner stores"
-            android:textColor="@color/text_dark_secondary"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp"
-            android:maxLines="2"
-            android:ellipsize="end"/>
-
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/bg_tab_active"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvPromoExpiry"
-        android:layout_width="wrap_content"
+    <!-- Thin divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_light"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Row 2: Category chip + Valid date -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2 days"
-        android:textColor="@color/nb_primary"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:layout_marginStart="8dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvPromoCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🛒 Groceries"
+            android:textColor="@color/nb_primary"
+            android:textSize="11sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:background="@drawable/bg_distance_chip"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tvPromoValidDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valid until 30 Apr 2026"
+            android:textColor="@color/stat_red"
+            android:textSize="11sp"/>
+    </LinearLayout>
+
+    <!-- Row 3: Prices -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp">
+
+        <!-- Original price (strikethrough applied in adapter) -->
+        <TextView
+            android:id="@+id/tvPromoOriginalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rs.500"
+            android:textColor="@color/text_dark_hint"
+            android:textSize="12sp"
+            android:layout_marginEnd="6dp"/>
+
+        <!-- Sale price (green, bold) -->
+        <TextView
+            android:id="@+id/tvPromoSalePrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rs.350"
+            android:textColor="@color/stat_green"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tvPromoExpiry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 days left"
+            android:textColor="@color/nb_accent"
+            android:textSize="11sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
 </LinearLayout>
-

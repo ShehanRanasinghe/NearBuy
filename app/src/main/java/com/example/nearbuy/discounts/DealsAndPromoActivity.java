@@ -22,20 +22,18 @@ import com.example.nearbuy.data.repository.DealRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * DealsAndPromoActivity – full listing of all active deals and promotions from
- * nearby shops.  Accessible ONLY via the "View All" links on the Dashboard home page.
+ * nearby shops.  Accessible via the "View All" links on the Dashboard home page.
  *
- * Data is loaded from Firestore via DealRepository.getAllDealsNearby().
- * The customer's GPS location and search radius are read from SessionManager.
+ * Uses DealItem directly so all Firestore fields (title, description, category,
+ * occasion, originalPrice, salePrice, discountLabel, shopName, distance, expiry)
+ * are available in the card without any lossy conversion.
  *
  * Two tabs:
- *   • Deals      – shop discounts (isPromotion = false)
- *   • Promotions – limited-time promo campaigns (isPromotion = true)
- *
- * Session guard: redirects to WelcomeActivity if no session is active.
+ *   • Deals      – shop discounts  (isPromotion = false)
+ *   • Promotions – limited-time campaigns (isPromotion = true)
  */
 public class DealsAndPromoActivity extends AppCompatActivity {
 
@@ -48,12 +46,11 @@ public class DealsAndPromoActivity extends AppCompatActivity {
     private TextView     tabDeals, tabPromos, tvResultLabel;
     private RecyclerView rvDealPromo;
 
-    // ── Data ───────────────────────────────────────────────────────────────────
-    // Loaded once from Firestore and kept in memory for fast tab switching
-    private List<DealPromoItem> allDeals  = new ArrayList<>();
-    private List<DealPromoItem> allPromos = new ArrayList<>();
+    // ── Data (raw DealItem lists – no intermediate conversion) ─────────────────
+    private List<DealItem> allDeals  = new ArrayList<>();
+    private List<DealItem> allPromos = new ArrayList<>();
 
-    private String activeTab = "deals"; // currently visible tab
+    private String activeTab = "deals";
 
     // ── Dependencies ───────────────────────────────────────────────────────────
     private DealRepository dealRepository;
@@ -135,7 +132,7 @@ public class DealsAndPromoActivity extends AppCompatActivity {
                 new DataCallback<List<DealItem>>() {
                     @Override
                     public void onSuccess(List<DealItem> deals) {
-                        allDeals = convertToDealPromoItems(deals, DealPromoItem.TYPE_DEAL);
+                        allDeals = deals;
                         Log.d(TAG, "Loaded " + allDeals.size() + " deals.");
                         // Refresh the displayed tab if it is currently showing deals
                         if (activeTab.equals("deals")) showTab("deals");
@@ -156,13 +153,13 @@ public class DealsAndPromoActivity extends AppCompatActivity {
         dealRepository.getAllDealsNearby(finalLat, finalLng, radius, true,
                 new DataCallback<List<DealItem>>() {
                     @Override
-                    public void onSuccess(List<DealItem> promos) {
-                        // Filter: keep only items where isPromotion == true
+                    public void onSuccess(List<DealItem> all) {
+                        // Keep only promotion items (isPromotion flag set by DealRepository)
                         List<DealItem> promoOnly = new ArrayList<>();
-                        for (DealItem d : promos) {
+                        for (DealItem d : all) {
                             if (d.isPromotion()) promoOnly.add(d);
                         }
-                        allPromos = convertToDealPromoItems(promoOnly, DealPromoItem.TYPE_PROMO);
+                        allPromos = promoOnly;
                         Log.d(TAG, "Loaded " + allPromos.size() + " promotions.");
                         if (activeTab.equals("promos")) showTab("promos");
                     }
@@ -177,33 +174,6 @@ public class DealsAndPromoActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    // ── DealItem → DealPromoItem conversion ───────────────────────────────────
-
-    /**
-     * Converts a list of Firestore-backed DealItem objects to the RecyclerView
-     * DealPromoItem UI model used by DealPromoAdapter.
-     *
-     * @param deals list of DealItem from Firestore
-     * @param type  DealPromoItem.TYPE_DEAL or TYPE_PROMO
-     * @return list of DealPromoItem ready for the adapter
-     */
-    private List<DealPromoItem> convertToDealPromoItems(List<DealItem> deals, int type) {
-        List<DealPromoItem> result = new ArrayList<>();
-        for (DealItem deal : deals) {
-            String emoji = categoryToEmoji(deal.getCategory());
-            result.add(new DealPromoItem(
-                    type,
-                    emoji,
-                    deal.getTitle()       != null ? deal.getTitle()       : "Deal",
-                    deal.getShopName()    != null ? deal.getShopName()    : "Nearby Shop",
-                    deal.getDescription() != null ? deal.getDescription() : "",
-                    deal.getDiscountLabel() != null ? deal.getDiscountLabel() : "",
-                    deal.getExpiryLabel()             // computed from expiresAt epoch
-            ));
-        }
-        return result;
     }
 
     // ── Tab switching ──────────────────────────────────────────────────────────
@@ -221,7 +191,7 @@ public class DealsAndPromoActivity extends AppCompatActivity {
      */
     private void showTab(String tab) {
         activeTab = tab;
-        List<DealPromoItem> list = tab.equals("deals") ? allDeals : allPromos;
+        List<DealItem> list = tab.equals("deals") ? allDeals : allPromos;
 
         // Bind data to the RecyclerView
         rvDealPromo.setAdapter(new DealPromoAdapter(this, list));
@@ -247,29 +217,6 @@ public class DealsAndPromoActivity extends AppCompatActivity {
         } else {
             tab.setBackgroundResource(R.drawable.bg_distance_chip);
             tab.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
-        }
-    }
-
-    /**
-     * Maps a deal category string to a representative emoji.
-     * Promotions of unrecognised categories receive the default 🎁 emoji.
-     */
-    private String categoryToEmoji(String category) {
-        if (category == null || category.isEmpty()) return "🏷️";
-        switch (category.toLowerCase(Locale.ROOT)) {
-            case "fruits":      return "🍎";
-            case "vegetables":  return "🥦";
-            case "food":        return "🍽️";
-            case "dairy":       return "🥛";
-            case "bakery":      return "🍞";
-            case "beverages":   return "🧃";
-            case "snacks":      return "🍟";
-            case "meat":        return "🍗";
-            case "seafood":     return "🐟";
-            case "household":   return "🧹";
-            case "groceries":   return "🛒";
-            case "promo":       return "🎁";
-            default:            return "🏷️";
         }
     }
 }

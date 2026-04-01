@@ -66,6 +66,12 @@ public class DashboardDealAdapter
                 deal.getDiscountLabel() != null ? deal.getDiscountLabel() : "SALE");
         holder.tvTitle.setText(deal.getTitle() != null ? deal.getTitle() : "");
 
+        // Show description snippet; fall back to "Valid until dd MMM yyyy" (or "No expiry")
+        String desc = deal.getDescription() != null ? deal.getDescription().trim() : "";
+        if (holder.tvDescription != null) {
+            holder.tvDescription.setText(desc.isEmpty() ? deal.getValidDateLabel() : desc);
+        }
+
         // Build "ShopName · distance" label
         String shopDist = deal.getShopName() != null ? deal.getShopName() : "";
         if (deal.hasDistance()) shopDist += " · " + deal.getDistanceLabel();
@@ -91,14 +97,16 @@ public class DashboardDealAdapter
         final TextView tvEmoji;
         final TextView tvDiscount;
         final TextView tvTitle;
+        final TextView tvDescription;
         final TextView tvShopDist;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvEmoji    = itemView.findViewById(R.id.tvDealEmoji);
-            tvDiscount = itemView.findViewById(R.id.tvDealDiscount);
-            tvTitle    = itemView.findViewById(R.id.tvDealTitle);
-            tvShopDist = itemView.findViewById(R.id.tvDealShopDist);
+            tvEmoji       = itemView.findViewById(R.id.tvDealEmoji);
+            tvDiscount    = itemView.findViewById(R.id.tvDealDiscount);
+            tvTitle       = itemView.findViewById(R.id.tvDealTitle);
+            tvDescription = itemView.findViewById(R.id.tvDealDescription);
+            tvShopDist    = itemView.findViewById(R.id.tvDealShopDist);
         }
     }
 }
