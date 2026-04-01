@@ -17,12 +17,14 @@ import com.example.nearbuy.product.ProductDetailsActivity;
 import java.util.List;
 
 /**
- * SearchGridAdapter – RecyclerView adapter for the 2-column product grid
- * shown in SearchActivity. Tapping an item opens ProductDetailsActivity.
+ * SearchListAdapter – RecyclerView adapter for the vertical product list
+ * shown in SearchActivity.  Uses item_search_result layout (horizontal row card).
+ * Tapping an item opens ProductDetailsActivity with full Firestore IDs so the
+ * product can be loaded completely.
  */
 public class SearchGridAdapter extends RecyclerView.Adapter<SearchGridAdapter.ViewHolder> {
 
-    private final Context               context;
+    private final Context                context;
     private final List<SearchResultItem> items;
 
     public SearchGridAdapter(Context context, List<SearchResultItem> items) {
@@ -34,7 +36,7 @@ public class SearchGridAdapter extends RecyclerView.Adapter<SearchGridAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context)
-                .inflate(R.layout.item_search_grid, parent, false);
+                .inflate(R.layout.item_search_result, parent, false);
         return new ViewHolder(v);
     }
 
@@ -48,12 +50,24 @@ public class SearchGridAdapter extends RecyclerView.Adapter<SearchGridAdapter.Vi
         h.tvDistance.setText(item.getDistanceLabel());
         h.tvCategory.setText(item.getCategory());
         h.tvPrice.setText(item.getPrice());
-        h.tvOriginal.setText(item.getOriginalPrice());
-        h.tvOriginal.setPaintFlags(h.tvOriginal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        // Strikethrough original price; hide if no discount
+        String origPrice = item.getOriginalPrice();
+        if (origPrice != null && !origPrice.isEmpty()) {
+            h.tvOriginal.setVisibility(View.VISIBLE);
+            h.tvOriginal.setText(origPrice);
+            h.tvOriginal.setPaintFlags(h.tvOriginal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            h.tvOriginal.setVisibility(View.GONE);
+        }
 
         h.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductDetailsActivity.class);
-            intent.putExtra(ProductDetailsActivity.EXTRA_EMOJI,           item.getEmoji());
+            // Pass Firestore IDs so ProductDetailsActivity loads full data
+            intent.putExtra(ProductDetailsActivity.EXTRA_SHOP_ID,       item.getShopId());
+            intent.putExtra(ProductDetailsActivity.EXTRA_PRODUCT_ID,    item.getProductId());
+            // Fallback extras shown immediately while Firestore loads
+            intent.putExtra(ProductDetailsActivity.EXTRA_EMOJI,          item.getEmoji());
             intent.putExtra(ProductDetailsActivity.EXTRA_NAME,            item.getProductName());
             intent.putExtra(ProductDetailsActivity.EXTRA_SHOP_NAME,       item.getShopName());
             intent.putExtra(ProductDetailsActivity.EXTRA_PRICE,           item.getPrice());
@@ -65,21 +79,22 @@ public class SearchGridAdapter extends RecyclerView.Adapter<SearchGridAdapter.Vi
     }
 
     @Override
-    public int getItemCount() { return items.size(); }
+    public int getItemCount() { return items == null ? 0 : items.size(); }
+
+    // ── ViewHolder ────────────────────────────────────────────────────────────
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvEmoji, tvName, tvShop, tvDistance, tvCategory, tvPrice, tvOriginal;
+        final TextView tvEmoji, tvName, tvShop, tvDistance, tvCategory, tvPrice, tvOriginal;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvEmoji    = itemView.findViewById(R.id.tvGridEmoji);
-            tvName     = itemView.findViewById(R.id.tvGridName);
-            tvShop     = itemView.findViewById(R.id.tvGridShop);
-            tvDistance = itemView.findViewById(R.id.tvGridDistance);
-            tvCategory = itemView.findViewById(R.id.tvGridCategory);
-            tvPrice    = itemView.findViewById(R.id.tvGridPrice);
-            tvOriginal = itemView.findViewById(R.id.tvGridOriginalPrice);
+            tvEmoji    = itemView.findViewById(R.id.tvProductEmoji);
+            tvName     = itemView.findViewById(R.id.tvProductName);
+            tvShop     = itemView.findViewById(R.id.tvShopName);
+            tvDistance = itemView.findViewById(R.id.tvDistance);
+            tvCategory = itemView.findViewById(R.id.tvCategory);
+            tvPrice    = itemView.findViewById(R.id.tvPrice);
+            tvOriginal = itemView.findViewById(R.id.tvOriginalPrice);
         }
     }
 }
-

@@ -102,7 +102,7 @@
             android:textSize="13sp"/>
     </LinearLayout>
 
-    <!-- Results Grid -->
+    <!-- Results List (single-column vertical) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearchResults"
         android:layout_width="match_parent"

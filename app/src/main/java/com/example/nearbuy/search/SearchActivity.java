@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nearbuy.R;
@@ -119,9 +119,9 @@ public class SearchActivity extends AppCompatActivity {
         ImageView btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        // 2-column grid for the search result cards
+        // Single-column vertical list for the search result cards
         if (rvSearchResults != null)
-            rvSearchResults.setLayoutManager(new GridLayoutManager(this, 2));
+            rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
     }
 
     // ── Search wiring ──────────────────────────────────────────────────────────
@@ -182,7 +182,7 @@ public class SearchActivity extends AppCompatActivity {
                 // Convert Firestore Product objects to the UI SearchResultItem model
                 List<SearchResultItem> items = new ArrayList<>();
                 for (Product p : products) {
-                    items.add(new SearchResultItem(
+                    SearchResultItem resultItem = new SearchResultItem(
                             p.getName(),
                             p.getShopName()  != null ? p.getShopName()  : "Nearby Shop",
                             categoryToEmoji(p.getCategory()),
@@ -191,7 +191,11 @@ public class SearchActivity extends AppCompatActivity {
                                     ? String.format(Locale.ROOT, "Rs. %.2f", p.getOriginalPrice()) : "",
                             p.hasDistance() ? p.getDistanceKm() : 0.0,
                             p.getCategory() != null ? p.getCategory() : "General"
-                    ));
+                    );
+                    // Attach Firestore IDs so ProductDetailsActivity can load full data
+                    resultItem.setShopId(p.getShopId() != null ? p.getShopId() : "");
+                    resultItem.setProductId(p.getId()  != null ? p.getId()     : "");
+                    items.add(resultItem);
                 }
 
                 // Bind the new list to the RecyclerView

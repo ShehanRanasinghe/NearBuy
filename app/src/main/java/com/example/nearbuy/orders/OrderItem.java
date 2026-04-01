@@ -6,12 +6,12 @@ import java.util.Map;
 /**
  * OrderItem – represents a single customer order.
  *
- * Firestore path: NearBuy/{customerId}/orders/{orderId}
+ * Firestore paths (dual-write):
+ *   NearBuyHQ/{shopId}/orders/{orderId}   ← visible to admin / shop owner
+ *   NearBuy/{customerId}/orders/{orderId} ← visible to the customer
  *
- * The display fields (shopEmoji, orderDate as formatted string, itemsSummary,
- * totalAmount as formatted string) are kept as Strings for backwards-compatibility
- * with the existing OrdersAdapter.  Raw numeric values are also stored so the
- * repository can calculate totals.
+ * Customer stats (totalOrders, totalSpent) are NOT updated by this app.
+ * They are maintained exclusively by the NearBuyHQ admin app.
  */
 public class OrderItem {
 
@@ -26,6 +26,11 @@ public class OrderItem {
     private int    itemCount;
     private double totalAmountRaw;  // numeric value for stats calculation
     private long   createdAt;       // epoch ms
+
+    // ── Fields for admin visibility ───────────────────────────────────────────
+    private String customerId;      // UID of the customer who placed the order
+    private String customerName;    // display name of the customer
+    private String fulfillmentType; // "Delivery" | "Pick Up"
 
     /** Constructor used by the OrdersAdapter (existing UI compatibility). */
     public OrderItem(String orderId, String shopName, String shopEmoji,
@@ -42,23 +47,33 @@ public class OrderItem {
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────
-    public String getOrderId()      { return orderId; }
-    public String getShopId()       { return shopId; }
-    public String getShopName()     { return shopName; }
-    public String getShopEmoji()    { return shopEmoji; }
-    public String getOrderDate()    { return orderDate; }
-    public String getItemsSummary() { return itemsSummary; }
-    public String getTotalAmount()  { return totalAmount; }
-    public String getStatus()       { return status; }
-    public int    getItemCount()    { return itemCount; }
+    public String getOrderId()        { return orderId; }
+    public String getShopId()         { return shopId; }
+    public String getShopName()       { return shopName; }
+    public String getShopEmoji()      { return shopEmoji; }
+    public String getOrderDate()      { return orderDate; }
+    public String getItemsSummary()   { return itemsSummary; }
+    public String getTotalAmount()    { return totalAmount; }
+    public String getStatus()         { return status; }
+    public int    getItemCount()      { return itemCount; }
     public double getTotalAmountRaw() { return totalAmountRaw; }
-    public long   getCreatedAt()    { return createdAt; }
+    public long   getCreatedAt()      { return createdAt; }
+    public String getCustomerId()     { return customerId; }
+    public String getCustomerName()   { return customerName; }
+    public String getFulfillmentType(){ return fulfillmentType; }
+
+    // ── Setters ───────────────────────────────────────────────────────────────
+    public void setShopId(String shopId)              { this.shopId = shopId; }
+    public void setTotalAmountRaw(double amount)      { this.totalAmountRaw = amount; }
+    public void setCustomerId(String customerId)      { this.customerId = customerId; }
+    public void setCustomerName(String customerName)  { this.customerName = customerName; }
+    public void setFulfillmentType(String type)       { this.fulfillmentType = type; }
+    public void setStatus(String status)              { this.status = status; }
 
     // ── Firestore serialisation ───────────────────────────────────────────────
 
     /**
      * Reconstructs an OrderItem from a Firestore document map.
-     * The display strings are derived from the stored raw values.
      *
      * @param id  Firestore document ID
      * @param map data map from Firestore
@@ -67,41 +82,48 @@ public class OrderItem {
     public static OrderItem fromMap(String id, Map<String, Object> map) {
         if (map == null) return null;
 
-        String shopName   = str(map.get("shopName"));
-        String shopEmoji  = str(map.get("shopEmoji"));
-        String dateStr    = str(map.get("orderDate"));
-        String summary    = str(map.get("itemsSummary"));
-        String totalStr   = str(map.get("totalAmount"));
-        String status     = defaultIfEmpty(str(map.get("status")), "Processing");
-        int    itemCount  = intVal(map.get("itemCount"));
-        double rawAmount  = dbl(map.get("totalAmountRaw"));
-        long   createdAt  = lng(map.get("createdAt"));
+        String shopName       = str(map.get("shopName"));
+        String shopEmoji      = str(map.get("shopEmoji"));
+        String dateStr        = str(map.get("orderDate"));
+        String summary        = str(map.get("itemsSummary"));
+        String totalStr       = str(map.get("totalAmount"));
+        String status         = defaultIfEmpty(str(map.get("status")), "Processing");
+        int    itemCount      = intVal(map.get("itemCount"));
+        double rawAmount      = dbl(map.get("totalAmountRaw"));
+        long   createdAt      = lng(map.get("createdAt"));
 
         OrderItem order = new OrderItem(id, shopName, shopEmoji,
                 dateStr, summary, totalStr, status, itemCount);
-        order.shopId        = str(map.get("shopId"));
-        order.totalAmountRaw = rawAmount;
-        order.createdAt     = createdAt;
+        order.shopId          = str(map.get("shopId"));
+        order.totalAmountRaw  = rawAmount;
+        order.createdAt       = createdAt;
+        order.customerId      = str(map.get("customerId"));
+        order.customerName    = str(map.get("customerName"));
+        order.fulfillmentType = str(map.get("fulfillmentType"));
         return order;
     }
 
     /**
      * Converts this order to a Firestore-compatible Map for writes.
+     * Includes customerId/customerName so the admin app can identify the customer.
      *
      * @return Map suitable for Firestore set() / update()
      */
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("shopId",        shopId != null ? shopId : "");
-        map.put("shopName",      shopName);
-        map.put("shopEmoji",     shopEmoji);
-        map.put("orderDate",     orderDate);
-        map.put("itemsSummary",  itemsSummary);
-        map.put("totalAmount",   totalAmount);
-        map.put("totalAmountRaw", totalAmountRaw);
-        map.put("status",        status);
-        map.put("itemCount",     itemCount);
-        map.put("createdAt",     createdAt > 0 ? createdAt : System.currentTimeMillis());
+        map.put("shopId",          shopId != null ? shopId : "");
+        map.put("shopName",        shopName);
+        map.put("shopEmoji",       shopEmoji);
+        map.put("orderDate",       orderDate);
+        map.put("itemsSummary",    itemsSummary);
+        map.put("totalAmount",     totalAmount);
+        map.put("totalAmountRaw",  totalAmountRaw);
+        map.put("status",          status);
+        map.put("itemCount",       itemCount);
+        map.put("createdAt",       createdAt > 0 ? createdAt : System.currentTimeMillis());
+        map.put("customerId",      customerId != null ? customerId : "");
+        map.put("customerName",    customerName != null ? customerName : "");
+        map.put("fulfillmentType", fulfillmentType != null ? fulfillmentType : "Delivery");
         return map;
     }
 

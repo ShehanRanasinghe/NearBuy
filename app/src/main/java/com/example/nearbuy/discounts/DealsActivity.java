@@ -8,17 +8,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nearbuy.R;
 import com.example.nearbuy.app.startup.WelcomeActivity;
 import com.example.nearbuy.core.SessionManager;
 import com.example.nearbuy.dashboard.DashboardActivity;
+import com.example.nearbuy.data.model.Customer;
 import com.example.nearbuy.data.repository.DataCallback;
 import com.example.nearbuy.data.repository.OrderRepository;
 import com.example.nearbuy.orders.OrderItem;
@@ -32,31 +34,31 @@ import java.util.List;
 /**
  * DealsActivity – the Orders tab in the bottom navigation bar.
  *
- * Despite its class name (kept for back-stack compatibility), this screen shows
- * the customer's order history, identical to OrdersActivity but with bottom-nav
- * integrated.  Orders are loaded from Firestore via OrderRepository.
- *
- * No sample / hardcoded data is used in this activity.
+ * Shows the customer's order history (RecyclerView) with filter tabs.
+ * Lifetime stats (Total Orders / Total Spent / Delivered) are loaded from
+ * the customer's Firestore profile – maintained by the NearBuyHQ admin app.
+ * This app NEVER writes to those counters.
  */
 public class DealsActivity extends AppCompatActivity {
 
     private static final String TAG = "NearBuy.Deals";
 
     // ── UI references ──────────────────────────────────────────────────────────
-    private ListView     listOrders;
-    private TextView     tvResultCount;
-    private TextView     tabAll, tabDelivered, tabProcessing, tabCancelled;
-    private LinearLayout navHome, navSearch, navDeals, navProfile;
-    private ImageView    navHomeIcon, navSearchIcon, navDealsIcon, navProfileIcon;
-    private TextView     navHomeText, navSearchText, navDealsText, navProfileText;
-    private ImageView    btnBack;
-    private View         layoutEmpty;
+    private RecyclerView  recyclerOrders;
+    private TextView      tvResultCount;
+    private TextView      tvTotalOrdersStat, tvTotalSpentStat, tvDeliveredStat, tvAvgOrderStat;
+    private TextView      tabAll, tabDelivered, tabProcessing, tabCancelled;
+    private LinearLayout  navHome, navSearch, navDeals, navProfile;
+    private ImageView     navHomeIcon, navSearchIcon, navDealsIcon, navProfileIcon;
+    private TextView      navHomeText, navSearchText, navDealsText, navProfileText;
+    private ImageView     btnBack;
+    private View          layoutEmpty;
 
     // ── Data ───────────────────────────────────────────────────────────────────
-    private OrdersAdapter    adapter;
-    private List<OrderItem>  allOrders      = new ArrayList<>();
-    private List<OrderItem>  filteredOrders = new ArrayList<>();
-    private String           activeFilter   = "All";
+    private OrdersAdapter   adapter;
+    private List<OrderItem> allOrders      = new ArrayList<>();
+    private List<OrderItem> filteredOrders = new ArrayList<>();
+    private String          activeFilter   = "All";
 
     // ── Dependencies ───────────────────────────────────────────────────────────
     private OrderRepository orderRepository;
@@ -74,7 +76,6 @@ public class DealsActivity extends AppCompatActivity {
         orderRepository = new OrderRepository();
         sessionManager  = SessionManager.getInstance(this);
 
-        // ── Session guard ─────────────────────────────────────────────────────
         if (!sessionManager.isLoggedIn()) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
@@ -85,43 +86,60 @@ public class DealsActivity extends AppCompatActivity {
         setupTabs();
         setupNavigation();
 
-        // Load real orders from Firestore
         loadOrders();
+        loadStats();
     }
 
     // ── View binding ───────────────────────────────────────────────────────────
 
     private void initViews() {
-        listOrders    = findViewById(R.id.listOrders);
-        tvResultCount = findViewById(R.id.tvResultCount);
-        tabAll        = findViewById(R.id.tabAll);
-        tabDelivered  = findViewById(R.id.tabDelivered);
-        tabProcessing = findViewById(R.id.tabProcessing);
-        tabCancelled  = findViewById(R.id.tabCancelled);
-        navHome       = findViewById(R.id.navHome);
-        navSearch     = findViewById(R.id.navSearch);
-        navDeals      = findViewById(R.id.navDeals);
-        navProfile    = findViewById(R.id.navProfile);
-        navHomeIcon   = findViewById(R.id.navHomeIcon);
-        navSearchIcon = findViewById(R.id.navSearchIcon);
-        navDealsIcon  = findViewById(R.id.navDealsIcon);
-        navProfileIcon= findViewById(R.id.navProfileIcon);
-        navHomeText   = findViewById(R.id.navHomeText);
-        navSearchText = findViewById(R.id.navSearchText);
-        navDealsText  = findViewById(R.id.navDealsText);
-        navProfileText= findViewById(R.id.navProfileText);
-        btnBack       = findViewById(R.id.btnBack);
-        layoutEmpty   = findViewById(R.id.layoutEmpty);
+        recyclerOrders     = findViewById(R.id.recyclerOrders);
+        tvResultCount      = findViewById(R.id.tvResultCount);
+        tvTotalOrdersStat  = findViewById(R.id.tvTotalOrdersStat);
+        tvTotalSpentStat   = findViewById(R.id.tvTotalSpentStat);
+        tvDeliveredStat    = findViewById(R.id.tvDeliveredStat);
+        tvAvgOrderStat     = findViewById(R.id.tvAvgOrderStat);
+        tabAll             = findViewById(R.id.tabAll);
+        tabDelivered       = findViewById(R.id.tabDelivered);
+        tabProcessing      = findViewById(R.id.tabProcessing);
+        tabCancelled       = findViewById(R.id.tabCancelled);
+        navHome            = findViewById(R.id.navHome);
+        navSearch          = findViewById(R.id.navSearch);
+        navDeals           = findViewById(R.id.navDeals);
+        navProfile         = findViewById(R.id.navProfile);
+        navHomeIcon        = findViewById(R.id.navHomeIcon);
+        navSearchIcon      = findViewById(R.id.navSearchIcon);
+        navDealsIcon       = findViewById(R.id.navDealsIcon);
+        navProfileIcon     = findViewById(R.id.navProfileIcon);
+        navHomeText        = findViewById(R.id.navHomeText);
+        navSearchText      = findViewById(R.id.navSearchText);
+        navDealsText       = findViewById(R.id.navDealsText);
+        navProfileText     = findViewById(R.id.navProfileText);
+        btnBack            = findViewById(R.id.btnBack);
+        layoutEmpty        = findViewById(R.id.layoutEmpty);
 
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());
+
+        // Placeholder until Firestore responds
+        if (tvTotalOrdersStat != null) tvTotalOrdersStat.setText("—");
+        if (tvTotalSpentStat  != null) tvTotalSpentStat.setText("—");
+        if (tvDeliveredStat   != null) tvDeliveredStat.setText("—");
+        if (tvAvgOrderStat    != null) tvAvgOrderStat.setText("—");
+
+        // Set up RecyclerView
+        if (recyclerOrders != null) {
+            adapter = new OrdersAdapter(filteredOrders, order ->
+                    Toast.makeText(this,
+                            "Order #" + order.getOrderId() + " — " + order.getStatus(),
+                            Toast.LENGTH_SHORT).show());
+            recyclerOrders.setLayoutManager(new LinearLayoutManager(this));
+            recyclerOrders.setAdapter(adapter);
+            recyclerOrders.setHasFixedSize(false);
+        }
     }
 
-    // ── Firestore data load ────────────────────────────────────────────────────
+    // ── Firestore: orders ──────────────────────────────────────────────────────
 
-    /**
-     * Loads the customer's order history from Firestore.
-     * On empty result → shows empty-state message.
-     */
     private void loadOrders() {
         String uid = sessionManager.getUserId();
         if (uid.isEmpty()) {
@@ -146,6 +164,55 @@ public class DealsActivity extends AppCompatActivity {
         });
     }
 
+    // ── Firestore: stats (read-only; maintained by NearBuyHQ admin app) ────────
+
+    /**
+     * Loads lifetime stats from the customer's Firestore profile document.
+     * These values are maintained by the NearBuyHQ admin app, never by this app.
+     */
+    private void loadStats() {
+        String uid = sessionManager.getUserId();
+        if (uid.isEmpty()) return;
+
+        orderRepository.getCustomerStats(uid, new DataCallback<Customer>() {
+            @Override
+            public void onSuccess(Customer customer) {
+                if (tvTotalOrdersStat != null)
+                    tvTotalOrdersStat.setText(String.valueOf(customer.getTotalOrders()));
+                if (tvTotalSpentStat != null) {
+                    double spent = customer.getTotalSpent();
+                    tvTotalSpentStat.setText(spent > 0
+                            ? String.format("Rs.%.0f", spent) : "Rs.0");
+                }
+                // Delivered count: count from loaded orders for now
+                // (admin will set totalOrders; delivered is derived locally)
+                if (tvDeliveredStat != null) {
+                    long delivered = allOrders.stream()
+                            .filter(o -> "Delivered".equals(o.getStatus())).count();
+                    tvDeliveredStat.setText(String.valueOf(delivered));
+                }
+                // Avg order
+                if (tvAvgOrderStat != null) {
+                    double spent = customer.getTotalSpent();
+                    int total = customer.getTotalOrders();
+                    if (total > 0)
+                        tvAvgOrderStat.setText(String.format("Rs.%.0f", spent / total));
+                    else
+                        tvAvgOrderStat.setText("Rs.0");
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.w(TAG, "Could not load customer stats", e);
+                if (tvTotalOrdersStat != null) tvTotalOrdersStat.setText("0");
+                if (tvTotalSpentStat  != null) tvTotalSpentStat.setText("Rs.0");
+                if (tvDeliveredStat   != null) tvDeliveredStat.setText("0");
+                if (tvAvgOrderStat    != null) tvAvgOrderStat.setText("Rs.0");
+            }
+        });
+    }
+
     // ── Tabs ───────────────────────────────────────────────────────────────────
 
     private void setupTabs() {
@@ -163,8 +230,7 @@ public class DealsActivity extends AppCompatActivity {
                 filteredOrders.add(o);
         }
 
-        adapter = new OrdersAdapter(this, filteredOrders);
-        if (listOrders != null) listOrders.setAdapter(adapter);
+        if (adapter != null) adapter.setItems(filteredOrders);
 
         int c = filteredOrders.size();
         if (tvResultCount != null)
@@ -204,12 +270,12 @@ public class DealsActivity extends AppCompatActivity {
                 if (child instanceof TextView) ((TextView) child).setText(message);
             }
         }
-        if (listOrders != null) listOrders.setVisibility(View.GONE);
+        if (recyclerOrders != null) recyclerOrders.setVisibility(View.GONE);
     }
 
     private void hideEmptyState() {
-        if (layoutEmpty != null) layoutEmpty.setVisibility(View.GONE);
-        if (listOrders  != null) listOrders.setVisibility(View.VISIBLE);
+        if (layoutEmpty    != null) layoutEmpty.setVisibility(View.GONE);
+        if (recyclerOrders != null) recyclerOrders.setVisibility(View.VISIBLE);
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────
@@ -228,21 +294,13 @@ public class DealsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (navDealsIcon != null)
-            navDealsIcon.setColorFilter(ContextCompat.getColor(this, R.color.nb_primary));
-        if (navDealsText != null)
-            navDealsText.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
-        if (navHomeIcon != null)
-            navHomeIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navHomeText != null)
-            navHomeText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navSearchIcon != null)
-            navSearchIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navSearchText != null)
-            navSearchText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navProfileIcon != null)
-            navProfileIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
-        if (navProfileText != null)
-            navProfileText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
+        if (navDealsIcon   != null) navDealsIcon.setColorFilter(ContextCompat.getColor(this, R.color.nb_primary));
+        if (navDealsText   != null) navDealsText.setTextColor(ContextCompat.getColor(this, R.color.nb_primary));
+        if (navHomeIcon    != null) navHomeIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
+        if (navHomeText    != null) navHomeText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
+        if (navSearchIcon  != null) navSearchIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
+        if (navSearchText  != null) navSearchText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
+        if (navProfileIcon != null) navProfileIcon.setColorFilter(ContextCompat.getColor(this, R.color.text_dark_hint));
+        if (navProfileText != null) navProfileText.setTextColor(ContextCompat.getColor(this, R.color.text_dark_hint));
     }
 }

@@ -115,14 +115,37 @@
                 android:maxLines="1"
                 android:ellipsize="end"/>
 
-            <TextView
-                android:id="@+id/tvOrderItemCount"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 items"
-                android:textColor="@color/text_dark_hint"
-                android:textSize="11sp"
-                android:layout_marginTop="2dp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/tvOrderItemCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 items"
+                    android:textColor="@color/text_dark_hint"
+                    android:textSize="11sp"/>
+
+                <!-- Fulfillment type badge (Delivery / Pick Up) -->
+                <TextView
+                    android:id="@+id/tvOrderFulfillment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delivery"
+                    android:textSize="10sp"
+                    android:textColor="@color/nb_primary"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_distance_chip"
+                    android:visibility="gone"/>
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Total amount -->

@@ -44,6 +44,13 @@ public final class FirebaseCollections {
     /** Promotions sub-collection inside each shop document. */
     public static final String SHOP_PROMOTIONS   = "promotions";     // NearBuyHQ/{shopId}/promotions
 
+    /**
+     * Orders sub-collection inside each shop document.
+     * Written by the customer app; read by both NearBuyHQ admin and customer app.
+     * Firestore path: NearBuyHQ/{shopId}/orders/{orderId}
+     */
+    public static final String SHOP_ORDERS       = "orders";         // NearBuyHQ/{shopId}/orders
+
     // ── Customer-owned collections ─────────────────────────────────────────────
     /** Root collection for customer profile documents. */
     public static final String CUSTOMERS               = "NearBuy";             // NearBuy/{customerId}

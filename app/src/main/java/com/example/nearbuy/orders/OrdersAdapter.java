@@ -1,79 +1,121 @@
 package com.example.nearbuy.orders;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nearbuy.R;
 
 import java.util.List;
 
 /**
- * ArrayAdapter for displaying OrderItem objects in the OrdersActivity ListView.
+ * RecyclerView.Adapter for displaying OrderItem objects in the OrdersActivity.
  */
-public class OrdersAdapter extends ArrayAdapter<OrderItem> {
+public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
 
-    public OrdersAdapter(@NonNull Context context, @NonNull List<OrderItem> items) {
-        super(context, 0, items);
+    public interface OnOrderClickListener {
+        void onOrderClick(OrderItem order);
+    }
+
+    private List<OrderItem> items;
+    private final OnOrderClickListener listener;
+
+    public OrdersAdapter(@NonNull List<OrderItem> items, OnOrderClickListener listener) {
+        this.items    = items;
+        this.listener = listener;
+    }
+
+    /** Replace the data set and refresh the list. */
+    public void setItems(@NonNull List<OrderItem> newItems) {
+        this.items = newItems;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.item_order, parent, false);
-        }
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_order, parent, false);
+        return new ViewHolder(view);
+    }
 
-        OrderItem item = getItem(position);
-        if (item == null) return convertView;
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        OrderItem item = items.get(position);
 
-        TextView tvEmoji    = convertView.findViewById(R.id.tvOrderShopEmoji);
-        TextView tvShop     = convertView.findViewById(R.id.tvOrderShopName);
-        TextView tvDate     = convertView.findViewById(R.id.tvOrderDate);
-        TextView tvItems    = convertView.findViewById(R.id.tvOrderItems);
-        TextView tvCount    = convertView.findViewById(R.id.tvOrderItemCount);
-        TextView tvTotal    = convertView.findViewById(R.id.tvOrderTotal);
-        TextView tvStatus   = convertView.findViewById(R.id.tvOrderStatus);
-        TextView tvOrderId  = convertView.findViewById(R.id.tvOrderId);
-
-        tvEmoji.setText(item.getShopEmoji());
-        tvShop.setText(item.getShopName());
-        tvDate.setText(item.getOrderDate());
-        tvItems.setText(item.getItemsSummary());
-        tvCount.setText(item.getItemCount() + " item" + (item.getItemCount() > 1 ? "s" : ""));
-        tvTotal.setText(item.getTotalAmount());
-        tvOrderId.setText("#" + item.getOrderId());
+        holder.tvEmoji.setText(item.getShopEmoji());
+        holder.tvShop.setText(item.getShopName());
+        holder.tvDate.setText(item.getOrderDate());
+        holder.tvItems.setText(item.getItemsSummary());
+        holder.tvCount.setText(item.getItemCount() + " item" + (item.getItemCount() > 1 ? "s" : ""));
+        holder.tvTotal.setText(item.getTotalAmount());
+        holder.tvOrderId.setText("#" + item.getOrderId());
 
         // Status color coding
         String status = item.getStatus();
-        tvStatus.setText(status);
+        holder.tvStatus.setText(status);
         switch (status) {
             case "Delivered":
-                tvStatus.setBackgroundResource(R.drawable.bg_status_delivered);
-                tvStatus.setTextColor(Color.WHITE);
+                holder.tvStatus.setBackgroundResource(R.drawable.bg_status_delivered);
+                holder.tvStatus.setTextColor(Color.WHITE);
                 break;
             case "Processing":
-                tvStatus.setBackgroundResource(R.drawable.bg_badge_teal);
-                tvStatus.setTextColor(Color.WHITE);
+                holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_teal);
+                holder.tvStatus.setTextColor(Color.WHITE);
                 break;
             case "Cancelled":
-                tvStatus.setBackgroundResource(R.drawable.bg_badge_orange);
-                tvStatus.setTextColor(Color.WHITE);
+                holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_orange);
+                holder.tvStatus.setTextColor(Color.WHITE);
                 break;
             default:
-                tvStatus.setBackgroundResource(R.drawable.bg_distance_badge);
-                tvStatus.setTextColor(getContext().getColor(R.color.nb_primary));
+                holder.tvStatus.setBackgroundResource(R.drawable.bg_distance_badge);
+                holder.tvStatus.setTextColor(
+                        holder.itemView.getContext().getColor(R.color.nb_primary));
         }
 
-        return convertView;
+        // Fulfillment type badge (if present)
+        String fType = item.getFulfillmentType();
+        if (holder.tvFulfillment != null) {
+            if (fType != null && !fType.isEmpty()) {
+                holder.tvFulfillment.setVisibility(View.VISIBLE);
+                holder.tvFulfillment.setText(fType);
+            } else {
+                holder.tvFulfillment.setVisibility(View.GONE);
+            }
+        }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onOrderClick(item);
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return items == null ? 0 : items.size();
+    }
+
+    // ── ViewHolder ────────────────────────────────────────────────────────────
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView tvEmoji, tvShop, tvDate, tvItems, tvCount, tvTotal, tvStatus, tvOrderId;
+        final TextView tvFulfillment; // optional – may be null if not in item layout
+
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvEmoji       = itemView.findViewById(R.id.tvOrderShopEmoji);
+            tvShop        = itemView.findViewById(R.id.tvOrderShopName);
+            tvDate        = itemView.findViewById(R.id.tvOrderDate);
+            tvItems       = itemView.findViewById(R.id.tvOrderItems);
+            tvCount       = itemView.findViewById(R.id.tvOrderItemCount);
+            tvTotal       = itemView.findViewById(R.id.tvOrderTotal);
+            tvStatus      = itemView.findViewById(R.id.tvOrderStatus);
+            tvOrderId     = itemView.findViewById(R.id.tvOrderId);
+            tvFulfillment = itemView.findViewById(R.id.tvOrderFulfillment); // optional
+        }
     }
 }
-

@@ -6,20 +6,25 @@ import com.example.nearbuy.core.firebase.FirebaseConfig;
 import com.example.nearbuy.data.model.Customer;
 import com.example.nearbuy.data.remote.firebase.FirebaseCollections;
 import com.example.nearbuy.orders.OrderItem;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OrderRepository – reads and writes customer order documents from Firestore.
  *
- * Firestore path: NearBuy/{customerId}/orders/{orderId}
+ * Dual-write strategy:
+ *   • NearBuyHQ/{shopId}/orders/{orderId}   ← shop-wise; readable by NearBuyHQ admin app
+ *   • NearBuy/{customerId}/orders/{orderId} ← customer-wise; readable by this app
  *
- * All order writes are performed by the companion NearBuyHQ admin / shop app.
- * The customer app only READS order history and customer stats here.
+ * Customer stats (totalOrders, totalSpent) are NOT updated here.
+ * They are maintained exclusively by the NearBuyHQ admin app when orders are processed.
  */
 public class OrderRepository {
 
@@ -34,12 +39,19 @@ public class OrderRepository {
     // ── Place order ────────────────────────────────────────────────────────────
 
     /**
-     * Saves a new order document to NearBuy/{customerId}/orders.
-     * Called from ProductDetailsActivity when the customer taps "Place Order".
+     * Saves a new order document to BOTH:
+     *   NearBuyHQ/{shopId}/orders/{orderId}   (admin / shop owner can see all orders per shop)
+     *   NearBuy/{customerId}/orders/{orderId} (customer can see their own order history)
+     *
+     * The same auto-generated document ID is used in both paths so they can be
+     * cross-referenced easily.
+     *
+     * Customer stats (totalOrders, totalSpent) are NOT modified here.
+     * The NearBuyHQ admin app is responsible for updating those when it processes orders.
      *
      * @param customerId customer UID
-     * @param order      the OrderItem to persist
-     * @param callback   OperationCallback – onSuccess when saved, onError otherwise
+     * @param order      the OrderItem to persist (must have shopId, customerId set)
+     * @param callback   OperationCallback – onSuccess when both writes succeed
      */
     public void placeOrder(String customerId, OrderItem order, OperationCallback callback) {
         if (!FirebaseConfig.isFirebaseEnabled()) {
@@ -47,12 +59,35 @@ public class OrderRepository {
             return;
         }
 
-        firestore.collection(FirebaseCollections.CUSTOMERS)
+        String shopId = order.getShopId();
+        Map<String, Object> orderData = order.toMap();
+
+        // ── Always write to customer's own orders sub-collection ──────────────
+        DocumentReference customerOrderRef = firestore
+                .collection(FirebaseCollections.CUSTOMERS)
                 .document(customerId)
                 .collection(FirebaseCollections.CUSTOMER_ORDERS)
-                .add(order.toMap())
-                .addOnSuccessListener(ref -> {
-                    Log.d(TAG, "Order placed: " + ref.getId());
+                .document();                   // auto-generate the document ID
+
+        String orderId = customerOrderRef.getId();
+
+        WriteBatch batch = firestore.batch();
+        batch.set(customerOrderRef, orderData);
+
+        // ── Also write under the shop's orders sub-collection in NearBuyHQ ────
+        if (shopId != null && !shopId.isEmpty()) {
+            DocumentReference shopOrderRef = firestore
+                    .collection(FirebaseCollections.SHOPS)
+                    .document(shopId)
+                    .collection(FirebaseCollections.SHOP_ORDERS)
+                    .document(orderId);        // same ID as the customer-side doc
+            batch.set(shopOrderRef, orderData);
+        }
+
+        batch.commit()
+                .addOnSuccessListener(unused -> {
+                    Log.d(TAG, "Order placed (id=" + orderId
+                            + ", shopId=" + shopId + ", customerId=" + customerId + ")");
                     callback.onSuccess();
                 })
                 .addOnFailureListener(e -> {
@@ -65,7 +100,7 @@ public class OrderRepository {
 
     /**
      * Loads all orders placed by the customer, sorted newest-first.
-     * Used in OrdersActivity and DealsActivity to display the order list.
+     * Reads from: NearBuy/{customerId}/orders
      *
      * @param customerId customer UID
      * @param callback   DataCallback<List<OrderItem>>
@@ -101,14 +136,13 @@ public class OrderRepository {
 
     /**
      * Reads the customer's Firestore profile document to get lifetime stats:
-     * total orders placed, total amount spent, and total amount saved via deals.
+     * totalOrders, totalSpent, and totalSaved.
      *
-     * These stats are maintained by the admin / shop app when orders are processed.
-     * The Dashboard stats card (Orders / Total Spent / Total Saved) is populated
-     * using the values returned here.
+     * These stats are maintained by the NearBuyHQ admin app when orders are processed.
+     * The customer app only READS these values – it never writes them.
      *
      * @param customerId customer UID
-     * @param callback   DataCallback<Customer> – the Customer model contains the stats
+     * @param callback   DataCallback<Customer>
      */
     public void getCustomerStats(String customerId,
                                  DataCallback<Customer> callback) {
@@ -122,7 +156,6 @@ public class OrderRepository {
                 .get()
                 .addOnSuccessListener(doc -> {
                     if (!doc.exists()) {
-                        // Return a zeroed-out Customer so the Dashboard shows 0/0/0
                         callback.onSuccess(new Customer(customerId, "", "", ""));
                         return;
                     }

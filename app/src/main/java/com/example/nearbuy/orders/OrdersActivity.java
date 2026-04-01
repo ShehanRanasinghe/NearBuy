@@ -6,16 +6,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nearbuy.R;
 import com.example.nearbuy.app.startup.WelcomeActivity;
 import com.example.nearbuy.core.SessionManager;
+import com.example.nearbuy.data.model.Customer;
 import com.example.nearbuy.data.repository.DataCallback;
 import com.example.nearbuy.data.repository.OrderRepository;
 
@@ -29,19 +31,20 @@ import java.util.List;
  * from SessionManager.  If no orders exist yet, an empty-state message is shown.
  *
  * Filter tabs: All | Delivered | Processing | Cancelled
- * Stats shown: total order count and a formatted total spent amount.
  *
- * No sample / hardcoded order data is used in this activity.
+ * Stats shown (Total Orders / Total Spent) come from the customer's Firestore
+ * profile document – maintained exclusively by the NearBuyHQ admin app.
+ * This app NEVER writes to those counters.
  */
 public class OrdersActivity extends AppCompatActivity {
 
     private static final String TAG = "NearBuy.Orders";
 
     // ── UI references ──────────────────────────────────────────────────────────
-    private ListView listOrders;
+    private RecyclerView recyclerOrders;
     private TextView tvResultLabel, tvOrderCount, tvStatTotal, tvStatSpent;
     private TextView tabAll, tabDelivered, tabProcessing, tabCancelled;
-    private View     layoutEmpty;  // empty-state container (if present in layout)
+    private View     layoutEmpty;
 
     // ── Data ───────────────────────────────────────────────────────────────────
     private OrdersAdapter   adapter;
@@ -77,40 +80,46 @@ public class OrdersActivity extends AppCompatActivity {
         initViews();
         setupTabs();
 
-        // Back button
         View btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        // Load real orders from Firestore
+        // Load orders and stats independently
         loadOrders();
+        loadStats();
     }
 
     // ── View binding ───────────────────────────────────────────────────────────
 
     private void initViews() {
-        listOrders   = findViewById(R.id.listOrders);
-        tvResultLabel = findViewById(R.id.tvResultLabel);
-        tvOrderCount = findViewById(R.id.tvOrderCount);
-        tabAll       = findViewById(R.id.tabAll);
-        tabDelivered = findViewById(R.id.tabDelivered);
-        tabProcessing= findViewById(R.id.tabProcessing);
-        tabCancelled = findViewById(R.id.tabCancelled);
-        layoutEmpty  = findViewById(R.id.layoutEmpty);  // optional – hide if not in layout
+        recyclerOrders = findViewById(R.id.recyclerOrders);
+        tvResultLabel  = findViewById(R.id.tvResultLabel);
+        tvOrderCount   = findViewById(R.id.tvOrderCount);
+        tabAll         = findViewById(R.id.tabAll);
+        tabDelivered   = findViewById(R.id.tabDelivered);
+        tabProcessing  = findViewById(R.id.tabProcessing);
+        tabCancelled   = findViewById(R.id.tabCancelled);
+        layoutEmpty    = findViewById(R.id.layoutEmpty);
 
-        // Stats row – show loading indicators until Firestore responds
+        // Stats placeholders
         tvStatTotal = findViewById(R.id.tvStatTotal);
         tvStatSpent = findViewById(R.id.tvStatSpent);
         if (tvStatTotal != null) tvStatTotal.setText("—");
         if (tvStatSpent != null) tvStatSpent.setText("—");
+
+        // Set up RecyclerView
+        if (recyclerOrders != null) {
+            adapter = new OrdersAdapter(filteredOrders, order ->
+                    Toast.makeText(this,
+                            "Order #" + order.getOrderId() + " — " + order.getStatus(),
+                            Toast.LENGTH_SHORT).show());
+            recyclerOrders.setLayoutManager(new LinearLayoutManager(this));
+            recyclerOrders.setAdapter(adapter);
+            recyclerOrders.setHasFixedSize(false);
+        }
     }
 
-    // ── Firestore data load ────────────────────────────────────────────────────
+    // ── Firestore: orders ──────────────────────────────────────────────────────
 
-    /**
-     * Loads the signed-in customer's order history from Firestore.
-     * On success: updates the order list and stats.
-     * On failure: shows a toast and an empty state.
-     */
     private void loadOrders() {
         String uid = sessionManager.getUserId();
         if (uid.isEmpty()) {
@@ -122,13 +131,7 @@ public class OrdersActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<OrderItem> orders) {
                 allOrders = orders;
-
-                // Calculate displayed stats from the loaded data
-                updateStats();
-
-                // Apply the currently selected filter
                 applyFilter(activeFilter);
-
                 if (orders.isEmpty()) {
                     showEmptyState("You haven't placed any orders yet.");
                 } else {
@@ -147,48 +150,46 @@ public class OrdersActivity extends AppCompatActivity {
         });
     }
 
-    // ── Stats ──────────────────────────────────────────────────────────────────
+    // ── Firestore: stats (read-only; maintained by NearBuyHQ admin app) ────────
 
     /**
-     * Calculates and updates the header stats (order count + total spent)
-     * from the currently loaded allOrders list.
+     * Loads lifetime stats from the customer's Firestore profile document.
+     * These values are updated by the NearBuyHQ admin app, never by this app.
      */
-    private void updateStats() {
-        double totalSpent = 0;
-        for (OrderItem o : allOrders) totalSpent += o.getTotalAmountRaw();
+    private void loadStats() {
+        String uid = sessionManager.getUserId();
+        if (uid.isEmpty()) return;
 
-        if (tvStatTotal != null)
-            tvStatTotal.setText(String.valueOf(allOrders.size()));
-        if (tvStatSpent != null)
-            tvStatSpent.setText(totalSpent > 0
-                    ? String.format("Rs.%.0f", totalSpent) : "Rs.0");
+        orderRepository.getCustomerStats(uid, new DataCallback<Customer>() {
+            @Override
+            public void onSuccess(Customer customer) {
+                if (tvStatTotal != null)
+                    tvStatTotal.setText(String.valueOf(customer.getTotalOrders()));
+                if (tvStatSpent != null) {
+                    double spent = customer.getTotalSpent();
+                    tvStatSpent.setText(spent > 0
+                            ? String.format("Rs.%.0f", spent) : "Rs.0");
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.w(TAG, "Could not load customer stats", e);
+                if (tvStatTotal != null) tvStatTotal.setText("0");
+                if (tvStatSpent != null) tvStatSpent.setText("Rs.0");
+            }
+        });
     }
 
     // ── Filter tabs ────────────────────────────────────────────────────────────
 
-    /** Wires up the four filter tabs and the list item click handler. */
     private void setupTabs() {
         if (tabAll       != null) tabAll.setOnClickListener(v       -> applyFilter("All"));
         if (tabDelivered != null) tabDelivered.setOnClickListener(v -> applyFilter("Delivered"));
         if (tabProcessing!= null) tabProcessing.setOnClickListener(v-> applyFilter("Processing"));
         if (tabCancelled != null) tabCancelled.setOnClickListener(v -> applyFilter("Cancelled"));
-
-        if (listOrders != null) {
-            listOrders.setOnItemClickListener((parent, view, pos, id) -> {
-                OrderItem item = filteredOrders.get(pos);
-                Toast.makeText(this,
-                        "Order #" + item.getOrderId() + " — " + item.getStatus(),
-                        Toast.LENGTH_SHORT).show();
-            });
-        }
     }
 
-    /**
-     * Filters the loaded allOrders list by the given status string and
-     * refreshes the ListView adapter.
-     *
-     * @param filter "All", "Delivered", "Processing", or "Cancelled"
-     */
     private void applyFilter(String filter) {
         activeFilter   = filter;
         filteredOrders = new ArrayList<>();
@@ -199,8 +200,7 @@ public class OrdersActivity extends AppCompatActivity {
             }
         }
 
-        adapter = new OrdersAdapter(this, filteredOrders);
-        if (listOrders != null) listOrders.setAdapter(adapter);
+        if (adapter != null) adapter.setItems(filteredOrders);
 
         int count = filteredOrders.size();
         if (tvResultLabel != null)
@@ -208,7 +208,6 @@ public class OrdersActivity extends AppCompatActivity {
         if (tvOrderCount  != null)
             tvOrderCount.setText(allOrders.size() + " Orders");
 
-        // Update tab highlight state
         setTabActive(tabAll,        filter.equals("All"));
         setTabActive(tabDelivered,  filter.equals("Delivered"));
         setTabActive(tabProcessing, filter.equals("Processing"));
@@ -225,12 +224,12 @@ public class OrdersActivity extends AppCompatActivity {
                     .getChildAt(0);
             if (tvMsg != null) tvMsg.setText(message);
         }
-        if (listOrders != null) listOrders.setVisibility(View.GONE);
+        if (recyclerOrders != null) recyclerOrders.setVisibility(View.GONE);
     }
 
     private void hideEmptyState() {
-        if (layoutEmpty != null) layoutEmpty.setVisibility(View.GONE);
-        if (listOrders  != null) listOrders.setVisibility(View.VISIBLE);
+        if (layoutEmpty    != null) layoutEmpty.setVisibility(View.GONE);
+        if (recyclerOrders != null) recyclerOrders.setVisibility(View.VISIBLE);
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────
