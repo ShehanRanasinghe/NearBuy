@@ -13,9 +13,6 @@
     <!-- ── Push Notifications (Android 13+ requires runtime grant) ── -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- ── Camera / Storage (profile photo uploads) ── -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <!-- Fallback for Android 12 and below -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -31,6 +28,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NearBuy"
         tools:targetApi="31">
+
+        <!-- ── Google Maps API Key ── -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAP_APIKEY}" />
 
         <!-- ── SPLASH SCREEN – App entry point ── -->
         <activity
@@ -97,6 +99,11 @@
         <!-- ── PROFILE ── -->
         <activity
             android:name=".profile.ProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".profile.LocationPickerActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

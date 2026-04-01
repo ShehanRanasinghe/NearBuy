@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_light_grey">
+
+    <!-- TOP HEADER BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_topbar_curved"
+        android:paddingStart="16dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@android:drawable/ic_menu_revert"
+            android:background="@drawable/bg_icon_circle_white"
+            android:padding="8dp"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="Back"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Select Location"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <!-- SEARCH BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/bg_white"
+        android:elevation="2dp">
+
+        <EditText
+            android:id="@+id/etSearchLocation"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Search for a place…"
+            android:textSize="14sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/bg_search_bar"
+            android:layout_margin="12dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:singleLine="true"/>
+
+        <ListView
+            android:id="@+id/lvLocationSuggestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="200dp"
+            android:scrollbars="vertical"
+            android:background="@color/bg_white"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <!-- MAP CONTAINER (fills remaining vertical space) -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- Map fragment is added programmatically into this container -->
+        <FrameLayout
+            android:id="@+id/mapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!-- Loading overlay shown until map is ready -->
+        <LinearLayout
+            android:id="@+id/mapLoadingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/bg_white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🗺"
+                android:textSize="48sp"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading map…"
+                android:textColor="@color/text_dark_hint"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- INFO BAR + CONFIRM BUTTON -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/bg_white"
+        android:elevation="6dp"
+        android:padding="16dp">
+
+        <!-- Selected address -->
+        <TextView
+            android:id="@+id/tvSelectedAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tap on the map to select your location"
+            android:textColor="@color/text_dark_primary"
+            android:textSize="14sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Coordinates -->
+        <TextView
+            android:id="@+id/tvCoordinates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_dark_hint"
+            android:textSize="12sp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"/>
+
+        <!-- Confirm button -->
+        <LinearLayout
+            android:id="@+id/btnConfirmLocation"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/bg_distance_chip_active"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📍  "
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Location"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+

@@ -71,7 +71,7 @@ android {
         buildConfigField("String",  "SMTP_PASSWORD",       "\"$smtpPassword\"")
 
         // Expose the Maps API key to AndroidManifest.xml via ${MAPS_API_KEY}
-        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+        manifestPlaceholders["GOOGLE_MAP_APIKEY"] = mapsApiKey
     }
 
     buildFeatures {
@@ -128,6 +128,8 @@ dependencies {
 
     // ── Google Play Services ──────────────────────────────────────────────────
     implementation(libs.play.services.location) // GPS for nearby-shop distance queries
+    implementation(libs.play.services.maps)     // Google Maps SDK
+    implementation(libs.places)                 // Google Places autocomplete
 
     // ── JavaMail for Android – OTP verification emails via Gmail SMTP ─────────
     implementation(libs.android.mail)

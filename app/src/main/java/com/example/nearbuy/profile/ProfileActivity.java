@@ -25,6 +25,8 @@ import com.example.nearbuy.data.repository.OperationCallback;
 import com.example.nearbuy.orders.OrdersActivity;
 import com.example.nearbuy.search.SearchActivity;
 
+import java.util.Locale;
+
 /**
  * ProfileActivity – displays the signed-in customer's profile information
  * and provides Edit Profile and Log Out functionality.
@@ -40,6 +42,7 @@ import com.example.nearbuy.search.SearchActivity;
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "NearBuy.Profile";
+    private static final int REQ_LOCATION_PICKER = 1001;
 
     // ── Bottom navigation ──────────────────────────────────────────────────────
     private LinearLayout navHome, navSearch, navDeals, navProfile;
@@ -119,6 +122,61 @@ public class ProfileActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
+
+        // "Change" location button → open the map location picker
+        clickSafe(R.id.btn_change_location, v -> openLocationPicker());
+    }
+
+    // ── Location Picker ────────────────────────────────────────────────────────
+
+    @SuppressWarnings("deprecation")
+    private void openLocationPicker() {
+        Intent intent = new Intent(this, LocationPickerActivity.class);
+        if (sessionManager.hasLocation()) {
+            intent.putExtra(LocationPickerActivity.EXTRA_LATITUDE,  sessionManager.getLastLatitude());
+            intent.putExtra(LocationPickerActivity.EXTRA_LONGITUDE, sessionManager.getLastLongitude());
+        }
+        startActivityForResult(intent, REQ_LOCATION_PICKER);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_LOCATION_PICKER && resultCode == RESULT_OK && data != null) {
+            double lat     = data.getDoubleExtra(LocationPickerActivity.EXTRA_LATITUDE, 0.0);
+            double lng     = data.getDoubleExtra(LocationPickerActivity.EXTRA_LONGITUDE, 0.0);
+            String address = data.getStringExtra(LocationPickerActivity.EXTRA_ADDRESS);
+            if (address == null) address = "";
+
+            // Save to SessionManager
+            sessionManager.saveLastLocation(lat, lng);
+
+            // Update location display immediately
+            String display = address.isEmpty()
+                    ? String.format(Locale.US, "%.4f, %.4f", lat, lng)
+                    : address;
+            setTextSafe(R.id.tv_location, display);
+
+            // Persist to Firestore
+            String uid = sessionManager.getUserId();
+            if (!uid.isEmpty()) {
+                final String finalAddress = address;
+                authRepository.updateUserLocation(uid, lat, lng, finalAddress,
+                        new OperationCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(ProfileActivity.this,
+                                        "Location updated successfully", Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(ProfileActivity.this,
+                                        "Failed to save location", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }
     }
 
     // ── Edit Profile dialog ────────────────────────────────────────────────────

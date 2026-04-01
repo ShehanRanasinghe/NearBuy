@@ -292,6 +292,22 @@
                             android:textSize="14sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
+                    <!-- Change location button -->
+                    <TextView
+                        android:id="@+id/btn_change_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Change"
+                        android:textColor="@color/nb_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:background="@drawable/bg_chip_outline_teal"
+                        android:clickable="true"
+                        android:focusable="true"/>
                 </LinearLayout>
             </LinearLayout>
 

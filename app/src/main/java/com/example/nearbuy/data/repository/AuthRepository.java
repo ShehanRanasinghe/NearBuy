@@ -436,6 +436,41 @@ public class AuthRepository {
                 .addOnFailureListener(callback::onError);
     }
 
+    // ── Location update ────────────────────────────────────────────────────────
+
+    /**
+     * Updates the customer's location (latitude, longitude, address) in Firestore
+     * and refreshes the SessionManager cache.
+     *
+     * @param uid      Firebase Auth UID of the signed-in customer
+     * @param lat      new latitude
+     * @param lng      new longitude
+     * @param address  reverse-geocoded address string (may be empty)
+     * @param callback OperationCallback
+     */
+    public void updateUserLocation(String uid, double lat, double lng,
+                                   String address, OperationCallback callback) {
+        if (!FirebaseConfig.isFirebaseEnabled()) {
+            callback.onError(new IllegalStateException("Firebase is not enabled."));
+            return;
+        }
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("latitude",  lat);
+        updates.put("longitude", lng);
+        updates.put("address",   address);
+        updates.put("updatedAt", System.currentTimeMillis());
+
+        firestore.collection(FirebaseCollections.CUSTOMERS)
+                .document(uid)
+                .update(updates)
+                .addOnSuccessListener(unused -> {
+                    Log.d(TAG, "Location updated for UID: " + uid);
+                    callback.onSuccess();
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
     // ── FCM token sync ─────────────────────────────────────────────────────────
 
     /**

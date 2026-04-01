@@ -136,6 +136,7 @@
 
     <!-- Profile -->
     <string name="profile_title">My Profile</string>
+    <string name="location_tap_hint">Tap on the map to select your location</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="logout">Log Out</string>
     <string name="settings_title">Settings</string>
