@@ -78,6 +78,7 @@ public class OrdersActivity extends AppCompatActivity {
         loadOrders();
         loadStats();
     }
+    /** Binds all layout views and sets up the RecyclerView with its adapter. */
     private void initViews() {
         recyclerOrders = findViewById(R.id.recyclerOrders);
         tvResultLabel  = findViewById(R.id.tvResultLabel);
@@ -99,6 +100,7 @@ public class OrdersActivity extends AppCompatActivity {
         }
     }
     // ── Report Dialog ─────────────────────────────────────────────────────────
+    /** Shows the order status in a toast, then checks if a report was already submitted before opening the input dialog. */
     private void showOrderReportDialog(OrderItem order) {
         // Show only the order status in toast - no long IDs
         Toast.makeText(this, order.getStatus(), Toast.LENGTH_SHORT).show();
@@ -124,6 +126,7 @@ public class OrdersActivity extends AppCompatActivity {
                     }
                 });
     }
+    /** Inflates the report dialog, wires up the word counter and submit button, then shows it. */
     private void openReportInputDialog(OrderItem order) {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_order_report, null);
         TextView tvInfo      = dialogView.findViewById(R.id.tvReportOrderInfo);
@@ -196,6 +199,7 @@ public class OrdersActivity extends AppCompatActivity {
         }
         dialog.show();
     }
+    /** Returns the number of words in the given text string; returns 0 for null or blank input. */
     private static int countWords(String text) {
         if (text == null || text.trim().isEmpty()) return 0;
         return text.trim().split("\\s+").length;
@@ -225,6 +229,7 @@ public class OrdersActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity.class)));
     }
     // ── Firestore: orders ──────────────────────────────────────────────────────
+    /** Fetches the customer's full order history from Firestore and applies the current filter. */
     private void loadOrders() {
         String uid = sessionManager.getUserId();
         if (uid.isEmpty()) {
@@ -250,6 +255,7 @@ public class OrdersActivity extends AppCompatActivity {
             }
         });
     }
+    /** Calculates total order count and amount spent from the loaded list and updates the stats row. */
     private void updateStatsFromOrders(List<OrderItem> orders) {
         int totalOrders = orders.size();
         double totalSpent = 0;
@@ -261,6 +267,7 @@ public class OrdersActivity extends AppCompatActivity {
             tvStatSpent.setText(totalSpent > 0 ? String.format("Rs.%.0f", totalSpent) : "Rs.0");
     }
     // ── Firestore: stats ───────────────────────────────────────────────────────
+    /** Attaches a real-time listener on the customer document to keep the stats row up to date. */
     private void loadStats() {
         String uid = sessionManager.getUserId();
         if (uid.isEmpty()) return;
@@ -295,12 +302,14 @@ public class OrdersActivity extends AppCompatActivity {
         });
     }
     // ── Filter tabs ────────────────────────────────────────────────────────────
+    /** Wires each tab chip to call applyFilter with the corresponding status string. */
     private void setupTabs() {
         if (tabAll        != null) tabAll.setOnClickListener(v        -> applyFilter("All"));
         if (tabDelivered  != null) tabDelivered.setOnClickListener(v  -> applyFilter("Delivered"));
         if (tabProcessing != null) tabProcessing.setOnClickListener(v -> applyFilter("Processing"));
         if (tabCancelled  != null) tabCancelled.setOnClickListener(v  -> applyFilter("Cancelled"));
     }
+    /** Filters allOrders by the given status, refreshes the adapter, and highlights the active tab. */
     private void applyFilter(String filter) {
         activeFilter   = filter;
         filteredOrders = new ArrayList<>();

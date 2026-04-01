@@ -33,6 +33,7 @@ public class DashboardShopAdapter
         R.drawable.bg_icon_circle_light
     };
 
+    /** Callback fired when the customer taps a shop card. */
     public interface OnShopClickListener {
         void onShopClick(Shop shop);
     }
@@ -40,6 +41,7 @@ public class DashboardShopAdapter
     private final List<Shop>          shops;
     private final OnShopClickListener listener;
 
+    /** Creates the adapter with the list of nearby shops and a tap callback. */
     public DashboardShopAdapter(List<Shop> shops, OnShopClickListener listener) {
         this.shops    = shops;
         this.listener = listener;
@@ -86,6 +88,7 @@ public class DashboardShopAdapter
         return shops.size();
     }
 
+    /** ViewHolder caches all view references for a single shop row. */
     static final class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvIcon;
         final TextView tvName;

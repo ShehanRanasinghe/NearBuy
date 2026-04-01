@@ -14,10 +14,14 @@ import com.example.nearbuy.R;
 import java.util.List;
 
 /**
- * RecyclerView.Adapter for displaying OrderItem objects in the OrdersActivity.
+ * OrdersAdapter – RecyclerView adapter that displays the customer's order history.
+ * Each row shows the shop emoji, name, order date, item summary, total, and a
+ * colour-coded status badge (Delivered / Processing / Cancelled).
+ * Tapping a row fires the OnOrderClickListener so the caller can show the report dialog.
  */
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
 
+    /** Callback fired when the customer taps an order row. */
     public interface OnOrderClickListener {
         void onOrderClick(OrderItem order);
     }
@@ -25,12 +29,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     private List<OrderItem> items;
     private final OnOrderClickListener listener;
 
+    /** Creates the adapter with an initial list and the click listener. */
     public OrdersAdapter(@NonNull List<OrderItem> items, OnOrderClickListener listener) {
         this.items    = items;
         this.listener = listener;
     }
 
-    /** Replace the data set and refresh the list. */
+    /** Replaces the current data set with newItems and triggers a full refresh. */
     public void setItems(@NonNull List<OrderItem> newItems) {
         this.items = newItems;
         notifyDataSetChanged();
@@ -39,6 +44,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the order row card layout
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_order, parent, false);
         return new ViewHolder(view);
@@ -101,6 +107,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
 
     // ── ViewHolder ────────────────────────────────────────────────────────────
 
+    /** ViewHolder caches all view references for a single order row. */
     static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvEmoji, tvShop, tvDate, tvItems, tvCount, tvTotal, tvStatus, tvOrderId;
         final TextView tvFulfillment; // optional – may be null if not in item layout

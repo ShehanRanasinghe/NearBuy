@@ -33,6 +33,7 @@ public class DashboardDealAdapter
         "🍎", "🥦", "🥛", "🍞", "🧃", "🍗", "🎀", "💎", "🌈", "🎪"
     };
 
+    /** Callback fired when the customer taps a deal card. */
     public interface OnDealClickListener {
         void onDealClick(DealItem deal);
     }
@@ -40,6 +41,7 @@ public class DashboardDealAdapter
     private final List<DealItem>      deals;
     private final OnDealClickListener listener;
 
+    /** Creates the adapter with the list of deals and a tap callback. */
     public DashboardDealAdapter(List<DealItem> deals, OnDealClickListener listener) {
         this.deals    = deals;
         this.listener = listener;
@@ -93,6 +95,7 @@ public class DashboardDealAdapter
         return deals.size();
     }
 
+    /** ViewHolder caches all view references for a single deal card. */
     static final class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvEmoji;
         final TextView tvDiscount;

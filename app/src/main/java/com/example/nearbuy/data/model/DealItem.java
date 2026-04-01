@@ -6,15 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * DealItem – Firestore data model for a deal or promotion published by a shop.
+ * DealItem – the sole Firestore data model for a deal or promotion published by a shop.
  *
  * Read from:
  *   NearBuyHQ/{shopId}/deals/{dealId}        – deals
  *   NearBuyHQ/{shopId}/promotions/{promoId}  – promotions
- *
- * NOTE: This is the Firestore-backed model.  The existing {@code deals.Deal} class
- * is a UI-only view model used to populate RecyclerView cards; this class handles
- * serialisation to/from Firestore.
  *
  * Used by:
  *   • Dashboard – "Latest Deals" and "Promotions" sections.

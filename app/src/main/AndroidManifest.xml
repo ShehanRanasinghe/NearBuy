@@ -120,12 +120,6 @@
             android:theme="@style/Theme.NearBuy.Screen"
             android:label="@string/notif_screen_title" />
 
-        <!-- ── CATEGORIES ── -->
-        <activity
-            android:name=".categories.CategoriesActivity"
-            android:exported="false"
-            android:theme="@style/Theme.NearBuy.Categories"
-            android:label="@string/categories_title" />
 
         <!-- ── ORDERS ── -->
         <activity

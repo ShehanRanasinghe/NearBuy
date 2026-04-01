@@ -37,6 +37,7 @@ public class DashboardPromoAdapter
         R.drawable.bg_promo_deal_card_5    // teal-mid    #00838F → #4DB6AC
     };
 
+    /** Callback fired when the customer taps a promotion card. */
     public interface OnPromoClickListener {
         void onPromoClick(DealItem promo);
     }
@@ -44,6 +45,7 @@ public class DashboardPromoAdapter
     private final List<DealItem>       promos;
     private final OnPromoClickListener listener;
 
+    /** Creates the adapter with the list of promotions and a tap callback. */
     public DashboardPromoAdapter(List<DealItem> promos, OnPromoClickListener listener) {
         this.promos   = promos;
         this.listener = listener;
@@ -106,6 +108,7 @@ public class DashboardPromoAdapter
         return promos.size();
     }
 
+    /** ViewHolder caches all view references for a single promo card. */
     static final class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvEmoji;
         final TextView tvDiscount;

@@ -23,6 +23,7 @@ import java.util.List;
 public class DashboardProductAdapter
         extends RecyclerView.Adapter<DashboardProductAdapter.ViewHolder> {
 
+    /** Callback fired when the customer taps a product card. */
     public interface OnProductClickListener {
         void onProductClick(Product product);
     }
@@ -30,6 +31,7 @@ public class DashboardProductAdapter
     private final List<Product>           products;
     private final OnProductClickListener  listener;
 
+    /** Creates the adapter with the list of featured products and a tap callback. */
     public DashboardProductAdapter(List<Product> products, OnProductClickListener listener) {
         this.products = products;
         this.listener = listener;
@@ -86,6 +88,7 @@ public class DashboardProductAdapter
         }
     }
 
+    /** ViewHolder caches all view references for a single product card. */
     static final class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvEmoji;
         final TextView tvName;
