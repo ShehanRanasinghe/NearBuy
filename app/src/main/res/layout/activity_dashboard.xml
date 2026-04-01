@@ -214,17 +214,14 @@
                     android:clickable="true" android:focusable="true"/>
             </LinearLayout>
 
-            <!--
-                FIX: was 5 hardcoded promo cards (each with 4-level nested LinearLayouts).
-                nestedScrollingEnabled=false lets the outer ScrollView handle all scrolling.
-            -->
+            <!-- Active Promotions shown as horizontal "Latest Deals" style cards -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPromos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="160dp"
                 android:layout_marginBottom="24dp"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"/>
+                android:overScrollMode="never"
+                android:clipToPadding="false"/>
 
             <!-- NEARBY SHOPS SECTION -->
             <TextView

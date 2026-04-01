@@ -1,6 +1,5 @@
 package com.example.nearbuy.dashboard;
 
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +14,27 @@ import com.example.nearbuy.data.model.DealItem;
 import java.util.List;
 
 /**
- * DashboardPromoAdapter – vertical RecyclerView adapter for the
+ * DashboardPromoAdapter – horizontal RecyclerView adapter for the
  * "Active Promotions" section on the Dashboard.
- * Shows: promotion name, occasion, food category, valid date, original price,
- * discount label, and discounted sale price.
+ * Displays the latest 5 active promotions as "Latest Deals" style cards
+ * with random NearBuy theme-coloured gradient backgrounds.
  */
 public class DashboardPromoAdapter
         extends RecyclerView.Adapter<DashboardPromoAdapter.ViewHolder> {
 
-    // ── Random promo icons (assigned per item, stable within session) ──────────
+    // ── Random promo emojis (stable within session) ───────────────────────────
     private static final String[] PROMO_EMOJIS = {
         "🎁", "🏷️", "💳", "🎊", "🥳", "💰", "🎉", "✨", "🌟", "🎀", "🛍️", "🎯",
         "🏅", "🎪", "🪄", "🎶", "🍀", "🌺", "💝", "🪙"
     };
 
-    private static final int[] ICON_BACKGROUNDS = {
-        R.drawable.bg_icon_circle_orange,
-        R.drawable.bg_icon_circle_teal,
-        R.drawable.bg_icon_circle_blue,
-        R.drawable.bg_icon_circle_light
+    // ── Theme-coloured card backgrounds (NearBuy teal + orange palette) ───────
+    private static final int[] PROMO_CARD_BACKGROUNDS = {
+        R.drawable.bg_promo_deal_card_1,   // dark teal   #006064 → #0097A7
+        R.drawable.bg_promo_deal_card_2,   // teal        #0097A7 → #26C6DA
+        R.drawable.bg_promo_deal_card_3,   // orange      #E65100 → #FFA726
+        R.drawable.bg_promo_deal_card_4,   // deep teal   #004D40 → #00838F
+        R.drawable.bg_promo_deal_card_5    // teal-mid    #00838F → #4DB6AC
     };
 
     public interface OnPromoClickListener {
@@ -51,8 +52,9 @@ public class DashboardPromoAdapter
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Reuse the same deal card layout for a consistent "Latest Deals" look
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_dashboard_promo, parent, false);
+                .inflate(R.layout.item_dashboard_deal, parent, false);
         return new ViewHolder(v);
     }
 
@@ -61,91 +63,38 @@ public class DashboardPromoAdapter
         DealItem promo = promos.get(position);
 
         String title = promo.getTitle() != null ? promo.getTitle() : "";
+
+        // Stable random emoji based on title hash
         int emojiIndex = Math.abs((title + position).hashCode()) % PROMO_EMOJIS.length;
-        int bgIndex    = Math.abs((title + position).hashCode()) % ICON_BACKGROUNDS.length;
+        if (holder.tvEmoji != null) holder.tvEmoji.setText(PROMO_EMOJIS[emojiIndex]);
 
-        // ── Icon ──────────────────────────────────────────────────────────────
-        if (holder.tvIcon != null) {
-            holder.tvIcon.setText(PROMO_EMOJIS[emojiIndex]);
-            holder.tvIcon.setBackgroundResource(ICON_BACKGROUNDS[bgIndex]);
-        }
+        // Discount badge
+        holder.tvDiscount.setText(
+                promo.getDiscountLabel() != null ? promo.getDiscountLabel() : "PROMO");
 
-        // ── Title ─────────────────────────────────────────────────────────────
+        // Title
         holder.tvTitle.setText(title);
 
-        // ── Occasion (use description as fallback if occasion is empty) ───────
-        String occasion = promo.getOccasion() != null ? promo.getOccasion().trim() : "";
-        if (occasion.isEmpty()) {
-            occasion = promo.getDescription() != null ? promo.getDescription().trim() : "";
+        // Description: use occasion, fall back to description text, then valid date
+        String desc = promo.getOccasion() != null ? promo.getOccasion().trim() : "";
+        if (desc.isEmpty()) {
+            desc = promo.getDescription() != null ? promo.getDescription().trim() : "";
         }
-        if (holder.tvOccasion != null) {
-            holder.tvOccasion.setVisibility(occasion.isEmpty() ? View.GONE : View.VISIBLE);
-            holder.tvOccasion.setText(occasion);
-        }
-
-        // ── Discount label ────────────────────────────────────────────────────
-        String badge = promo.getDiscountLabel() != null ? promo.getDiscountLabel().trim() : "";
-        if (holder.tvDiscount != null) {
-            holder.tvDiscount.setVisibility(badge.isEmpty() ? View.GONE : View.VISIBLE);
-            holder.tvDiscount.setText(badge);
+        if (holder.tvDescription != null) {
+            holder.tvDescription.setText(desc.isEmpty() ? promo.getValidDateLabel() : desc);
         }
 
-        // ── Category chip ─────────────────────────────────────────────────────
-        String category = promo.getCategory() != null ? promo.getCategory().trim() : "";
-        if (holder.tvCategory != null) {
-            if (category.isEmpty()) {
-                holder.tvCategory.setVisibility(View.GONE);
-            } else {
-                holder.tvCategory.setVisibility(View.VISIBLE);
-                holder.tvCategory.setText(categoryEmoji(category) + " " + category);
-            }
+        // Shop + valid date row
+        String shopDist = promo.getShopName() != null ? promo.getShopName() : "";
+        String validDate = promo.getValidDateLabel();
+        if (!validDate.isEmpty()) {
+            shopDist = shopDist.isEmpty() ? validDate : shopDist + " · " + validDate;
         }
+        holder.tvShopDist.setText(shopDist);
 
-        // ── Valid date ────────────────────────────────────────────────────────
-        if (holder.tvValidDate != null) {
-            holder.tvValidDate.setText(promo.getValidDateLabel());
-        }
-
-        // ── Prices ────────────────────────────────────────────────────────────
-        double origPrice = promo.getOriginalPrice();
-        double salePrice = promo.getSalePrice();
-
-        if (holder.tvOriginalPrice != null) {
-            if (origPrice > 0) {
-                holder.tvOriginalPrice.setVisibility(View.VISIBLE);
-                holder.tvOriginalPrice.setText(String.format("Rs.%.0f", origPrice));
-                // Strikethrough so it's clear this is the old price (no arrow needed)
-                holder.tvOriginalPrice.setPaintFlags(
-                        holder.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                holder.tvOriginalPrice.setVisibility(View.GONE);
-            }
-        }
-
-        if (holder.tvSalePrice != null) {
-            if (salePrice > 0) {
-                holder.tvSalePrice.setVisibility(View.VISIBLE);
-                holder.tvSalePrice.setText(String.format("Rs.%.0f", salePrice));
-            } else {
-                holder.tvSalePrice.setVisibility(View.GONE);
-            }
-        }
-
-        // ── Human-readable expiry — hide entirely when no expiry date set ─────
-        int days = promo.daysUntilExpiry();
-        if (holder.tvExpiry != null) {
-            if (!promo.hasExpiry()) {
-                // No expiry stored in Firestore – hide the countdown label entirely
-                holder.tvExpiry.setVisibility(View.GONE);
-            } else {
-                holder.tvExpiry.setVisibility(View.VISIBLE);
-                if (days < 0)       holder.tvExpiry.setText("Expired");
-                else if (days == 0) holder.tvExpiry.setText("Today only!");
-                else if (days == 1) holder.tvExpiry.setText("1 day left");
-                else if (days <= 7) holder.tvExpiry.setText(days + " days left");
-                else                holder.tvExpiry.setText(days / 7 + " weeks left");
-            }
-        }
+        // Apply a random theme-coloured background (cycles through 5 palette options)
+        int bgIndex = Math.abs((title + position).hashCode()) % PROMO_CARD_BACKGROUNDS.length;
+        holder.itemView.setBackgroundResource(PROMO_CARD_BACKGROUNDS[bgIndex]);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onPromoClick(promo);
@@ -157,46 +106,20 @@ public class DashboardPromoAdapter
         return promos.size();
     }
 
-    /** Maps a category string to a representative emoji prefix. */
-    private static String categoryEmoji(String category) {
-        switch (category.toLowerCase(java.util.Locale.ROOT)) {
-            case "fruits":      return "🍎";
-            case "vegetables":  return "🥦";
-            case "food":        return "🍽️";
-            case "dairy":       return "🥛";
-            case "bakery":      return "🍞";
-            case "beverages":   return "🧃";
-            case "snacks":      return "🍟";
-            case "meat":        return "🍗";
-            case "seafood":     return "🐟";
-            case "household":   return "🧹";
-            case "groceries":   return "🛒";
-            default:            return "🏷️";
-        }
-    }
-
     static final class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView tvIcon;
-        final TextView tvTitle;
-        final TextView tvOccasion;
+        final TextView tvEmoji;
         final TextView tvDiscount;
-        final TextView tvCategory;
-        final TextView tvValidDate;
-        final TextView tvOriginalPrice;
-        final TextView tvSalePrice;
-        final TextView tvExpiry;
+        final TextView tvTitle;
+        final TextView tvDescription;
+        final TextView tvShopDist;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvIcon          = itemView.findViewById(R.id.tvPromoIcon);
-            tvTitle         = itemView.findViewById(R.id.tvPromoTitle);
-            tvOccasion      = itemView.findViewById(R.id.tvPromoOccasion);
-            tvDiscount      = itemView.findViewById(R.id.tvPromoDiscount);
-            tvCategory      = itemView.findViewById(R.id.tvPromoCategory);
-            tvValidDate     = itemView.findViewById(R.id.tvPromoValidDate);
-            tvOriginalPrice = itemView.findViewById(R.id.tvPromoOriginalPrice);
-            tvSalePrice     = itemView.findViewById(R.id.tvPromoSalePrice);
-            tvExpiry        = itemView.findViewById(R.id.tvPromoExpiry);
+            tvEmoji       = itemView.findViewById(R.id.tvDealEmoji);
+            tvDiscount    = itemView.findViewById(R.id.tvDealDiscount);
+            tvTitle       = itemView.findViewById(R.id.tvDealTitle);
+            tvDescription = itemView.findViewById(R.id.tvDealDescription);
+            tvShopDist    = itemView.findViewById(R.id.tvDealShopDist);
         }
     }
 }
