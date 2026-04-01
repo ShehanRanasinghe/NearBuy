@@ -388,6 +388,20 @@ public class AuthRepository {
                     session.saveUserEmail(customer.getEmail());
                     session.saveUserPhone(customer.getPhone());
 
+                    // Cache location address if present in the Firestore document
+                    String address = doc.getString("address");
+                    if (address != null && !address.isEmpty()) {
+                        session.saveLocationAddress(address);
+                    }
+                    // Cache lat/lng if present
+                    Object latObj = doc.get("latitude");
+                    Object lngObj = doc.get("longitude");
+                    if (latObj instanceof Number && lngObj instanceof Number) {
+                        session.saveLastLocation(
+                                ((Number) latObj).doubleValue(),
+                                ((Number) lngObj).doubleValue());
+                    }
+
                     Log.d(TAG, "Profile loaded for UID: " + uid);
                     callback.onSuccess(customer);
                 })

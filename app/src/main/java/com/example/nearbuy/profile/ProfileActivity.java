@@ -98,12 +98,18 @@ public class ProfileActivity extends AppCompatActivity {
         setTextSafe(R.id.tv_full_name,  name);
         setTextSafe(R.id.tv_email,      email.isEmpty() ? "Not set" : email);
         setTextSafe(R.id.tv_phone,      phone.isEmpty() ? "Not set" : phone);
-        // Location is shown from the last known coordinates saved in session
-        String loc = sessionManager.hasLocation()
-                ? String.format("%.4f, %.4f",
-                sessionManager.getLastLatitude(),
-                sessionManager.getLastLongitude())
-                : "Location not set";
+        // Location: show address name if saved, otherwise fall back to coordinates
+        String locAddress = sessionManager.getLocationAddress();
+        String loc;
+        if (!locAddress.isEmpty()) {
+            loc = locAddress;
+        } else if (sessionManager.hasLocation()) {
+            loc = String.format(Locale.US, "%.4f, %.4f",
+                    sessionManager.getLastLatitude(),
+                    sessionManager.getLastLongitude());
+        } else {
+            loc = "Location not set";
+        }
         setTextSafe(R.id.tv_location, loc);
     }
 
@@ -149,10 +155,11 @@ public class ProfileActivity extends AppCompatActivity {
             String address = data.getStringExtra(LocationPickerActivity.EXTRA_ADDRESS);
             if (address == null) address = "";
 
-            // Save to SessionManager
+            // Save coordinates + address to SessionManager
             sessionManager.saveLastLocation(lat, lng);
+            sessionManager.saveLocationAddress(address);
 
-            // Update location display immediately
+            // Update location display: show address name if available, else coordinates
             String display = address.isEmpty()
                     ? String.format(Locale.US, "%.4f, %.4f", lat, lng)
                     : address;

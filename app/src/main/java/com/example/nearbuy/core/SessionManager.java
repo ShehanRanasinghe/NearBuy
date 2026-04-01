@@ -29,6 +29,7 @@ public class SessionManager {
     // Location
     private static final String KEY_LAST_LATITUDE  = "lastLatitude";
     private static final String KEY_LAST_LONGITUDE = "lastLongitude";
+    private static final String KEY_LOCATION_ADDRESS = "locationAddress";
 
     // Search preference – radius in kilometres (default 2 km)
     private static final String KEY_SEARCH_RADIUS  = "searchRadiusKm";
@@ -130,6 +131,16 @@ public class SessionManager {
     /** Returns true when at least one location fix has been saved. */
     public boolean hasLocation() {
         return getLastLatitude() != 0.0 || getLastLongitude() != 0.0;
+    }
+
+    /** Save the human-readable address for the last known location. */
+    public void saveLocationAddress(String address) {
+        prefs.edit().putString(KEY_LOCATION_ADDRESS, address).apply();
+    }
+
+    /** Returns the saved location address, or empty string if not set. */
+    public String getLocationAddress() {
+        return prefs.getString(KEY_LOCATION_ADDRESS, "");
     }
 
     // ── Search Radius ─────────────────────────────────────────────────────────
