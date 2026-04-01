@@ -217,7 +217,7 @@ public class DashboardActivity extends AppCompatActivity {
                 this, LinearLayoutManager.HORIZONTAL, false);
         rvDeals.setLayoutManager(dealLM);
         rvDeals.setAdapter(dealAdapter);
-        rvDeals.setHasFixedSize(true);
+        rvDeals.setHasFixedSize(false);
 
         // Horizontal promos strip – displayed as "Latest Deals" style cards (nestedScrollingEnabled=false in XML)
         promoAdapter = new DashboardPromoAdapter(promoList, promo -> {
