@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.nearbuy.R;
+import com.example.nearbuy.app.startup.WelcomeActivity;
+import com.example.nearbuy.core.SessionManager;
 import com.example.nearbuy.search.SearchActivity;
 
 /**
@@ -31,6 +33,15 @@ public class CategoriesActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_categories);
         if (getSupportActionBar() != null) getSupportActionBar().hide();
+
+        // ── Session guard ─────────────────────────────────────────────────────
+        // Categories are only accessible to logged-in customers.
+        SessionManager sessionManager = SessionManager.getInstance(this);
+        if (!sessionManager.isLoggedIn()) {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            finish();
+            return;
+        }
 
         setupCategoryCards();
     }
