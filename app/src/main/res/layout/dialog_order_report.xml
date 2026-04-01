@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dialog_order_report.xml
+    Pop-up dialog that lets a customer submit a one-time report for an order.
+    Word limit: 200 words.  Saved to NearBuyHQ/{shopId}/reports/{orderId}.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/bg_card_white">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📝 Report Order"
+        android:textColor="@color/text_dark_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <!-- Shop + order info -->
+    <TextView
+        android:id="@+id/tvReportOrderInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FreshMart · March 25, 2026"
+        android:textColor="@color/text_dark_secondary"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_light"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Report text input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Describe your issue or experience:"
+        android:textColor="@color/text_dark_primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="6dp"/>
+
+    <EditText
+        android:id="@+id/etReportText"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:hint="Write your report here…"
+        android:textSize="13sp"
+        android:textColor="@color/text_dark_primary"
+        android:textColorHint="@color/text_dark_hint"
+        android:inputType="textMultiLine|textCapSentences"
+        android:gravity="top|start"
+        android:padding="10dp"
+        android:background="@drawable/bg_input_field"
+        android:maxLines="8"
+        android:scrollbars="vertical"/>
+
+    <!-- Word count -->
+    <TextView
+        android:id="@+id/tvWordCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 / 200 words"
+        android:textColor="@color/text_dark_hint"
+        android:textSize="11sp"
+        android:layout_marginTop="4dp"
+        android:layout_gravity="end"/>
+
+    <!-- One-time note -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_alert_info"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ℹ️ "
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You can only submit one report per order."
+            android:textColor="@color/stat_blue"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btnReportCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="@color/nb_primary"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_marginEnd="8dp"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <Button
+            android:id="@+id/btnReportSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit Report"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/nb_primary"
+            style="@style/Widget.AppCompat.Button"/>
+    </LinearLayout>
+
+</LinearLayout>
+

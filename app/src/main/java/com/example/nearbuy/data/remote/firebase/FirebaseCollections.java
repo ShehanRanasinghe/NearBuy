@@ -51,6 +51,14 @@ public final class FirebaseCollections {
      */
     public static final String SHOP_ORDERS       = "orders";         // NearBuyHQ/{shopId}/orders
 
+    /**
+     * Reports sub-collection inside each shop document.
+     * Written by customer app when a user submits an order report.
+     * One report per order (orderId used as document ID).
+     * Firestore path: NearBuyHQ/{shopId}/reports/{orderId}
+     */
+    public static final String SHOP_REPORTS      = "reports";        // NearBuyHQ/{shopId}/reports
+
     // ── Customer-owned collections ─────────────────────────────────────────────
     /** Root collection for customer profile documents. */
     public static final String CUSTOMERS               = "NearBuy";             // NearBuy/{customerId}

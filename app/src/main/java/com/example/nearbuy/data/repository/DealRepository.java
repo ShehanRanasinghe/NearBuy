@@ -303,6 +303,9 @@ public class DealRepository {
                                             DealItem item = DealItem.fromMap(
                                                     doc.getId(), shop.getId(), doc.getData());
                                             if (item == null) continue;
+                                            // Force the promotion flag from which sub-collection
+                                            // was queried – admin docs may omit the isPromotion field
+                                            item.setPromotion(isPromo);
                                             // Enrich with shop location data
                                             item.setShopName(shop.getName());
                                             item.setShopLocation(shop.getShopLocation());

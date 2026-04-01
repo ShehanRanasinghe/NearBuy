@@ -219,13 +219,14 @@ public class DashboardActivity extends AppCompatActivity {
         rvDeals.setAdapter(dealAdapter);
         rvDeals.setHasFixedSize(true);
 
-        // Vertical promos list (nestedScrollingEnabled=false already set in XML)
+        // Horizontal promos strip – displayed as "Latest Deals" style cards (nestedScrollingEnabled=false in XML)
         promoAdapter = new DashboardPromoAdapter(promoList, promo -> {
             Intent i = new Intent(this, DealsAndPromoActivity.class);
             i.putExtra(DealsAndPromoActivity.EXTRA_TAB, "promos");
             startActivity(i);
         });
-        rvPromos.setLayoutManager(new LinearLayoutManager(this));
+        rvPromos.setLayoutManager(new LinearLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL, false));
         rvPromos.setAdapter(promoAdapter);
         rvPromos.setHasFixedSize(false); // height changes as items load
 

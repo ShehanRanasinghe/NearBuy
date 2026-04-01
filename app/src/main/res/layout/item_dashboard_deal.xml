@@ -2,14 +2,14 @@
 <!--
     item_dashboard_deal.xml
     Compact horizontal card used in the "Latest Deals" RecyclerView on the Dashboard.
-    Flat structure (2 levels) to minimise ViewRootImpl.performTraversals() cost.
+    Shows deal title, shop name, short description preview, and discount badge.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="130dp"
+    android:layout_width="210dp"
+    android:layout_height="160dp"
     android:orientation="vertical"
     android:background="@drawable/bg_deal_card"
-    android:padding="16dp"
+    android:padding="14dp"
     android:layout_marginEnd="12dp"
     android:clickable="true"
     android:focusable="true">
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🔥"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginEnd="6dp"/>
         <TextView
             android:id="@+id/tvDealDiscount"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="50% OFF"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:maxLines="1"/>
     </LinearLayout>
@@ -45,9 +45,22 @@
         android:layout_height="wrap_content"
         android:text="Fresh Apples"
         android:textColor="@color/white"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginTop="2dp"
         android:maxLines="1"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:id="@+id/tvDealDescription"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Farm fresh apples sourced daily from local farms"
+        android:textColor="#CCFFFFFF"
+        android:textSize="11sp"
+        android:layout_marginTop="4dp"
+        android:maxLines="2"
         android:ellipsize="end"/>
 
     <TextView
@@ -55,9 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="FreshMart · 0.8 km"
-        android:textColor="#CCFFFFFF"
+        android:textColor="#B3FFFFFF"
         android:textSize="11sp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:maxLines="1"
         android:ellipsize="end"/>
 
