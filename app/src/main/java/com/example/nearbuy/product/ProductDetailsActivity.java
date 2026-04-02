@@ -246,6 +246,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 intent.putExtra(StoreDetailsActivity.EXTRA_SHOP_NAME,
                         shopName != null ? shopName
                                 : getIntent().getStringExtra(EXTRA_SHOP_NAME));
+                // Forward the distance that was passed to this screen so the
+                // Store Details page can display it without recalculating.
+                intent.putExtra(StoreDetailsActivity.EXTRA_DISTANCE,
+                        getIntent().getStringExtra(EXTRA_DISTANCE));
                 startActivity(intent);
             });
         }

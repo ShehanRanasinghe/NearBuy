@@ -1,12 +1,12 @@
 package com.example.nearbuy.store;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -27,6 +27,7 @@ import com.example.nearbuy.product.ProductDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * StoreDetailsActivity – shows full details of a NearBuyHQ shop including
@@ -55,6 +56,9 @@ public class StoreDetailsActivity extends AppCompatActivity {
 
     // ── RecyclerViews ─────────────────────────────────────────────────────────
     private RecyclerView rvProducts, rvDeals, rvPromos;
+
+    // ── Stat views ────────────────────────────────────────────────────────────
+    private TextView tvActiveDeals, tvDistance;
 
     // ── Adapters ──────────────────────────────────────────────────────────────
     private StoreItemAdapter productsAdapter, dealsAdapter, promosAdapter;
@@ -115,9 +119,11 @@ public class StoreDetailsActivity extends AppCompatActivity {
     // ── RecyclerView init ─────────────────────────────────────────────────────
 
     private void initRecyclerViews() {
-        rvProducts = findViewById(R.id.rvStoreProducts);
-        rvDeals    = findViewById(R.id.rvStoreDeals);
-        rvPromos   = findViewById(R.id.rvStorePromos);
+        rvProducts    = findViewById(R.id.rvStoreProducts);
+        rvDeals       = findViewById(R.id.rvStoreDeals);
+        rvPromos      = findViewById(R.id.rvStorePromos);
+        tvActiveDeals = findViewById(R.id.tv_active_deals);
+        tvDistance    = findViewById(R.id.tv_distance);
 
         if (rvProducts != null) {
             productsAdapter = new StoreItemAdapter(productRows, pos -> {
@@ -159,10 +165,20 @@ public class StoreDetailsActivity extends AppCompatActivity {
     // ── Firestore load ────────────────────────────────────────────────────────
 
     private void loadShopFromFirestore(String sId) {
+        // Read the distance that was calculated client-side before opening this screen.
+        // The Shop object fetched from Firestore will have distanceKm == -1 (never stored),
+        // so we must use the value passed via EXTRA_DISTANCE instead.
+        final String intentDistance = getIntent().getStringExtra(EXTRA_DISTANCE);
+
         shopRepository.getShopById(sId, new DataCallback<Shop>() {
             @Override
             public void onSuccess(Shop shop) {
-                populateStoreInfo(shop.getName(), shop.getDistanceLabel(),
+                // If no distance was passed via intent, calculate it from the
+                // shop's GPS coordinates and the user's last known location.
+                String dist = (intentDistance != null && !intentDistance.isEmpty())
+                        ? intentDistance
+                        : computeDistance(shop.getLatitude(), shop.getLongitude());
+                populateStoreInfo(shop.getName(), dist,
                         shop.getShopLocation(), shop.getPhone(), shop.getOpeningHours());
             }
             @Override
@@ -170,9 +186,28 @@ public class StoreDetailsActivity extends AppCompatActivity {
                 Log.w(TAG, "Could not load shop: " + sId, e);
                 String name    = getIntent().getStringExtra(EXTRA_SHOP_NAME);
                 String address = getIntent().getStringExtra(EXTRA_ADDRESS);
-                populateStoreInfo(name, null, address, null, null);
+                populateStoreInfo(name, intentDistance, address, null, null);
             }
         });
+    }
+
+    /**
+     * Calculates the distance between the shop's GPS coordinates and the
+     * customer's last saved location. Returns a formatted label like "1.3 km"
+     * or "350 m", or null if either set of coordinates is unavailable.
+     */
+    private String computeDistance(double shopLat, double shopLng) {
+        if (shopLat == 0.0 && shopLng == 0.0) return null;
+        SessionManager session = SessionManager.getInstance(this);
+        double userLat = session.getLastLatitude();
+        double userLng = session.getLastLongitude();
+        if (userLat == 0.0 && userLng == 0.0) return null;
+
+        float[] results = new float[1];
+        Location.distanceBetween(userLat, userLng, shopLat, shopLng, results);
+        double km = results[0] / 1000.0;
+        if (km < 1.0) return String.format(Locale.ROOT, "%.0f m", km * 1000);
+        return String.format(Locale.ROOT, "%.1f km", km);
     }
 
     private void loadProducts(String sId) {
@@ -197,10 +232,15 @@ public class StoreDetailsActivity extends AppCompatActivity {
                             badgeClr));
                 }
                 if (productsAdapter != null) productsAdapter.notifyDataSetChanged();
+                // Update the products count chip with the real count
+                if (tvActiveDeals != null) {
+                    tvActiveDeals.setText(String.valueOf(products.size()));
+                }
             }
             @Override
             public void onError(Exception e) {
                 Log.w(TAG, "Could not load products for shop: " + sId, e);
+                if (tvActiveDeals != null) tvActiveDeals.setText("0");
             }
         });
     }
@@ -262,22 +302,17 @@ public class StoreDetailsActivity extends AppCompatActivity {
         setText(R.id.tv_location,   address);
         setText(R.id.tv_contact,    phone);
         setText(R.id.tv_hours,      hours);
+
+        // Update the distance chip with real data (fallback to "N/A")
+        if (tvDistance != null) {
+            tvDistance.setText((distance != null && !distance.isEmpty()) ? distance : "N/A");
+        }
     }
 
     // ── Buttons ───────────────────────────────────────────────────────────────
 
     private void setupButtons() {
         safeClick(R.id.btn_back, v -> finish());
-
-        safeClick(R.id.btn_view_deals, v -> {
-            // Scroll to products section or open search
-            Toast.makeText(this, "Browse products above.", Toast.LENGTH_SHORT).show();
-        });
-
-        safeClick(R.id.btn_call_store,
-                v -> Toast.makeText(this,
-                        "Use the contact number above to call the store.",
-                        Toast.LENGTH_SHORT).show());
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
