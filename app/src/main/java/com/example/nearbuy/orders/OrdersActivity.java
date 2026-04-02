@@ -43,7 +43,7 @@ public class OrdersActivity extends AppCompatActivity {
     private static final int MAX_REPORT_WORDS = 200;
     private RecyclerView recyclerOrders;
     private TextView tvResultLabel, tvOrderCount, tvStatTotal, tvStatSpent;
-    private TextView tabAll, tabDelivered, tabProcessing, tabCancelled;
+    private TextView tabAll, tabDelivered, tabProcessing, tabCancelled, tabPending;
     private View layoutEmpty;
     private LinearLayout navHome, navSearch, navMap, navDeals, navProfile;
     private ImageView navDealsIcon;
@@ -88,6 +88,7 @@ public class OrdersActivity extends AppCompatActivity {
         tabDelivered   = findViewById(R.id.tabDelivered);
         tabProcessing  = findViewById(R.id.tabProcessing);
         tabCancelled   = findViewById(R.id.tabCancelled);
+        tabPending     = findViewById(R.id.tabPending);
         layoutEmpty    = findViewById(R.id.layoutEmpty);
         tvStatTotal    = findViewById(R.id.tvStatTotal);
         tvStatSpent    = findViewById(R.id.tvStatSpent);
@@ -362,6 +363,7 @@ public class OrdersActivity extends AppCompatActivity {
         if (tabDelivered  != null) tabDelivered.setOnClickListener(v  -> applyFilter("Delivered"));
         if (tabProcessing != null) tabProcessing.setOnClickListener(v -> applyFilter("Processing"));
         if (tabCancelled  != null) tabCancelled.setOnClickListener(v  -> applyFilter("Cancelled"));
+        if (tabPending    != null) tabPending.setOnClickListener(v    -> applyFilter("Pending"));
     }
     /** Filters allOrders by the given status, refreshes the adapter, and highlights the active tab. */
     private void applyFilter(String filter) {
@@ -381,6 +383,7 @@ public class OrdersActivity extends AppCompatActivity {
         setTabActive(tabDelivered,  filter.equals("Delivered"));
         setTabActive(tabProcessing, filter.equals("Processing"));
         setTabActive(tabCancelled,  filter.equals("Cancelled"));
+        setTabActive(tabPending,    filter.equals("Pending"));
     }
     // ── Empty state ────────────────────────────────────────────────────────────
     private void showEmptyState(String message) {

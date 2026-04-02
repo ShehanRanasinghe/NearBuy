@@ -393,7 +393,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 dateStr,
                 summary,
                 totalStr,
-                "Processing",
+                "Pending",
                 quantity
         );
         order.setShopId(sId);
