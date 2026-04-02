@@ -400,6 +400,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         order.setTotalAmountRaw(totalPrice);
         order.setCustomerId(customerId);
         order.setCustomerName(customerName != null ? customerName : "");
+        order.setCustomerPhone(sessionManager.getUserPhone());
+        order.setCustomerAddress(sessionManager.getLocationAddress());
         order.setFulfillmentType(fulfillment);
 
         if (btnPlaceOrder != null) btnPlaceOrder.setEnabled(false);
@@ -409,7 +411,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onSuccess() {
                 if (btnPlaceOrder != null) btnPlaceOrder.setEnabled(true);
                 Toast.makeText(ProductDetailsActivity.this,
-                        "✅ Order placed! " + quantity + " item(s) – " + fulfillment
+                        "Order placed! " + quantity + " item(s) – " + fulfillment
                                 + " – Cash on Delivery",
                         Toast.LENGTH_LONG).show();
                 finish();

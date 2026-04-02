@@ -30,6 +30,8 @@ public class OrderItem {
     // ── Fields for admin visibility ───────────────────────────────────────────
     private String customerId;      // UID of the customer who placed the order
     private String customerName;    // display name of the customer
+    private String customerPhone;   // phone number of the customer
+    private String customerAddress; // delivery address of the customer
     private String fulfillmentType; // "Delivery" | "Pick Up"
 
     /** Constructor used by the OrdersAdapter (existing UI compatibility). */
@@ -60,6 +62,8 @@ public class OrderItem {
     public long   getCreatedAt()      { return createdAt; }
     public String getCustomerId()     { return customerId; }
     public String getCustomerName()   { return customerName; }
+    public String getCustomerPhone()  { return customerPhone; }
+    public String getCustomerAddress(){ return customerAddress; }
     public String getFulfillmentType(){ return fulfillmentType; }
 
     // ── Setters ───────────────────────────────────────────────────────────────
@@ -67,6 +71,8 @@ public class OrderItem {
     public void setTotalAmountRaw(double amount)      { this.totalAmountRaw = amount; }
     public void setCustomerId(String customerId)      { this.customerId = customerId; }
     public void setCustomerName(String customerName)  { this.customerName = customerName; }
+    public void setCustomerPhone(String phone)        { this.customerPhone = phone; }
+    public void setCustomerAddress(String address)    { this.customerAddress = address; }
     public void setFulfillmentType(String type)       { this.fulfillmentType = type; }
     public void setStatus(String status)              { this.status = status; }
 
@@ -99,6 +105,8 @@ public class OrderItem {
         order.createdAt       = createdAt;
         order.customerId      = str(map.get("customerId"));
         order.customerName    = str(map.get("customerName"));
+        order.customerPhone   = str(map.get("customerPhone"));
+        order.customerAddress = str(map.get("customerAddress"));
         order.fulfillmentType = str(map.get("fulfillmentType"));
         return order;
     }
@@ -123,6 +131,8 @@ public class OrderItem {
         map.put("createdAt",       createdAt > 0 ? createdAt : System.currentTimeMillis());
         map.put("customerId",      customerId != null ? customerId : "");
         map.put("customerName",    customerName != null ? customerName : "");
+        map.put("customerPhone",   customerPhone != null ? customerPhone : "");
+        map.put("customerAddress", customerAddress != null ? customerAddress : "");
         map.put("fulfillmentType", fulfillmentType != null ? fulfillmentType : "Delivery");
         return map;
     }
