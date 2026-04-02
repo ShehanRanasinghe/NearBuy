@@ -1,16 +1,45 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.NearBuy" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
+    <!-- Dark-mode override – mirrors the light theme but keeps NoActionBar -->
+    <style name="Theme.NearBuy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/nb_primary</item>
+        <item name="colorPrimaryVariant">@color/nb_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/nb_accent</item>
+        <item name="colorSecondaryVariant">@color/nb_accent_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:navigationBarColor">@color/bg_white</item>
+        <item name="android:windowBackground">@color/bg_light_grey</item>
+        <!-- Opt out of edge-to-edge enforcement (Android 15 / API 35+) -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
     </style>
+
+    <!-- Splash theme – full screen deep teal -->
+    <style name="Theme.NearBuy.Splash" parent="Theme.NearBuy">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:navigationBarColor">@color/nb_primary_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+    </style>
+
+    <!-- Auth screens theme – dark teal header -->
+    <style name="Theme.NearBuy.Auth" parent="Theme.NearBuy">
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+    </style>
+
+    <!-- Shared screen theme -->
+    <style name="Theme.NearBuy.Screen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/nb_primary</item>
+        <item name="colorPrimaryVariant">@color/nb_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/nb_accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/nb_primary_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+    </style>
+
 </resources>
