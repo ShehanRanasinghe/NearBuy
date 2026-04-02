@@ -32,8 +32,9 @@
             <ImageView android:id="@+id/ivTogglePassword"
                 android:layout_width="24dp" android:layout_height="24dp"
                 android:layout_alignParentEnd="true" android:layout_centerVertical="true"
-                android:layout_marginEnd="14dp" android:src="@android:drawable/ic_menu_view"
-                android:clickable="true" android:focusable="true"/>
+                android:layout_marginEnd="14dp" android:src="@drawable/ic_eye_off"
+                android:clickable="true" android:focusable="true"
+                android:contentDescription="Toggle password visibility"/>
         </RelativeLayout>
         <TextView android:id="@+id/tvForgotPassword"
             android:layout_width="wrap_content" android:layout_height="wrap_content"

@@ -43,15 +43,26 @@
             <ImageView android:id="@+id/ivTogglePass"
                 android:layout_width="24dp" android:layout_height="24dp"
                 android:layout_alignParentEnd="true" android:layout_centerVertical="true"
-                android:layout_marginEnd="14dp" android:src="@android:drawable/ic_menu_view"
-                android:clickable="true" android:focusable="true"/>
+                android:layout_marginEnd="14dp" android:src="@drawable/ic_eye_off"
+                android:clickable="true" android:focusable="true"
+                android:contentDescription="Toggle password visibility"/>
         </RelativeLayout>
-        <EditText android:id="@+id/etConfirmPassword"
-            android:layout_width="match_parent" android:layout_height="56dp"
-            android:hint="@string/hint_confirm_password" android:inputType="textPassword"
-            android:background="@drawable/bg_input_field" android:padding="16dp"
-            android:textColor="@color/text_dark_primary" android:textColorHint="@color/text_dark_hint"
-            android:layout_marginBottom="24dp"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp"
+            android:background="@drawable/bg_input_field" android:layout_marginBottom="24dp">
+            <EditText android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:hint="@string/hint_confirm_password" android:inputType="textPassword"
+                android:background="@null" android:paddingStart="16dp" android:paddingEnd="52dp"
+                android:paddingTop="16dp" android:paddingBottom="16dp"
+                android:textColor="@color/text_dark_primary" android:textColorHint="@color/text_dark_hint"
+                android:layout_toStartOf="@+id/ivToggleConfirmPass" android:layout_alignParentStart="true" android:layout_centerVertical="true"/>
+            <ImageView android:id="@+id/ivToggleConfirmPass"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:layout_alignParentEnd="true" android:layout_centerVertical="true"
+                android:layout_marginEnd="14dp" android:src="@drawable/ic_eye_off"
+                android:clickable="true" android:focusable="true"
+                android:contentDescription="Toggle confirm password visibility"/>
+        </RelativeLayout>
         <Button android:id="@+id/btnRegister"
             android:layout_width="match_parent" android:layout_height="56dp"
             android:text="@string/btn_register" android:textColor="@color/white"

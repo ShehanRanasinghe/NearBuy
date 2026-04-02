@@ -9,9 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.InputType;
+import android.graphics.Typeface;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     // UI references
     private EditText    etFullName, etEmail, etPhone, etPassword, etConfirmPassword;
+    private ImageView   ivTogglePass, ivToggleConfirmPass;
     private Button      btnRegister;
     private TextView    tvLogin;
     private ProgressBar progressBar;
@@ -66,6 +70,8 @@ public class RegisterActivity extends AppCompatActivity {
         etPhone           = findViewById(R.id.etPhone);
         etPassword        = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        ivTogglePass        = findViewById(R.id.ivTogglePass);
+        ivToggleConfirmPass = findViewById(R.id.ivToggleConfirmPass);
         btnRegister       = findViewById(R.id.btnRegister);
         tvLogin           = findViewById(R.id.tvLogin);
         progressBar       = findViewById(R.id.progressBar);
@@ -77,11 +83,39 @@ public class RegisterActivity extends AppCompatActivity {
         // "Create Account" button → validate + request OTP
         btnRegister.setOnClickListener(v -> attemptRegister());
 
+        // Password visibility toggles
+        ivTogglePass.setOnClickListener(v -> togglePasswordVisibility(etPassword, ivTogglePass));
+        ivToggleConfirmPass.setOnClickListener(v -> togglePasswordVisibility(etConfirmPassword, ivToggleConfirmPass));
+
         // "Already have an account? Log In" link → go back to Login
         tvLogin.setOnClickListener(v -> {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
+    }
+
+    // ── Password toggle helper ─────────────────────────────────────────────────
+
+    /**
+     * Toggles an EditText between hidden (textPassword) and visible (visiblePassword) modes,
+     * updates the eye icon accordingly, and preserves cursor position and typeface.
+     */
+    private void togglePasswordVisibility(EditText field, ImageView icon) {
+        Typeface tf = field.getTypeface();
+        boolean isVisible = (field.getInputType() ==
+                (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD));
+        if (isVisible) {
+            // Currently visible → hide
+            field.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            icon.setImageResource(R.drawable.ic_eye_off);
+        } else {
+            // Currently hidden → show
+            field.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            icon.setImageResource(R.drawable.ic_eye);
+        }
+        // Restore typeface and move cursor to end
+        field.setTypeface(tf);
+        field.setSelection(field.getText().length());
     }
 
     // ── Registration logic ─────────────────────────────────────────────────────
