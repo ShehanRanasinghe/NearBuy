@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,14 +59,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private TextView tvProductEmoji, tvProductName, tvCategory, tvInStock;
     private TextView tvSalePrice, tvOriginalPrice;
-    private TextView tvShopEmoji, tvShopName, tvDistance, tvRating;
-    private TextView tvDescription, tvWeight, tvCategoryDetail, tvDealExpiry;
-    private TextView btnViewStore;
+    private TextView tvShopEmoji, tvShopName, tvDistance;
+    private TextView tvDescription, tvWeight, tvCategoryDetail;
+    private LinearLayout btnViewStore;
     private TextView btnDelivery, btnPickUp;
     private Button   btnPlaceOrder;
     private ProgressBar progressBar;
 
+    // Quantity stepper views
+    private TextView tvQuantity, tvOrderTotal, btnDecrement, btnIncrement;
+
     private boolean isDeliverySelected = true;
+
+    // Quantity & price tracking
+    private int    quantity  = 1;
+    private double unitPrice = 0.0;
 
     // Loaded product (populated from Firestore when shopId+productId are provided)
     private Product loadedProduct;
@@ -129,17 +137,20 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvShopEmoji      = findViewById(R.id.tvShopEmoji);
         tvShopName       = findViewById(R.id.tvShopName);
         tvDistance       = findViewById(R.id.tvDistance);
-        tvRating         = findViewById(R.id.tvRating);
         tvDescription    = findViewById(R.id.tvDescription);
         tvWeight         = findViewById(R.id.tvWeight);
         tvCategoryDetail = findViewById(R.id.tvCategoryDetail);
-        tvDealExpiry     = findViewById(R.id.tvDealExpiry);
         btnViewStore     = findViewById(R.id.btnViewStore);
         btnDelivery      = findViewById(R.id.btnDelivery);
         btnPickUp        = findViewById(R.id.btnPickUp);
         btnPlaceOrder    = findViewById(R.id.btnPlaceOrder);
-        // ProgressBar may not exist in the current layout – use null-safe access
         progressBar      = findViewById(R.id.progressBar);
+
+        // Quantity stepper
+        tvQuantity   = findViewById(R.id.tvQuantity);
+        tvOrderTotal = findViewById(R.id.tvOrderTotal);
+        btnDecrement = findViewById(R.id.btnDecrement);
+        btnIncrement = findViewById(R.id.btnIncrement);
     }
 
     // ── Firestore load ────────────────────────────────────────────────────────
@@ -178,16 +189,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
         safe(tvSalePrice,      p.getPriceLabel());
         safe(tvShopName,       shopName != null ? shopName : "");
         safe(tvShopEmoji,      "🏪");
-        safe(tvDistance,       p.hasDistance()
-                ? "📍 " + p.getDistanceLabel() + " away" : "📍 Nearby");
+
+        // Distance: prefer intent extra (already calculated), fall back to product field
+        String intentDist = getIntent().getStringExtra(EXTRA_DISTANCE);
+        if (intentDist != null && !intentDist.isEmpty()) {
+            safe(tvDistance, "📍 " + intentDist + " away");
+        } else if (p.hasDistance()) {
+            safe(tvDistance, "📍 " + p.getDistanceLabel() + " away");
+        } else {
+            safe(tvDistance, "📍 Nearby");
+        }
+
         safe(tvDescription,    p.getDescription());
         safe(tvWeight,         p.getUnit() != null && !p.getUnit().isEmpty()
                 ? p.getUnit() : "—");
         safe(tvCategoryDetail, p.getCategory());
-        safe(tvDealExpiry,     "—");
 
         if (tvOriginalPrice != null && p.hasDiscount()) {
-            tvOriginalPrice.setText(String.format("Rs. %.0f", p.getOriginalPrice()));
+            tvOriginalPrice.setText(String.format(Locale.ROOT, "Rs. %.0f", p.getOriginalPrice()));
             tvOriginalPrice.setPaintFlags(
                     tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             tvOriginalPrice.setVisibility(View.VISIBLE);
@@ -197,6 +216,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             tvInStock.setTextColor(ContextCompat.getColor(this,
                     p.isAvailable() ? R.color.stat_green : R.color.stat_red));
         }
+
+        // Store unit price and refresh quantity display
+        unitPrice = p.getPrice();
+        updateQuantityUI();
     }
 
     /** Fallback: populate from raw intent extras (search / deal card flow). */
@@ -221,15 +244,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
         safe(tvCategoryDetail, category != null ? category : "");
         safe(tvDescription,    desc    != null ? desc     : "");
         safe(tvWeight,         unit    != null ? unit     : "—");
-        safe(tvDealExpiry,     "—");
 
-        if (distance != null) safe(tvDistance, "📍 " + distance + " away");
+        if (distance != null && !distance.isEmpty()) {
+            safe(tvDistance, "📍 " + distance + " away");
+        }
 
         if (tvOriginalPrice != null && origP != null && !origP.isEmpty()) {
             tvOriginalPrice.setText(origP);
             tvOriginalPrice.setPaintFlags(
                     tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
+
+        // Parse unit price from intent extra for quantity calculation
+        if (price != null) {
+            try {
+                unitPrice = Double.parseDouble(price.replaceAll("[^\\d.]", ""));
+            } catch (NumberFormatException ignore) { }
+        }
+        updateQuantityUI();
     }
 
     // ── Button setup ─────────────────────────────────────────────────────────
@@ -246,8 +278,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 intent.putExtra(StoreDetailsActivity.EXTRA_SHOP_NAME,
                         shopName != null ? shopName
                                 : getIntent().getStringExtra(EXTRA_SHOP_NAME));
-                // Forward the distance that was passed to this screen so the
-                // Store Details page can display it without recalculating.
                 intent.putExtra(StoreDetailsActivity.EXTRA_DISTANCE,
                         getIntent().getStringExtra(EXTRA_DISTANCE));
                 startActivity(intent);
@@ -278,8 +308,37 @@ public class ProductDetailsActivity extends AppCompatActivity {
             });
         }
 
+        // Quantity stepper
+        if (btnDecrement != null) {
+            btnDecrement.setOnClickListener(v -> {
+                if (quantity > 1) {
+                    quantity--;
+                    updateQuantityUI();
+                }
+            });
+        }
+        if (btnIncrement != null) {
+            btnIncrement.setOnClickListener(v -> {
+                quantity++;
+                updateQuantityUI();
+            });
+        }
+
         if (btnPlaceOrder != null) {
             btnPlaceOrder.setOnClickListener(v -> placeOrder());
+        }
+    }
+
+    /** Refreshes the quantity counter and running total label. */
+    private void updateQuantityUI() {
+        if (tvQuantity != null) tvQuantity.setText(String.valueOf(quantity));
+        if (tvOrderTotal != null) {
+            if (unitPrice > 0) {
+                tvOrderTotal.setText(
+                        String.format(Locale.ROOT, "Rs. %.0f", unitPrice * quantity));
+            } else {
+                tvOrderTotal.setText("");
+            }
         }
     }
 
@@ -307,10 +366,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
         String sName  = loadedProduct != null
                 ? (loadedProduct.getShopName() != null ? loadedProduct.getShopName() : shopName)
                 : (shopName != null ? shopName : getIntent().getStringExtra(EXTRA_SHOP_NAME));
-        // shopId comes from the product so the order lands in the correct shop collection
         String sId    = loadedProduct != null ? loadedProduct.getShopId()
                 : (shopId != null ? shopId : "");
-        double price  = loadedProduct != null ? loadedProduct.getPrice() : 0.0;
+        double price  = unitPrice > 0 ? unitPrice : 0.0;
+        if (price == 0.0 && loadedProduct != null) price = loadedProduct.getPrice();
         if (price == 0.0) {
             String priceStr = getIntent().getStringExtra(EXTRA_PRICE);
             if (priceStr != null) {
@@ -319,25 +378,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         }
 
+        double totalPrice  = price * quantity;
         String fulfillment = isDeliverySelected ? "Delivery" : "Pick Up";
         String dateStr     = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
                 .format(new Date());
-        String summary     = (pName != null ? pName : "Item") + " x1";
-        String totalStr    = price > 0 ? String.format("Rs.%.0f", price) : "Rs.0";
+        String summary     = (pName != null ? pName : "Item") + " x" + quantity;
+        String totalStr    = totalPrice > 0
+                ? String.format(Locale.ROOT, "Rs.%.0f", totalPrice) : "Rs.0";
 
-        // Build the order
         OrderItem order = new OrderItem(
-                "",                          // orderId – auto-generated by Firestore
+                "",
                 sName != null ? sName : "",
                 "🏪",
                 dateStr,
                 summary,
                 totalStr,
                 "Processing",
-                1
+                quantity
         );
         order.setShopId(sId);
-        order.setTotalAmountRaw(price);
+        order.setTotalAmountRaw(totalPrice);
         order.setCustomerId(customerId);
         order.setCustomerName(customerName != null ? customerName : "");
         order.setFulfillmentType(fulfillment);
@@ -349,7 +409,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onSuccess() {
                 if (btnPlaceOrder != null) btnPlaceOrder.setEnabled(true);
                 Toast.makeText(ProductDetailsActivity.this,
-                        "✅ Order placed! (" + fulfillment + " – Cash on Delivery)",
+                        "✅ Order placed! " + quantity + " item(s) – " + fulfillment
+                                + " – Cash on Delivery",
                         Toast.LENGTH_LONG).show();
                 finish();
             }
