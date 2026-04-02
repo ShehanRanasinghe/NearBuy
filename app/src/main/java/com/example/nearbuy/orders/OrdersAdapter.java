@@ -86,7 +86,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         switch (status) {
             case "Delivered":
                 holder.tvStatus.setBackgroundResource(R.drawable.bg_status_delivered);
-                holder.tvStatus.setTextColor(Color.WHITE);
+                holder.tvStatus.setTextColor(Color.parseColor("#27AE60"));
                 break;
             case "Processing":
                 holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_teal);
