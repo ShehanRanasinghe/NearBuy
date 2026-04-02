@@ -89,11 +89,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
                 holder.tvStatus.setTextColor(Color.parseColor("#27AE60"));
                 break;
             case "Processing":
-                holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_teal);
+                holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_processing);
                 holder.tvStatus.setTextColor(Color.WHITE);
                 break;
             case "Cancelled":
                 holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_orange);
+                holder.tvStatus.setTextColor(Color.WHITE);
+                break;
+            case "Pending":
+                holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_pending);
                 holder.tvStatus.setTextColor(Color.WHITE);
                 break;
             default:
