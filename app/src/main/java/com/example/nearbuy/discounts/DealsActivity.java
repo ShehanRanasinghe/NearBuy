@@ -27,6 +27,7 @@ import com.example.nearbuy.orders.OrderItem;
 import com.example.nearbuy.orders.OrdersAdapter;
 import com.example.nearbuy.profile.ProfileActivity;
 import com.example.nearbuy.search.SearchActivity;
+import com.example.nearbuy.store.StoreDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,10 +129,22 @@ public class DealsActivity extends AppCompatActivity {
 
         // Set up RecyclerView
         if (recyclerOrders != null) {
-            adapter = new OrdersAdapter(filteredOrders, order ->
-                    Toast.makeText(this,
+            adapter = new OrdersAdapter(
+                    filteredOrders,
+                    order -> Toast.makeText(this,
                             "Order #" + order.getOrderId() + " — " + order.getStatus(),
-                            Toast.LENGTH_SHORT).show());
+                            Toast.LENGTH_SHORT).show(),
+                    null,   // cancel not available from Deals screen
+                    order -> {
+                        // Visit Store navigation
+                        String shopId = order.getShopId();
+                        if (shopId == null || shopId.isEmpty()) return;
+                        Intent i = new Intent(this, StoreDetailsActivity.class);
+                        i.putExtra(StoreDetailsActivity.EXTRA_SHOP_ID,   shopId);
+                        i.putExtra(StoreDetailsActivity.EXTRA_SHOP_NAME, order.getShopName());
+                        i.putExtra(StoreDetailsActivity.EXTRA_SHOP_EMOJI, order.getShopEmoji());
+                        startActivity(i);
+                    });
             recyclerOrders.setLayoutManager(new LinearLayoutManager(this));
             recyclerOrders.setAdapter(adapter);
             recyclerOrders.setHasFixedSize(false);

@@ -18,6 +18,7 @@ import java.util.List;
  * Each row shows the shop emoji, name, order date, item summary, total, and a
  * colour-coded status badge (Delivered / Processing / Cancelled).
  * Tapping a row fires the OnOrderClickListener so the caller can show the report dialog.
+ * Each card also has a "Visit Store" button and a "Cancel Order" button (Processing only).
  */
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
 
@@ -26,13 +27,30 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         void onOrderClick(OrderItem order);
     }
 
-    private List<OrderItem> items;
-    private final OnOrderClickListener listener;
+    /** Callback fired when the customer taps the Cancel Order button. */
+    public interface OnCancelClickListener {
+        void onCancelClick(OrderItem order);
+    }
 
-    /** Creates the adapter with an initial list and the click listener. */
-    public OrdersAdapter(@NonNull List<OrderItem> items, OnOrderClickListener listener) {
-        this.items    = items;
-        this.listener = listener;
+    /** Callback fired when the customer taps the Visit Store button. */
+    public interface OnVisitStoreClickListener {
+        void onVisitStoreClick(OrderItem order);
+    }
+
+    private List<OrderItem> items;
+    private final OnOrderClickListener    listener;
+    private final OnCancelClickListener   cancelListener;
+    private final OnVisitStoreClickListener visitStoreListener;
+
+    /** Creates the adapter with an initial list and all click listeners. */
+    public OrdersAdapter(@NonNull List<OrderItem> items,
+                         OnOrderClickListener listener,
+                         OnCancelClickListener cancelListener,
+                         OnVisitStoreClickListener visitStoreListener) {
+        this.items              = items;
+        this.listener           = listener;
+        this.cancelListener     = cancelListener;
+        this.visitStoreListener = visitStoreListener;
     }
 
     /** Replaces the current data set with newItems and triggers a full refresh. */
@@ -98,6 +116,25 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onOrderClick(item);
         });
+
+        // Visit Store button – always visible
+        if (holder.btnVisitStore != null) {
+            holder.btnVisitStore.setOnClickListener(v -> {
+                if (visitStoreListener != null) visitStoreListener.onVisitStoreClick(item);
+            });
+        }
+
+        // Cancel Order button – only shown for "Processing" orders
+        if (holder.btnCancelOrder != null) {
+            if ("Processing".equals(status)) {
+                holder.btnCancelOrder.setVisibility(View.VISIBLE);
+                holder.btnCancelOrder.setOnClickListener(v -> {
+                    if (cancelListener != null) cancelListener.onCancelClick(item);
+                });
+            } else {
+                holder.btnCancelOrder.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -111,6 +148,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvEmoji, tvShop, tvDate, tvItems, tvCount, tvTotal, tvStatus, tvOrderId;
         final TextView tvFulfillment; // optional – may be null if not in item layout
+        final TextView btnVisitStore;   // always visible action button
+        final TextView btnCancelOrder;  // visible only for Processing orders
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -123,6 +162,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             tvStatus      = itemView.findViewById(R.id.tvOrderStatus);
             tvOrderId     = itemView.findViewById(R.id.tvOrderId);
             tvFulfillment = itemView.findViewById(R.id.tvOrderFulfillment); // optional
+            btnVisitStore  = itemView.findViewById(R.id.btnVisitStore);
+            btnCancelOrder = itemView.findViewById(R.id.btnCancelOrder);
         }
     }
 }

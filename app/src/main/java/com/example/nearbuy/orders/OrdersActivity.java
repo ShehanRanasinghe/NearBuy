@@ -29,6 +29,7 @@ import com.example.nearbuy.data.repository.OrderRepository;
 import com.example.nearbuy.map.NearbyMapActivity;
 import com.example.nearbuy.profile.ProfileActivity;
 import com.example.nearbuy.search.SearchActivity;
+import com.example.nearbuy.store.StoreDetailsActivity;
 import com.google.firebase.firestore.ListenerRegistration;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,12 +94,65 @@ public class OrdersActivity extends AppCompatActivity {
         if (tvStatTotal != null) tvStatTotal.setText("-");
         if (tvStatSpent != null) tvStatSpent.setText("-");
         if (recyclerOrders != null) {
-            adapter = new OrdersAdapter(filteredOrders, this::showOrderReportDialog);
+            adapter = new OrdersAdapter(
+                    filteredOrders,
+                    this::showOrderReportDialog,
+                    this::showCancelOrderDialog,
+                    this::openStoreDetails);
             recyclerOrders.setLayoutManager(new LinearLayoutManager(this));
             recyclerOrders.setAdapter(adapter);
             recyclerOrders.setHasFixedSize(false);
         }
     }
+    // ── Cancel Order ──────────────────────────────────────────────────────────
+
+    /** Shows a confirmation dialog before cancelling a Processing order. */
+    private void showCancelOrderDialog(OrderItem order) {
+        new AlertDialog.Builder(this)
+                .setTitle("Cancel Order")
+                .setMessage("Are you sure you want to cancel your order from "
+                        + order.getShopName() + "?\n\nThis action cannot be undone.")
+                .setPositiveButton("Yes, Cancel", (dialog, which) -> cancelOrder(order))
+                .setNegativeButton("Keep Order", null)
+                .show();
+    }
+
+    /** Calls the repository to update the order status to Cancelled, then reloads the list. */
+    private void cancelOrder(OrderItem order) {
+        String uid = sessionManager.getUserId();
+        if (uid.isEmpty()) return;
+        orderRepository.cancelOrder(uid, order, new OperationCallback() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(OrdersActivity.this,
+                        "Order cancelled successfully.", Toast.LENGTH_SHORT).show();
+                loadOrders();
+            }
+            @Override
+            public void onError(Exception e) {
+                Log.e(TAG, "Failed to cancel order", e);
+                Toast.makeText(OrdersActivity.this,
+                        "Could not cancel order. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // ── Visit Store ───────────────────────────────────────────────────────────
+
+    /** Opens StoreDetailsActivity for the shop associated with the given order. */
+    private void openStoreDetails(OrderItem order) {
+        String shopId = order.getShopId();
+        if (shopId == null || shopId.isEmpty()) {
+            Toast.makeText(this, "Store details not available.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent intent = new Intent(this, StoreDetailsActivity.class);
+        intent.putExtra(StoreDetailsActivity.EXTRA_SHOP_ID,    shopId);
+        intent.putExtra(StoreDetailsActivity.EXTRA_SHOP_NAME,  order.getShopName());
+        intent.putExtra(StoreDetailsActivity.EXTRA_SHOP_EMOJI, order.getShopEmoji());
+        startActivity(intent);
+    }
+
     // ── Report Dialog ─────────────────────────────────────────────────────────
     /** Shows the order status in a toast, then checks if a report was already submitted before opening the input dialog. */
     private void showOrderReportDialog(OrderItem order) {

@@ -239,6 +239,58 @@ public class OrderRepository {
                 .addOnFailureListener(callback::onError);
     }
 
+    // ── Cancel order ───────────────────────────────────────────────────────────
+
+    /**
+     * Cancels an order by updating its status to "Cancelled" in both Firestore paths:
+     *   NearBuy/{customerId}/orders/{orderId}
+     *   NearBuyHQ/{shopId}/orders/{orderId}  (if shopId is available)
+     *
+     * @param customerId customer UID
+     * @param order      the order to cancel (must have orderId set; shopId optional)
+     * @param callback   OperationCallback
+     */
+    public void cancelOrder(String customerId, OrderItem order, OperationCallback callback) {
+        if (!FirebaseConfig.isFirebaseEnabled()) {
+            callback.onError(new IllegalStateException("Firebase is not enabled."));
+            return;
+        }
+
+        String orderId = order.getOrderId();
+        String shopId  = order.getShopId();
+
+        Map<String, Object> update = new java.util.HashMap<>();
+        update.put("status", "Cancelled");
+
+        WriteBatch batch = firestore.batch();
+
+        DocumentReference customerRef = firestore
+                .collection(FirebaseCollections.CUSTOMERS)
+                .document(customerId)
+                .collection(FirebaseCollections.CUSTOMER_ORDERS)
+                .document(orderId);
+        batch.update(customerRef, update);
+
+        if (shopId != null && !shopId.isEmpty()) {
+            DocumentReference shopRef = firestore
+                    .collection(FirebaseCollections.SHOPS)
+                    .document(shopId)
+                    .collection(FirebaseCollections.SHOP_ORDERS)
+                    .document(orderId);
+            batch.update(shopRef, update);
+        }
+
+        batch.commit()
+                .addOnSuccessListener(unused -> {
+                    Log.d(TAG, "Order cancelled (id=" + orderId + ", customerId=" + customerId + ")");
+                    callback.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to cancel order", e);
+                    callback.onError(e);
+                });
+    }
+
     // ── Order reports ──────────────────────────────────────────────────────────
 
     /**
