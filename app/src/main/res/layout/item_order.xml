@@ -28,7 +28,7 @@
                 android:id="@+id/tvOrderShopEmoji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🏪"
+                android:text=""
                 android:textSize="26sp"/>
         </LinearLayout>
 
@@ -43,7 +43,7 @@
                 android:id="@+id/tvOrderShopName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FreshMart Grocery"
+                android:text=""
                 android:textColor="@color/text_dark_primary"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
@@ -52,7 +52,7 @@
                 android:id="@+id/tvOrderId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="#ORD-2024-001"
+                android:text=""
                 android:textColor="@color/nb_primary"
                 android:textSize="11sp"
                 android:layout_marginTop="2dp"/>
@@ -61,7 +61,7 @@
                 android:id="@+id/tvOrderDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="March 25, 2026"
+                android:text=""
                 android:textColor="@color/text_dark_hint"
                 android:textSize="11sp"
                 android:layout_marginTop="2dp"/>
@@ -72,7 +72,7 @@
             android:id="@+id/tvOrderStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delivered"
+            android:text=""
             android:textSize="11sp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -109,7 +109,7 @@
                 android:id="@+id/tvOrderItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fresh Apples x2, Milk x1"
+                android:text=""
                 android:textColor="@color/text_dark_secondary"
                 android:textSize="12sp"
                 android:maxLines="1"
@@ -126,7 +126,7 @@
                     android:id="@+id/tvOrderItemCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 items"
+                    android:text=""
                     android:textColor="@color/text_dark_hint"
                     android:textSize="11sp"/>
 
@@ -135,7 +135,7 @@
                     android:id="@+id/tvOrderFulfillment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Delivery"
+                    android:text=""
                     android:textSize="10sp"
                     android:textColor="@color/nb_primary"
                     android:paddingStart="6dp"
@@ -153,7 +153,7 @@
             android:id="@+id/tvOrderTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rs.350"
+            android:text=""
             android:textColor="@color/nb_primary"
             android:textSize="16sp"
             android:textStyle="bold"/>
@@ -196,7 +196,7 @@
             android:layout_height="36dp"
             android:layout_weight="1"
             android:layout_marginStart="10dp"
-            android:text="✕ Cancel Order"
+            android:text="Cancel Order"
             android:textSize="12sp"
             android:textColor="#E03B2F"
             android:textStyle="bold"
