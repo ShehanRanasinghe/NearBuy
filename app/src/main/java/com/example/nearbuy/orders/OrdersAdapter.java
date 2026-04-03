@@ -18,7 +18,7 @@ import java.util.List;
  * Each row shows the shop emoji, name, order date, item summary, total, and a
  * colour-coded status badge (Delivered / Processing / Cancelled).
  * Tapping a row fires the OnOrderClickListener so the caller can show the report dialog.
- * Each card also has a "Visit Store" button and a "Cancel Order" button (Processing only).
+ * Each card also has a "Visit Store" button and a "Cancel Order" button (Pending or Processing only).
  */
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder> {
 
@@ -128,9 +128,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
             });
         }
 
-        // Cancel Order button – only shown for "Processing" orders
+        // Cancel Order button – shown for "Pending" and "Processing" orders
         if (holder.btnCancelOrder != null) {
-            if ("Processing".equals(status)) {
+            if ("Pending".equals(status) || "Processing".equals(status)) {
                 holder.btnCancelOrder.setVisibility(View.VISIBLE);
                 holder.btnCancelOrder.setOnClickListener(v -> {
                     if (cancelListener != null) cancelListener.onCancelClick(item);
